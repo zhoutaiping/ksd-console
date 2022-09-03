@@ -20,42 +20,58 @@
       label-width="150px"
     >
       <el-form-item
-        prop="domain"
+        prop="pool_name"
         label="资源池名称"
       >
         <el-input
-          v-model="form.type"
+          v-model="form.pool_name"
           class="input-box"
         />
       </el-form-item>
       <el-form-item
-        prop="ip"
-        label="风险等级"
+        prop="type"
+        label="类型"
       >
         <el-select
-          v-model="form.level"
+          v-model="form.type"
           class="input-box"
         >
-          <el-option value="1">高</el-option>
-          <el-option value="2">中</el-option>
-          <el-option value="3">低</el-option>
+          <el-option :value="0" label="默认"></el-option>
+          <el-option :value="1" label="全家配置"></el-option>
+          <el-option :value="2" label="高风险池"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item
-        prop="status"
+        prop="risk_level"
+        label="风险等级"
+      >
+        <el-select
+          v-model="form.risk_level"
+          class="input-box"
+        >
+          <el-option :value="1" label="低"></el-option>
+          <el-option :value="2" label="中"></el-option>
+          <el-option :value="3" label="高"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item
+        prop="unshared"
         label="是否独享"
       >
         <el-checkbox
-          v-model="form.status"
+          v-model="form.unshared"
+          :true-label="1"
+          :false-label="0"
         />
       </el-form-item>
       <el-form-item
-        prop="isp"
-        label="特殊需求"
+        prop="is_delete"
+        label="是否删除"
       >
-        <el-select
-          v-model="form.isp"
-          class="input-box"
+        <el-checkbox
+          v-model="form.is_delete"
+          :true-label="1"
+          :false-label="0"
         />
       </el-form-item>
       <el-form-item label="备注">
@@ -128,14 +144,13 @@ export default createDialog({
         listView: []
       },
       formDefault: {
-        protocol: 1,
-        domain: '',
-        port: '',
-        loading: 1,
-        channel_loading: 1,
-        remark: '',
-        channel_status: 0,
-        source_type: ''
+        "is_delete": 0,
+        "pool_name": "",
+        "pool_uuid": "",
+        "remark": "",
+        "risk_level": 1,
+        "type": 0,
+        "unshared": 0
       },
       rules: {
         port: [
@@ -170,18 +185,10 @@ export default createDialog({
       }
 
       try {
-        if (this.options.batch) {
-          if (this.options.mode === 'Create') {
-            await this.Fetch.post('V4/tjkd.app.domain.batch.add', form)
-          } else {
-            await this.Fetch.post('V4/tjkd.app.domain.batch.edit', form)
-          }
+        if (this.options.mode === 'Create') {
+          await this.Fetch.post('/pooolAdd', form)
         } else {
-          if (this.options.mode === 'Create') {
-            await this.Fetch.post('V4/tjkd.app.domain.add', form)
-          } else {
-            await this.Fetch.post('V4/tjkd.app.domain.edit', form)
-          }
+          await this.Fetch.post('/pooolNodify', form)
         }
       } catch (e) {
         throw new Error()
@@ -190,7 +197,7 @@ export default createDialog({
 
     async handleSubmit() {
       this.Message('ACTION_SUCCESS')
-      this.$emit('init')
+      this.$emit('submit')
       this.handleClose()
     }
   }

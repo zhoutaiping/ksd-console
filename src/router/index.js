@@ -97,7 +97,7 @@ export const asyncRoutes = [
     path: '/meal',
     component: Layout,
     alwaysShow: true,
-    meta: { title: '套餐管理', icon: 'tab' },
+    meta: { title: '应用管理', icon: 'tab' },
     redirect: '/list',
     children: [
       {

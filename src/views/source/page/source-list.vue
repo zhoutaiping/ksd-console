@@ -1,21 +1,44 @@
 <template>
   <ConsolePageLayout>
-    <DmData>
+    <DmData ref="DmData"
+      @init="fetchList">
       <DmToolbar>
         <el-button type="primary" @click="$refs.addedit.handleOpen()">新增</el-button>
         <div slot="right">
-          <InputSearch />
+          <InputSearch v-model="bindParams.pool_name" placeholder="资源池名称" @submit="$refs.DmData.initPage()"/>
         </div>
       </DmToolbar>
-      <DmTable min-height>
+      <DmTable
+        :loading="loading"
+        min-height
+      >
         <el-table :data="list">
-          <el-table-column label="ID" prop="ID" />
-          <el-table-column label="资源池名称/UUID" prop="NAME" />
-          <el-table-column label="是否共享" prop="ISA" />
-          <el-table-column label="风险等级" prop="LVEL" />
-          <el-table-column label="资源分配" prop="SOUCRCE" />
-          <el-table-column label="备注" prop="REMARK" />
-          <el-table-column label="创建时间" prop="CREATEAT" />
+          <el-table-column label="ID" prop="id" />
+          <el-table-column label="资源池名称/UUID" prop="pool_name" />
+          <el-table-column label="类型" prop="LVEL" >
+            <template slot-scope="{row}">
+              {{type[row.type] || '--' }}
+            </template>
+          </el-table-column>
+          <el-table-column label="是否共享" prop="ISA" >
+            <template slot-scope="{row}">
+              {{row.unshared ===1 ? '独享': '共享' }}
+            </template>
+          </el-table-column>
+          <el-table-column label="风险等级" prop="LVEL" >
+            <template slot-scope="{row}">
+              {{risk_level[row.risk_level] || '--' }}
+            </template>
+          </el-table-column>
+          
+          <el-table-column label="是否删除" prop="is_delete" >
+            <template slot-scope="{row}">
+              {{row.is_delete ===1 ? '是': '否' }}
+            </template>
+          </el-table-column>
+          <el-table-column label="备注" prop="remark" />
+          <el-table-column label="创建时间" prop="created_at" />
+          <el-table-column label="更新时间" prop="updated_at" />
           <el-table-column label="操作" width="140px">
             <template slot-scope="{row}">
               <el-button @click="$refs.addedit.handleOpen(row, 'Edit')">编辑</el-button>
@@ -25,21 +48,28 @@
       </DmTable>
 
     </DmData>
-    <AddEdit ref="addedit" @submit="e =>{}" />
+    <AddEdit ref="addedit" @submit="e =>{$refs.DmData.initPage()}" />
   </ConsolePageLayout>
 </template>
 
 <script>
+import consoleData from '@/mixins/consoleData'
 import DmTable from '@/components/Dm/DmTable.vue'
 import AddEdit from './components/add-source.vue'
 export default {
   name: 'SourceList',
   components: { DmTable, AddEdit },
+  mixins: [consoleData],
   data() {
     return {
-      list: [
-        { ID: '22' }
-      ]
+      API_INDEX: '/poolList',
+      bindParams:{pool_name:''},
+      risk_level:{
+        1:'低风险',2:'中风险',3:'高风险'
+      },
+      type:{
+        0:' 默认',1:'全局配置',2:'高危风险池'
+      }
     }
   }
 }

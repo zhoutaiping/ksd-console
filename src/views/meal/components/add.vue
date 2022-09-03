@@ -9,7 +9,7 @@
     :fetch-submit="fetchSubmit"
     :mode="options.mode"
     width="700px"
-    title="套餐开通"
+    title-label="应用"
     @submit="handleSubmit"
   >
     <el-form
@@ -20,18 +20,15 @@
       label-width="150px"
     >
       <el-form-item
-        prop="domain"
-        label="套餐"
+        prop="app_name"
+        label="应用名称"
       >
-        <el-select
-          v-model="form.type"
+        <el-input
+          v-model="form.app_name"
           class="input-box"
-        >
-          <el-option value="商业版">商业版</el-option>
-          <el-option value="VIP">VIP</el-option>
-        </el-select>
+        />
       </el-form-item>
-      <el-form-item
+      <!-- <el-form-item
         prop="ip"
         label="用户"
       >
@@ -48,7 +45,7 @@
           v-model="form.SOUCRCE"
           class="input-box"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="备注">
         <el-input
           v-model="form.remark"
@@ -119,25 +116,20 @@ export default createDialog({
         listView: []
       },
       formDefault: {
-        protocol: 1,
-        domain: '',
-        port: '',
-        loading: 1,
-        channel_loading: 1,
+        // protocol: 1,
+        app_name: '',
+        // port: '',
+        // loading: 1,
+        // channel_loading: 1,
         remark: '',
-        channel_status: 0,
-        source_type: ''
+        // channel_status: 0,
+        // source_type: ''
       },
       rules: {
-        port: [
-          { required: true, message: '请输入端口', trigger: 'blur' },
-          { validator: portValidator, trigger: 'blur' }
+        app_name: [
+          { required: true, message: '请输入应用名称', trigger: 'blur' },
         ],
-        domain: [
-          {
-
-          }
-        ]
+        remark:[]
       }
     }
   },
@@ -160,19 +152,19 @@ export default createDialog({
       }
 
       try {
-        if (this.options.batch) {
+        // if (this.options.batch) {
+        //   if (this.options.mode === 'Create') {
+        //     await this.Fetch.post('V4/tjkd.app.domain.batch.add', form)
+        //   } else {
+        //     await this.Fetch.post('V4/tjkd.app.domain.batch.edit', form)
+        //   }
+        // } else {
           if (this.options.mode === 'Create') {
-            await this.Fetch.post('V4/tjkd.app.domain.batch.add', form)
+            await this.Fetch.post('/add', form)
           } else {
-            await this.Fetch.post('V4/tjkd.app.domain.batch.edit', form)
+            await this.Fetch.post('/modify', form)
           }
-        } else {
-          if (this.options.mode === 'Create') {
-            await this.Fetch.post('V4/tjkd.app.domain.add', form)
-          } else {
-            await this.Fetch.post('V4/tjkd.app.domain.edit', form)
-          }
-        }
+        // }
       } catch (e) {
         throw new Error()
       }
@@ -180,7 +172,7 @@ export default createDialog({
 
     async handleSubmit() {
       this.Message('ACTION_SUCCESS')
-      this.$emit('init')
+      this.$emit('submit')
       this.handleClose()
     }
   }

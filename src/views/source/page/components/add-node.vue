@@ -20,28 +20,25 @@
       label-width="150px"
     >
       <el-form-item
-        prop="domain"
-        label="节点池类型"
-      >
-        <el-select
-          v-model="form.type"
-          class="input-box"
-        >
-          <el-option value="1">优质节点</el-option>
-          <el-option value="2">专用节点</el-option>
-          <el-option value="3">VIP节点</el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item
         prop="ip"
         label="IP"
       >
         <el-input
           v-model="form.ip"
           type="textarea"
-          placeholder="多个可以用 ; 分开"
+          placeholder="ip"
           class="input-box"
         />
+      </el-form-item>
+      <el-form-item
+        prop="ip_pool"
+        label="节点池"
+      >
+      <el-select v-model="form.ip_pool" placeholder="节点池" clearable class="input-box">
+        <el-option :value="2" label="良好池"/>
+        <el-option :value="1" label="普通池"/>
+        <el-option :value="0" label="风险池"/>
+      </el-select>
       </el-form-item>
       <el-form-item
         prop="status"
@@ -55,47 +52,47 @@
         prop="isp"
         label="ISP"
       >
-        <el-select
+        <el-input
           v-model="form.isp"
           class="input-box"
         />
       </el-form-item>
       <el-form-item
-        prop="port"
+        prop="continent_country"
         label="大洲-国家"
       >
         <el-input
-          v-model="form.port"
+          v-model="form.continent_country"
           placeholder=""
           class="input-box"
         />
       </el-form-item>
       <el-form-item
-        prop="port"
+        prop="location"
         label="归属地"
       >
         <el-input
-          v-model="form.port"
+          v-model="form.location"
           placeholder=""
           class="input-box"
         />
       </el-form-item>
       <el-form-item
-        prop="port"
+        prop="server_config"
         label="机器配置"
       >
         <el-input
-          v-model="form.port"
+          v-model="form.server_config"
           placeholder=""
           class="input-box"
         />
       </el-form-item>
       <el-form-item
-        prop="port"
+        prop="ip_pool"
         label="独享配置"
       >
         <el-checkbox
-          v-model="form.port"
+          v-model="form.ip_pool"
         />
       </el-form-item>
       <el-form-item label="备注">
@@ -167,15 +164,20 @@ export default createDialog({
         mode: 'Create',
         listView: []
       },
-      formDefault: {
-        protocol: 1,
-        domain: '',
-        port: '',
-        loading: 1,
-        channel_loading: 1,
-        remark: '',
-        channel_status: 0,
-        source_type: ''
+      formDefault:{
+        "block_overseas": 0,
+        "continent_country": "",
+        "ip": "",
+        "ip_pool": 0,
+        "ip_type": 0,
+        "is_delete": 0,
+        "isp": "",
+        "location": "",
+        "remark": "",
+        "server_config": "",
+        "status": 0,
+        "task_uuid": "",
+        "unshared": 0
       },
       rules: {
         port: [
@@ -196,9 +198,19 @@ export default createDialog({
       this.$nextTick(async() => {
         this.$refs.Form.clearValidate()
         this.loading = false
+        if(this.options.mode ==='Edit') {
+          this.getDetail()
+        }
       })
     },
-
+    async getDetail() {
+      try {
+        const data = await this.Fetch.get('/poolNodeDetail', {id:this.form.id})
+        console.log(data)
+      } catch (error) {
+        return
+      }
+    },
     async fetchSubmit(form) {
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error()
@@ -209,18 +221,11 @@ export default createDialog({
       }
 
       try {
-        if (this.options.batch) {
-          if (this.options.mode === 'Create') {
-            await this.Fetch.post('V4/tjkd.app.domain.batch.add', form)
-          } else {
-            await this.Fetch.post('V4/tjkd.app.domain.batch.edit', form)
-          }
+       
+        if (this.options.mode === 'Create') {
+          await this.Fetch.post('/poolNodeAdd', form)
         } else {
-          if (this.options.mode === 'Create') {
-            await this.Fetch.post('V4/tjkd.app.domain.add', form)
-          } else {
-            await this.Fetch.post('V4/tjkd.app.domain.edit', form)
-          }
+          await this.Fetch.post('/poolNodeModify', form)
         }
       } catch (e) {
         throw new Error()
@@ -229,7 +234,7 @@ export default createDialog({
 
     async handleSubmit() {
       this.Message('ACTION_SUCCESS')
-      this.$emit('init')
+      this.$emit('submit')
       this.handleClose()
     }
   }
