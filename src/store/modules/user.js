@@ -1,4 +1,4 @@
-// import { login, logout, getInfo } from '@/api/user'
+import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
@@ -7,6 +7,7 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
+  user_id:'',
   roles: []
 }
 
@@ -25,43 +26,51 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_USER_ID: (state, user_id) => {
+    state.user_id = user_id
   }
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    // const { username, password } = userInfo
+    const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      // login({ username: username.trim(), password: password }).then(response => {
-      const { data } = { 'code': 20000, 'data': { 'token': 'admin-token' }}
-      commit('SET_TOKEN', data.token)
-      setToken(data.token)
-      resolve()
-      // }).catch(error => {
-      //   reject(error)
-      // })
+      login({ user_name: username.trim(), password: password }).then(res => {
+        console.log()
+        localStorage.setItem('user', JSON.stringify(res))
+        commit('SET_TOKEN', res.accessToken)
+        setToken(res.accessToke)
+        resolve()
+      }).catch(error => {
+
+        reject(error)
+      })
     })
   },
 
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      const data  = JSON.parse(localStorage.getItem('user'))
       // getInfo(state.token).then(response => {
-      const { data } = { 'code': 20000, 'data': { 'roles': ['admin'], 'introduction': 'I am a super administrator', 'avatar': 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 'name': 'Super Admin' }}
+      // const { data } = { 'code': 20000, 'data': { 'roles': ['admin'], 'introduction': 'I am a super administrator', 'avatar': 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif', 'name': 'Super Admin' }}
 
       if (!data) {
         reject('Verification failed, please Login again.')
       }
 
-      const { roles, name, avatar, introduction } = data
+      const { roles, name, avatar, introduction,id } = data
 
       // roles must be a non-empty array
       if (!roles || roles.length <= 0) {
         reject('getInfo: roles must be a non-null array!')
       }
 
-      commit('SET_ROLES', roles)
+      commit('SET_ROLES', 'admin')
+      commit('SET_USER_ID', id)
+      
       commit('SET_NAME', name)
       commit('SET_AVATAR', avatar)
       commit('SET_INTRODUCTION', introduction)
@@ -74,8 +83,8 @@ const actions = {
 
   // user logout
   logout({ commit, state, dispatch }) {
-    return new Promise((resolve, reject) => {
-      // logout(state.token).then(() => {
+    // return new Promise((resolve, reject) => {
+      logout(state.token).then(() => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
       removeToken()
