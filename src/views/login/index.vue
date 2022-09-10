@@ -225,16 +225,12 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (!value) callback(new Error('请输入密码'))
-      if (value.length && value.length < 6) {
-        callback(new Error('密码长度大于等于6'))
-      } else {
-        callback()
-      }
+      else callback()
     }
     return {
       loginForm: {
         username: 'admin',
-        password: '111111'
+        password: 'admin'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -294,6 +290,7 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
+              this.$message.success("登录成功!")
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
