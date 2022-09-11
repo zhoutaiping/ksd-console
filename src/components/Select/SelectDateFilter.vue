@@ -194,7 +194,7 @@ export default create({
       params.end_time = endTime
       this.$emit('input', params)
 
-      if (!hasInit) this.$emit('change')
+      if (!hasInit) this.$emit('change', params)
     }
   }
 })

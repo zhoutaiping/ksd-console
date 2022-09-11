@@ -1,0 +1,18 @@
+{
+    "page": {
+        "template": {
+            "5ks9fhggsas0": "配置监控模板，监控任务只能引入监控模板",
+            "5ks9fhggsvs0": "添加监控模板",
+            "5ks9fhggszc0": "名称",
+            "5ks9fhggt380": "监控协议",
+            "5ks9fhggt6k0": "监控组",
+            "5ks9fhggt9c0": "模板名称/ID",
+            "5ks9fhggtc00": "通用协议",
+            "5ks9fhggtec0": "监控频率",
+            "5ks9fhggth00": "监控耗时",
+            "5ks9fhggto00": "连续不可以用计数",
+            "5ks9fhggtvc0": "添加时间",
+            "5ks9fhggu000": "操作"
+        }
+    }
+}

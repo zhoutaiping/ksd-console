@@ -130,6 +130,53 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/monitor',
+    component: Layout,
+    alwaysShow: true,
+    meta: { title: '监控管理', icon: 'tab' },
+    redirect: '/monitor-task',
+    children: [
+      {
+        path: 'monitor-task',
+        component: () => import('@/views/monitor/page/task'),
+        name: 'monitor-task',
+        meta: { title: '监控任务', icon: 'component', noCache: true }
+      },
+      {
+        path:'task-dashboard/:id',
+        component: () => import('@/views/monitor/page/task-dashboard'),
+        name: 'task-dashboard',
+        meta: { title: 'Dashboard', icon: 'component', noCache: true , back: `monitor-task` },
+        hidden: true
+      },
+      {
+        path: 'monitor-template',
+        component: () => import('@/views/monitor/page/template'),
+        name: 'Smonitor_template',
+        meta: { title: '监控模板', icon: 'component', noCache: true }
+      },
+      {
+        path: 'monitor-group',
+        component: () => import('@/views/monitor/page/monitoring-group'),
+        name: 'monitor_group',
+        meta: { title: '监控组', icon: 'component', noCache: true }
+      },{
+        path: 'monitor-group/:id',
+        hidden: true,
+        component: () => import('@/views/monitor/page/monitoring-group-edit'),
+        name: 'monitor_template-server',
+        meta: { title: '监控点管理', icon: 'component', noCache: true , back: `monitor_group` }
+      },
+      {
+        path: 'monitor-print',
+        component: () => import('@/views/monitor/page/monitoring-print'),
+        name: 'monitor_print',
+        meta: { title: '监控点', icon: 'component', noCache: true }
+      },
+      
+    ]
+  },
+  {
     path: '/sdk',
     component: Layout,
     alwaysShow: true,
