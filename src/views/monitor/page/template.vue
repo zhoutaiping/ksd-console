@@ -3,7 +3,7 @@
     <div slot="header" style="margin-bottom: 10px">
       <span> 配置监控模板，监控任务只能引入监控模板 </span>
       <div style="position: absolute; right: 20px; top: 20px">
-        <el-button type="primary" @click="$refs.AddEditTemplate.handleOpen()"
+        <el-button type="primary" @click="$refs.AddEditTemplate.handleOpen({}, {mode:'Create'})"
           >添加监控模板</el-button
         >
       </div>
@@ -34,17 +34,30 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column label="模板名称/ID" prop="name" min-width="150" />
-          <el-table-column label="监控组" prop="group_name" min-width="150" />
-          <el-table-column label="适用协议" prop="http" min-width="150" />
-          <el-table-column label="监控频率" prop="desc" min-width="150" />
-          <el-table-column label="监控耗时" prop="status" min-width="150" />
+          <el-table-column label="模板名称/ID" prop="name" min-width="150" >
+            <template slot-scope="{row}">
+              <span>{{row.name}}</span><br/>
+              <span>{{row.uuid}}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="监控组" prop="group_name" min-width="150" /> -->
+          <el-table-column label="适用协议" prop="protocol" min-width="150" />
+          <el-table-column label="监控频率" prop="frequency" min-width="150" >
+            <template slot-scope="{row}">
+              <span>{{row.frequency}} s</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="监控耗时" prop="limit_max_delay" min-width="150" >
+            <template slot-scope="{row}">
+              <span>{{row.limit_max_delay}} ms</span>
+            </template>
+          </el-table-column>
           <el-table-column
             label="连续不可以用计数"
-            prop="desc"
+            prop="limit_max_fail"
             min-width="150"
           />
-          <el-table-column label="添加时间" prop="desc" min-width="150" />
+          <el-table-column label="添加时间" prop="created_at" min-width="150" />
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown
@@ -85,8 +98,8 @@ export default {
   components: { InputSearch, AddEditTemplate },
   data() {
     return {
-      API_INDEX: "",
-      list: [{ name: "模板一", group_name: "模板组一", id:1 }],
+      API_INDEX: "/monitor/template/list",
+      API_METHOD: "post"
     };
   },
   methods: {

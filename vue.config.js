@@ -48,6 +48,12 @@ module.exports = {
          pathRewrite: {
            '^/api': '/' // 重写路径
          }
+       },
+       '/monitor/':{
+        target:'http://120.55.48.6:8888',
+        // pathRewrite: {
+        //   '^/monitor': '/' // 重写路径
+        // }
        }
      }
   },

@@ -24,18 +24,46 @@
         <el-input v-model="form.ipv6" class="input-box" />
       </el-form-item>
       <el-form-item prop="type" label="监测类型">
-        <el-select v-model="form.type" class="input-box" placeholder="监测类型" >
-          <el-option label="节点" value="ip" />
-          <el-option label="源站" value="oomain" />
+        <el-select v-model="form.type" class="input-box" placeholder="监测类型">
+          <el-option label="节点监控" :value="1" />
+          <el-option label="源站监控" :value="2" />
         </el-select>
       </el-form-item>
       <template v-if="options.mode === 'Edit'">
-        <el-form-item prop="loction" label="归属地">
-          <el-select v-model="form.loction" class="input-box" placeholder="" >
-            <el-option label="上海-上海-上海" value="ip" />
+        <el-form-item prop="country" label="国家">
+          <el-select
+            v-model="form.country"
+            class="input-box"
+            placeholder=""
+            filterable
+            allow-create
+            default-first-option
+          >
           </el-select>
         </el-form-item>
-        <el-form-item prop="isp" label="ISP">
+        <el-form-item prop="province" label="省/地区">
+          <el-select
+            v-model="form.province"
+            class="input-box"
+            placeholder=""
+            filterable
+            allow-create
+            default-first-option
+          >
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="city" label="城市">
+          <el-select
+            v-model="form.city"
+            class="input-box"
+            placeholder=""
+            filterable
+            allow-create
+            default-first-option
+          >
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="isp" label="线路">
           <el-input v-model="form.isp" class="input-box" placeholder="" />
         </el-form-item>
       </template>
@@ -64,9 +92,12 @@ export default createDialog({
         ipv4: "",
         ipv6: "",
         type: "",
-        location: "",
+        country: "",
+        province: "",
+        city: "",
         isp: "",
         remark: "",
+        status: 0,
       },
       rules: {
         name: [{ required: true, message: " ", trigger: "blur" }],
@@ -74,7 +105,9 @@ export default createDialog({
         ipv6: [],
         type: [{ required: true, message: " ", trigger: "blur" }],
         isp: [],
-        location: [],
+        country: [],
+        province: [],
+        city: [],
         remark: [],
       },
     };
@@ -88,11 +121,12 @@ export default createDialog({
       form = {
         ...this.form,
       };
+      console.log();
       try {
         if (this.options.mode === "Create") {
-          await this.Fetch.post("/add", form);
+          await this.Fetch.post("/monitor/node/add", form);
         } else {
-          await this.Fetch.post("/modify", form);
+          await this.Fetch.post("/monitor/node/edit", form);
         }
       } catch (e) {
         throw new Error();

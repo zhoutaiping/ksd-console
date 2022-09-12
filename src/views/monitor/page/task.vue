@@ -34,9 +34,7 @@
     </DmToolbar>
     <DmData ref="DmData" @init="fetchList">
       <DmTable :loading="loading" min-height>
-        <el-table :data="[
-          {app_name:'任务A',name:'监控组一', id:1}
-        ]">
+        <el-table :data="list">
           <el-table-column type="selection" />
           <el-table-column
             label="监控任务名称/ID"
@@ -45,21 +43,21 @@
             >
             <template slot-scope="scope">
               <router-link :to="{
-                  path:'/monitor/task-dashboard/'+ scope.row.id 
+                  path:'/monitor/task-dashboard/'+ scope.row.uuid 
               }">
-                <span style="font-weight: 700;">{{ scope.row.app_name }}</span>
+                <span style="font-weight: 700;">{{ scope.row.name }}</span>
               </router-link><br>
-              {{ scope.row.id }}
+              {{ scope.row.uuid }}
             </template>
           </el-table-column>
-          <el-table-column label="监控组" prop="name" min-width="150" />
-          <el-table-column label="监控目标" prop="desc" min-width="150" />
+          <el-table-column label="监控组" prop="group_uuid" min-width="150" />
+          <el-table-column label="监控目标" prop="target" min-width="150" />
           <el-table-column label="监控协议" prop="desc" min-width="150" />
           <el-table-column label="监控频率" prop="desc" min-width="150" />
           <el-table-column label="监控目标状态" prop="status" min-width="150" />
           <el-table-column label="延迟" prop="desc" min-width="150" />
           <el-table-column label="可用率" prop="desc" min-width="150" />
-          <el-table-column label="添加时间" prop="desc" min-width="150" />
+          <el-table-column label="添加时间" prop="created_at" min-width="150" />
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown
@@ -106,7 +104,8 @@ export default {
   components: { InputSearch, AddEditTaskVue },
   data() {
     return {
-      API_INDEX: "",
+      API_INDEX: "/monitor/task/list",
+      API_METHOD: "post",
     };
   },
   methods: {
@@ -135,13 +134,18 @@ export default {
 
       this.Message("ACTION_SUCCESS");
     },
-    handleDel(data) {
+    async handleDel(data) {
       const params = {
-        id: data.id,
+        uuid: data.uuid,
       };
-      console.log(params);
+      try {
+        await this.Fetch.post('/monitor/task/delete', params)
+        this.Message("ACTION_SUCCESS");
+        this.handleSearch()
+      } catch (error) {
+        return
+      }
 
-      this.Message("ACTION_SUCCESS");
     },
   },
 };

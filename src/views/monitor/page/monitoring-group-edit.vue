@@ -1,10 +1,13 @@
 <template>
   <ConsolePageLayout>
     <div slot="header" style="margin-bottom: 10px">
-      <span> 监控组中的监控点管理 </span>
+      <span style="color: #606266"> 监控组中的监控点管理 </span>
       <div style="position: absolute; right: 20px; top: 20px">
-        <el-button @click="$refs.AddEditServe.handleOpen()" type="primary"
-          >添加监控点</el-button>
+        <el-button
+          @click="$refs.AddEditServe.handleOpen({}, { mode: 'Create' })"
+          type="primary"
+          >添加监控点</el-button
+        >
       </div>
     </div>
     <DmToolbar>
@@ -20,14 +23,7 @@
     </DmToolbar>
     <DmData ref="DmData" @init="fetchList">
       <DmTable :loading="loading" min-height>
-        <el-table
-          :data="[
-            {
-              name: '监控组一',
-              id: 1,
-            },
-          ]"
-        >
+        <el-table :data="list">
           <el-table-column type="selection" />
           <el-table-column label="监控点名称/ID" prop="name" min-width="150" />
           <el-table-column label="监控点类型" prop="name" min-width="150" />
@@ -74,13 +70,15 @@ export default {
   components: { InputSearch, AddEditServe },
   data() {
     return {
-      API_INDEX: "",
+      API_INDEX: "/monitor/group/list_node",
+      API_METHOD: "post",
+      bindParams: {
+        group_uuid: this.$route.params.id,
+      },
     };
   },
   methods: {
     handleOption(e, data) {
-      console.log(e, data);
-
       if (e === "eidt") {
         this.$refs.AddEditServe.handleOpen(data, {
           mode: "Edit",
@@ -90,13 +88,18 @@ export default {
       }
     },
 
-    handleDel(data) {
+    async handleDel(data) {
       const params = {
-        id: data.id,
+        group_uuid: this.$route.params.id,
+        node_uuid: [data.uuid],
       };
-      console.log(params);
-
-      this.Message("ACTION_SUCCESS");
+      try {
+        await this.Fetch.post("/monitor/group/delete_node", params);
+        this.Message("ACTION_SUCCESS");
+        this.handleSearch();
+      } catch (error) {
+        return;
+      }
     },
   },
 };

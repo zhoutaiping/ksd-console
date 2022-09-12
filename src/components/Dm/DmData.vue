@@ -99,18 +99,16 @@ export default {
       }
       const { page, per_page } = this.pagination
       this.$emit('init', {
-        page,
-        per_page,
-        size: per_page,
-        pagesize: per_page
+        page: page,
+        per_size: per_page
       })
     },
 
     getPagination() {
+      const { page, per_page } = this.pagination
       return {
-        ...this.pagination,
-        pagesize: this.pagination.per_page,
-        size: this.pagination.per_page
+        page: page,
+        per_size: per_page
       }
     },
 

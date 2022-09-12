@@ -3,14 +3,14 @@
     <div slot="header" style="margin-bottom: 10px">
       <span> 网关和源站可用性监控点维护管理 </span>
       <div style="position: absolute; right: 20px; top: 20px">
-        <el-button @click="$refs.AddEditGroup.handleOpen()" type="primary"
+        <el-button @click="$refs.AddEditGroup.handleOpen({}, {mode:'Create'})" type="primary"
           >添加监控组</el-button
         >
       </div>
     </div>
     <DmToolbar>
       <InputSearch
-        v-model="bindParams.app_name"
+        v-model="bindParams.name"
         :placeholder="'组名称'"
         class="input-box"
         @submit="handleSearch"
@@ -22,26 +22,21 @@
     <DmData ref="DmData" @init="fetchList">
       <DmTable :loading="loading" min-height>
         <el-table
-          :data="[
-            {
-              name: '监控组一',
-              id: 1,
-            },
-          ]"
+          :data="list"
         >
           <el-table-column type="selection" />
           <el-table-column label="组名称/ID" prop="name" min-width="150">
             <template slot-scope="scope">
               <router-link :to="{
-                  path:'/monitor/monitor-group/'+ scope.row.id 
+                  path:'/monitor/monitor-group/'+ scope.row.uuid 
               }">
                 <span style="font-weight: 700;">{{ scope.row.name }}</span>
               </router-link><br>
-              {{ scope.row.id }}
+              {{ scope.row.uuid }}
             </template>
           </el-table-column>
-          <el-table-column label="添加时间" prop="desc" min-width="150" />
-          <el-table-column label="备注" prop="desc" min-width="150" />
+          <el-table-column label="添加时间" prop="created_at" min-width="150" />
+          <el-table-column label="备注" prop="remark" min-width="150" />
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown
@@ -85,7 +80,8 @@ export default {
   components: { InputSearch, AddEditGroup },
   data() {
     return {
-      API_INDEX: "",
+      API_INDEX: "/monitor/group/list",
+      API_METHOD: "post",
     };
   },
   methods: {
@@ -100,18 +96,23 @@ export default {
         this.handleDel(data);
       } else if (e === "serve") {
         this.$router.push({
-          path: "/monitor/monitor-group/" + data.id,
+          path: "/monitor/monitor-group/" + data.uuid,
         });
       }
     },
 
-    handleDel(data) {
+    async handleDel(data) {
       const params = {
-        id: data.id,
+        uuid: data.uuid,
       };
-      console.log(params);
+      try {
+        await this.Fetch.post('/monitor/group/delete', params)
+        this.Message("ACTION_SUCCESS");
+        this.handleSearch()
+      } catch (error) {
+        return
+      }
 
-      this.Message("ACTION_SUCCESS");
     },
   },
 };

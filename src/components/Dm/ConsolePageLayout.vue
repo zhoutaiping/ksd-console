@@ -38,7 +38,8 @@
       display: inline-block;
       margin: 0px;
       padding: 0px;
-      font-size: 14px;
+      font-size: 15px;
+      font-weight: 700;
       padding-left: 12px;
       height: 40px;
       line-height: 40px;

@@ -2,14 +2,14 @@ import request from '@/service/request-raw'
 
 export function login(data) {
   return request({
-    url: '/user/login',
+    url: '/api/user/login',
     method: 'post',
     data
   })
 }
 export function getInfo(token) {
   return request({
-    url: '/user/verifyToken',
+    url: '/api/user/verifyToken',
     method: 'get',
     params: { token }
   })
@@ -17,7 +17,7 @@ export function getInfo(token) {
 
 export function logout(data) {
   return request({
-    url: '/user/logout',
+    url: '/api/user/logout',
     method: 'post',
     data
   })

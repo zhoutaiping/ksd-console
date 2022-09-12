@@ -17,14 +17,8 @@
       <el-form-item prop="name" label="模板名称">
         <el-input v-model="form.name" class="input-box" />
       </el-form-item>
-      <!-- <el-form-item prop="group" label="监控点组">
-        <el-select v-model="form.group" class="input-box">
-          <el-option value="1" label="测试模板" />
-          <el-option value="2" label="正式模板" />
-        </el-select>
-      </el-form-item> -->
-      <el-form-item prop="http" label="适用协议">
-        <el-select v-model="form.http" class="input-box" @change="e => {
+      <el-form-item prop="protocol" label="适用协议">
+        <el-select v-model="form.protocol" class="input-box" @change="e => {
           if(e === 'http') {
             form.port = 80
           }else if(e === 'https') {
@@ -45,37 +39,37 @@
           class="input-box"
         />
       </el-form-item>
-      <template v-if="form.http!=='tcp'">
-        <el-form-item prop="methods" label="监控请求方法">
-          <el-select v-model="form.methods" class="input-box">
+      <template v-if="form.protocol!=='tcp'">
+        <el-form-item prop="method" label="监控请求方法">
+          <el-select v-model="form.method" class="input-box">
             <el-option value="get" label="GET" />
             <el-option value="post" label="POST" />
             <el-option value="put" label="PUT" />
             <el-option value="delete" label="DELETE" />
           </el-select>
         </el-form-item>
-        <el-form-item prop="host" label="监控host">
-          <el-input v-model="form.host" class="input-box" />
+        <el-form-item prop="domain" label="监控host">
+          <el-input v-model="form.domain" class="input-box" />
         </el-form-item>
-        <el-form-item prop="url" label="监控路径">
-          <el-input v-model="form.url" class="input-box" />
+        <el-form-item prop="path" label="监控路径">
+          <el-input v-model="form.path" class="input-box" />
         </el-form-item>
       </template>
       <el-form-item prop="frequency" label="监控频率">
         <el-input-number :controls="false" v-model="form.frequency" class="input-box" /> 秒
       </el-form-item>
-      <el-form-item v-if="form.http!=='tcp'" prop="htpt_code" label="预期状态码">
+      <el-form-item v-if="form.protocol!=='tcp'" prop="expect_status_code" label="预期状态码">
         <el-input-number
           :controls="false"
           placeholder="200"
-          v-model="form.htpt_code"
+          v-model="form.expect_status_code"
           class="input-box"
         />
       </el-form-item>
-      <el-form-item prop="error_ratio" label="监控失败占比">
+      <el-form-item prop="limit_max_fails_rate" label="监控失败占比">
         <el-input-number
           :controls="false"
-          v-model="form.error_ratio"
+          v-model="form.limit_max_fails_rate"
           class="input-box"
           placeholder="10-100"
           :min="10"
@@ -85,10 +79,10 @@
           失败监控点个数/总监控点个数 百分比，被监控对象视为不可用（10-100）
         </h5>
       </el-form-item>
-      <el-form-item prop="monitor_time" label="监控耗时">
+      <el-form-item prop="limit_max_delay" label="监控耗时">
         <el-input-number
           :controls="false"
-          v-model="form.monitor_time"
+          v-model="form.limit_max_delay"
           class="input-box"
           placeholder="100-10000"
           :min="100"
@@ -98,10 +92,10 @@
           所有监控点监控耗时均达到该值，则视本次监控不可用（100~10000）
         </h5>
       </el-form-item>
-      <el-form-item prop="nouse_count" label="连续不可用计数">
+      <el-form-item prop="limit_max_fail" label="连续不可用计数">
         <el-input-number
           :controls="false"
-          v-model="form.nouse_count"
+          v-model="form.limit_max_fail"
           class="input-box"
           placeholder="2-10"
           :min="2"
@@ -111,10 +105,10 @@
           监控连续不可用次数达到该限制，则视监控目标宕机（2~10）
         </h5>
       </el-form-item>
-      <el-form-item prop="use_count" label="连续可用计数">
+      <el-form-item prop="limit_max_rise" label="连续可用计数">
         <el-input-number
           :controls="false"
-          v-model="form.use_count"
+          v-model="form.limit_max_rise"
           class="input-box"
           placeholder="1-5"
           :min="1"
@@ -124,25 +118,25 @@
           监控连续可用次数达到该限制, 则视监控目标恢复（1-5）
         </h5>
       </el-form-item>
-      <el-form-item prop="down_count" label="连续宕机限制">
+      <el-form-item prop="limit_max_delay" label="连续宕机限制">
         <el-input-number
           :controls="false"
-          v-model="form.down_time"
+          v-model="form.limit_up_down_interval"
           style="width:150px"
         /> 秒
         <el-input-number
           :controls="false"
-          v-model="form.down_count"
+          v-model="form.limit_up_down_count"
           style="width:150px"
         /> 次
         <h5>
           设定时间周期内up/down状态改变次数达到阈值,则在周期时间内视为任务"down"(即使"up")
         </h5>
       </el-form-item>
-      <el-form-item prop="delayed_time" label="平均可用延时监控">
+      <el-form-item prop="limit_avg_delay" label="平均可用延时监控">
         <el-input-number
           :controls="false"
-          v-model="form.delayed_time"
+          v-model="form.limit_avg_delay"
           class="input-box"
         /> 毫秒
         <h5>
@@ -169,41 +163,42 @@ export default createDialog({
     return {
       formDefault: {
         name: "",
-        // group: "",
-        http: "http",
+        protocol: "http",
         port:'80',
-        methods:'',
-        host:'',
-        url:'',
+        method:'',
+        domain:'',
+        path:'',
         frequency: 30,
-        htpt_code: "",
-        error_ratio: 60,
-        monitor_time: 3000,
-        nouse_count: 3,
-        use_count:2,
-        down_time: 600,
-        down_count: 5,
-        delayed_time: "",
+        expect_status_code: 200,
+        limit_max_fail:3,
+        limit_max_fails_rate: 60,
+        limit_avg_delay: 0,
+        limit_up_down_count: 5,
+        limit_up_down_interval:600,
+        limit_max_delay: 5,
+        limit_avg_delay: "",
+        limit_max_rise:2,
         remark: "",
       },
       rules: {
         name: [{ required: true, message: " ", trigger: "blur" }],
-        group: [{ required: true, message: " ", trigger: "blur" }],
-        http: [{ required: true, message: " ", trigger: "blur" }],
+        protocol: [{ required: true, message: " ", trigger: "blur" }],
         port: [{ required: true, message: " ", trigger: "blur" }],
-        methods: [{ required: true, message: " ", trigger: "blur" }],
-        host: [],
-        url: [{ required: true, message: " ", trigger: "blur" }],
+        method: [{ required: true, message: " ", trigger: "blur" }],
+        domain: [],
+        path: [{ required: true, message: " ", trigger: "blur" }],
         is_default: [{ required: true, message: " ", trigger: "blur" }],
         frequency: [{ required: true, message: " ", trigger: "blur" }],
-        htpt_code: [{ required: true, message: " ", trigger: "blur" }],
-        error_ratio: [{ required: true, message: " ", trigger: "blur" }],
-        monitor_time: [{ required: true, message: " ", trigger: "blur" }],
-        nouse_count: [{ required: true, message: " ", trigger: "blur" }],
-        use_count: [{ required: true, message: " ", trigger: "blur" }],
+        expect_status_code: [{ required: true, message: " ", trigger: "blur" }],
+        limit_max_fail: [{ required: true, message: " ", trigger: "blur" }],
+        limit_max_fails_rate: [{ required: true, message: " ", trigger: "blur" }],
+        limit_avg_delay: [{ required: true, message: " ", trigger: "blur" }],
+        limit_up_down_count: [{ required: true, message: " ", trigger: "blur" }],
+        limit_up_down_interval: [{ required: true, message: " ", trigger: "blur" }],
         down_time: [{ required: true, message: " ", trigger: "blur" }],
-        down_count: [{ required: true, message: " ", trigger: "blur" }],
-        delayed_time: [{ required: true, message: " ", trigger: "blur" }],
+        limit_max_delay: [{ required: true, message: " ", trigger: "blur" }],
+        limit_max_rise: [{ required: true, message: " ", trigger: "blur" }],
+        limit_avg_delay: [{ required: true, message: " ", trigger: "blur" }],
         remark: [],
       },
     };
@@ -216,12 +211,13 @@ export default createDialog({
 
       form = {
         ...this.form,
+        limit_max_fails_rate : this.form.limit_max_fails_rate * 0.01
       };
       try {
         if (this.options.mode === "Create") {
-          await this.Fetch.post("/add", form);
+          await this.Fetch.post("/monitor/template/add", form);
         } else {
-          await this.Fetch.post("/modify", form);
+          await this.Fetch.post("/monitor/template/edit", form);
         }
       } catch (e) {
         throw new Error();

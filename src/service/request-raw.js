@@ -4,16 +4,15 @@ import { uuid } from '@/utils/uuid'
 import Lockr from 'lockr'
 import router from '@/router'
 const service = axios.create({
-  baseURL: '/api',
+  // baseURL: '/api',
   timeout: 30000,
   headers: {
-    'Content-Type': 'application/json'
+    'content-type': 'application/json; charset=utf-8'
   }
 })
 
 service.interceptors.request.use(
   config => {
-    console.log('config---------', config)
     return config
   }
 )
@@ -22,7 +21,15 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const { status: status, data: body } = response
-    const { data, msg, code } = body
+    let { data, code, msg } = body
+    // console.log('----body--status',body,status)
+
+    const _status = body.status && body.status || null
+    if (_status) {
+      code = _status.code
+      msg = _status.msg || _status.message || msg
+    }
+    // console.log("_status---",_status)
     // agw
     if (code !== 0 && msg) {
       Message.warning(msg)
@@ -48,7 +55,6 @@ service.interceptors.response.use(
             const dataMessage = JSON.stringify(data) === '[]' ? '' : data
             Message.warning(msg || dataMessage || '操作失败')
           }
-
           return Promise.reject(body)
         }
       } else {
