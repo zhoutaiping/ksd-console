@@ -32,7 +32,6 @@
           <el-table-column label="监控点名称/ID" prop="name" min-width="150" />
           <el-table-column label="监控点类型" prop="name" min-width="150" />
           <el-table-column label="IPV4/IPV6" prop="name" min-width="150" />
-          <el-table-column label="使用状态/健康状态" prop="name" min-width="150" />
           <el-table-column label="ISP/归属地" prop="name" min-width="150" />
           <el-table-column label="添加时间" prop="desc" min-width="150" />
           <el-table-column label="备注" prop="desc" min-width="150" />

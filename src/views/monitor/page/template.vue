@@ -36,7 +36,7 @@
           <el-table-column type="selection" />
           <el-table-column label="模板名称/ID" prop="name" min-width="150" />
           <el-table-column label="监控组" prop="group_name" min-width="150" />
-          <el-table-column label="通用协议" prop="http" min-width="150" />
+          <el-table-column label="适用协议" prop="http" min-width="150" />
           <el-table-column label="监控频率" prop="desc" min-width="150" />
           <el-table-column label="监控耗时" prop="status" min-width="150" />
           <el-table-column

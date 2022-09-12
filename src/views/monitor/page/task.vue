@@ -5,9 +5,9 @@
       <div style="position: absolute; right: 20px; top: 20px">
         <el-button>启用</el-button>
         <el-button>暂停</el-button>
-        <el-button type="primary" @click="$refs.AddEditTaskVue.handleOpen()"
+        <!-- <el-button type="primary" @click="$refs.AddEditTaskVue.handleOpen()"
           >添加监控任务</el-button
-        >
+        > -->
       </div>
     </div>
     <DmToolbar>
@@ -54,6 +54,7 @@
           </el-table-column>
           <el-table-column label="监控组" prop="name" min-width="150" />
           <el-table-column label="监控目标" prop="desc" min-width="150" />
+          <el-table-column label="监控协议" prop="desc" min-width="150" />
           <el-table-column label="监控频率" prop="desc" min-width="150" />
           <el-table-column label="监控目标状态" prop="status" min-width="150" />
           <el-table-column label="延迟" prop="desc" min-width="150" />
@@ -73,7 +74,7 @@
                   <i class="el-icon-more" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="eidt">编辑</el-dropdown-item>
+                  <el-dropdown-item command="eidt">任务详情</el-dropdown-item>
                   <el-dropdown-item command="dashboard">Dashboard</el-dropdown-item>
                   <el-dropdown-item command="down">
                     <span>永远宕机</span>

@@ -17,25 +17,54 @@
       <el-form-item prop="name" label="模板名称">
         <el-input v-model="form.name" class="input-box" />
       </el-form-item>
-      <el-form-item prop="group" label="监控点组">
+      <!-- <el-form-item prop="group" label="监控点组">
         <el-select v-model="form.group" class="input-box">
           <el-option value="1" label="测试模板" />
           <el-option value="2" label="正式模板" />
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item prop="http" label="适用协议">
-        <el-select v-model="form.http" class="input-box">
-          <el-option value="http" label="http" />
-          <el-option value="https" label="https" />
+        <el-select v-model="form.http" class="input-box" @change="e => {
+          if(e === 'http') {
+            form.port = 80
+          }else if(e === 'https') {
+            form.port = 443
+          }else {
+            form.port = 61081
+          }
+        }">
+          <el-option value="http" label="HTTP" />
+          <el-option value="https" label="HTTPS" />
+          <el-option value="tcp" label="TCP" />
         </el-select>
       </el-form-item>
-      <el-form-item prop="is_default" label="是否默认模板">
-        <el-checkbox v-model="form.is_default" class="input-box" />
+      <el-form-item prop="port" label="监控端口">
+        <el-input-number
+          :controls="false"
+          v-model="form.port"
+          class="input-box"
+        />
       </el-form-item>
+      <template v-if="form.http!=='tcp'">
+        <el-form-item prop="methods" label="监控请求方法">
+          <el-select v-model="form.methods" class="input-box">
+            <el-option value="get" label="GET" />
+            <el-option value="post" label="POST" />
+            <el-option value="put" label="PUT" />
+            <el-option value="delete" label="DELETE" />
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="host" label="监控host">
+          <el-input v-model="form.host" class="input-box" />
+        </el-form-item>
+        <el-form-item prop="url" label="监控路径">
+          <el-input v-model="form.url" class="input-box" />
+        </el-form-item>
+      </template>
       <el-form-item prop="frequency" label="监控频率">
         <el-input-number :controls="false" v-model="form.frequency" class="input-box" /> 秒
       </el-form-item>
-      <el-form-item prop="htpt_code" label="预期状态码">
+      <el-form-item v-if="form.http!=='tcp'" prop="htpt_code" label="预期状态码">
         <el-input-number
           :controls="false"
           placeholder="200"
@@ -53,7 +82,7 @@
           :max="100"
         /> %
         <h5>
-          次监控监所有监控点失败个数占比达到该限制,则视本次监控不可用（10-100）
+          失败监控点个数/总监控点个数 百分比，被监控对象视为不可用（10-100）
         </h5>
       </el-form-item>
       <el-form-item prop="monitor_time" label="监控耗时">
@@ -66,7 +95,7 @@
           :max="10000"
         /> 毫秒
         <h5>
-          一次监控所有监控点监控耗时均达到该限制,则视本次监控不可用（100~10000）
+          所有监控点监控耗时均达到该值，则视本次监控不可用（100~10000）
         </h5>
       </el-form-item>
       <el-form-item prop="nouse_count" label="连续不可用计数">
@@ -79,7 +108,7 @@
           :max="10"
         /> 次
         <h5>
-          监控连续不可用计数达到该限制, 则视监控目标宕机（2~10）
+          监控连续不可用次数达到该限制，则视监控目标宕机（2~10）
         </h5>
       </el-form-item>
       <el-form-item prop="use_count" label="连续可用计数">
@@ -92,7 +121,7 @@
           :max="5"
         /> 次
         <h5>
-          监控连续可用计数达到该限制, 则视监控目标恢复（1-5）
+          监控连续可用次数达到该限制, 则视监控目标恢复（1-5）
         </h5>
       </el-form-item>
       <el-form-item prop="down_count" label="连续宕机限制">
@@ -117,7 +146,7 @@
           class="input-box"
         /> 毫秒
         <h5>
-          一次监控如果所有监测点平均延迟达到该限制, 则视本次监控不可用 (阈值必须大于50ms)
+          一次监控如果所有监测点平均延迟达到该值，则视本次监控不可用 (阈值必须大于50ms)
         </h5>
       </el-form-item>
       <el-form-item label="备注">
@@ -140,17 +169,20 @@ export default createDialog({
     return {
       formDefault: {
         name: "",
-        group: "",
-        http: "",
-        is_default: "",
-        frequency: "",
+        // group: "",
+        http: "http",
+        port:'80',
+        methods:'',
+        host:'',
+        url:'',
+        frequency: 30,
         htpt_code: "",
-        error_ratio: "",
-        monitor_time: "",
-        nouse_count: "",
-        use_count: "",
-        down_time: "",
-        down_count: "",
+        error_ratio: 60,
+        monitor_time: 3000,
+        nouse_count: 3,
+        use_count:2,
+        down_time: 600,
+        down_count: 5,
         delayed_time: "",
         remark: "",
       },
@@ -158,6 +190,10 @@ export default createDialog({
         name: [{ required: true, message: " ", trigger: "blur" }],
         group: [{ required: true, message: " ", trigger: "blur" }],
         http: [{ required: true, message: " ", trigger: "blur" }],
+        port: [{ required: true, message: " ", trigger: "blur" }],
+        methods: [{ required: true, message: " ", trigger: "blur" }],
+        host: [],
+        url: [{ required: true, message: " ", trigger: "blur" }],
         is_default: [{ required: true, message: " ", trigger: "blur" }],
         frequency: [{ required: true, message: " ", trigger: "blur" }],
         htpt_code: [{ required: true, message: " ", trigger: "blur" }],

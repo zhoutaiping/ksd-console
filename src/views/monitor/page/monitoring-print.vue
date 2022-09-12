@@ -5,8 +5,6 @@
             网关和源站可用性监控点维护管理
         </span>
         <div style="position: absolute;right: 20px;top: 20px;">
-            <el-button>启用</el-button>
-            <el-button>暂停</el-button>
             <el-button @click="$refs.AddEditPrint.handleOpen()" type="primary">添加监控点</el-button>
         </div>
     </div>
@@ -47,11 +45,7 @@
             prop="desc"
             min-width="150"
           />
-          <el-table-column
-            label="使用状态/健康状态"
-            prop="desc"
-            min-width="150"
-          />
+          
           <el-table-column
             label="IP/归属地"
             prop="status"

@@ -70,7 +70,7 @@ export default createDialog({
       },
       rules: {
         name: [{ required: true, message: " ", trigger: "blur" }],
-        ipv4: [],
+        ipv4: [{ required: true, message: " ", trigger: "blur" }],
         ipv6: [],
         type: [{ required: true, message: " ", trigger: "blur" }],
         isp: [],

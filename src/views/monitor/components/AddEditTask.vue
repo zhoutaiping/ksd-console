@@ -17,6 +17,12 @@
       <el-form-item prop="name" label="任务名称">
         <el-input v-model="form.name" class="input-box" />
       </el-form-item>
+      <el-form-item prop="group" label="监控组">
+        <el-select v-model="form.group" class="input-box">
+          <el-option value="1" label="测试模板" />
+          <el-option value="2" label="正式模板" />
+        </el-select>
+      </el-form-item>
       <el-form-item prop="template" label="监控模板">
         <el-select v-model="form.template" class="input-box">
           <el-option value="1" label="测试模板" />
@@ -44,14 +50,27 @@
           <el-option value="delete" label="DELETE" />
         </el-select>
       </el-form-item>
-      <el-form-item prop="http_sni" label="不启用 HTTP_SNI">
-        <el-checkbox v-model="form.http_sni" class="input-box" />
+      <el-form-item prop="host" label="监控host">
+        <el-input v-model="form.host" class="input-box"/>
       </el-form-item>
-      <el-form-item prop="domain" label="监控域名">
-        <el-input v-model="form.domain" class="input-box" />
-      </el-form-item>
+     
       <el-form-item prop="url" label="监控路径">
         <el-input v-model="form.url" class="input-box" />
+      </el-form-item>
+      <el-form-item prop="domain" label="预期HTTP状态码">
+        <el-input v-model="form.domain" class="input-box" />
+      </el-form-item>
+      <el-form-item prop="domain" label="监控耗时">
+        <el-input v-model="form.domain" class="input-box" />
+      </el-form-item>
+      <el-form-item prop="domain" label="连续不可用次数">
+        <el-input v-model="form.domain" class="input-box" />
+      </el-form-item>
+      <el-form-item prop="domain" label="连续宕机限制">
+        <el-input v-model="form.domain" class="input-box" />
+      </el-form-item>
+      <el-form-item prop="domain" label="平均监控延时">
+        <el-input v-model="form.domain" class="input-box" />
       </el-form-item>
       <el-form-item label="备注">
         <el-input
