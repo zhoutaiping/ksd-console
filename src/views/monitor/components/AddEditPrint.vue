@@ -29,7 +29,6 @@
           <el-option label="源站监控" :value="2" />
         </el-select>
       </el-form-item>
-      <template v-if="options.mode === 'Edit'">
         <el-form-item prop="country" label="国家">
           <el-select
             v-model="form.country"
@@ -66,7 +65,6 @@
         <el-form-item prop="isp" label="线路">
           <el-input v-model="form.isp" class="input-box" placeholder="" />
         </el-form-item>
-      </template>
       <el-form-item label="备注">
         <el-input
           v-model="form.remark"

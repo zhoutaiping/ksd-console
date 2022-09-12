@@ -115,14 +115,19 @@ export default {
       }
     },
 
-    handleDel(data) {
+    async handleDel(data) {
       const params = {
-        id: data.id
+        uuid: data.uuid,
+      };
+      try {
+        await this.Fetch.post('/monitor/template/delete', params)
+        this.Message("ACTION_SUCCESS");
+        this.handleSearch()
+      } catch (error) {
+        return
       }
-      console.log(params)
 
-      this.Message("ACTION_SUCCESS");
-    }
+    },
   },
 };
 </script>

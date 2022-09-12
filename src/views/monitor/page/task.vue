@@ -74,12 +74,6 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="eidt">任务详情</el-dropdown-item>
                   <el-dropdown-item command="dashboard">Dashboard</el-dropdown-item>
-                  <el-dropdown-item command="down">
-                    <span>永远宕机</span>
-                  </el-dropdown-item>
-                  <el-dropdown-item command="up">
-                    <span>永远在线</span>
-                  </el-dropdown-item>
                   <el-dropdown-item command="delte">
                     <span style="color: red">删除</span>
                   </el-dropdown-item>

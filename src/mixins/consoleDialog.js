@@ -29,6 +29,8 @@ export default {
       this.$refs.Dialog.handleOpen(form)
 
       this.$nextTick(() => {
+        this.$refs.Form && this.$refs.Form.resetFields()
+
         this.initOptions(form, options)
       })
       this.afterOpen(form)
