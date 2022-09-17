@@ -14,11 +14,26 @@ export function getInfo(token) {
     params: { token }
   })
 }
-
+export function verifyToken(token) {
+  return request({
+    url: '/account/user/verifyToken',
+    method: 'get',
+    params: { token }
+  })
+}
 export function logout(data) {
   return request({
     url: '/api/user/logout',
     method: 'post',
     data
+  })
+}
+
+
+export function signOut(token) {
+  return request({
+    url: '/account/user/sign-out',
+    method: 'get',
+    params: { token }
   })
 }

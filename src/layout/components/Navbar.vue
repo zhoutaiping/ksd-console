@@ -16,6 +16,7 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <el-avatar :src="th_default" size="medium" />
+          <span style="display: inline-block;vertical-align: super;font-size: 13px;">{{name}}</span>
           <!-- <img :src="th_default+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
         </div>
@@ -38,6 +39,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import th_default from '@/assets/images/th.jpg'
+import defaultSettings from '@/settings'
 export default {
   components: {
     Breadcrumb,
@@ -53,6 +55,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
+      'name',
       'device'
     ])
   },
@@ -62,7 +65,9 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
+      if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
+      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
     }
   }
 }

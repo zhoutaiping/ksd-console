@@ -2,6 +2,7 @@
 .index-module__container {
   height: 100vh;
   min-height: 500px;
+  display:none;
 }
 .index-module__content {
   display: -webkit-flex;
@@ -211,7 +212,6 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   components: { },
@@ -256,15 +256,21 @@ export default {
       immediate: true
     }
   },
-  created() {
-    // window.addEventListener('storage', this.afterQRScan)
-  },
-  mounted() {
-    if (this.loginForm.username === '') {
-      this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
-      this.$refs.password.focus()
+  beforeCreated() {
+    const token = localStorage.getItem('token')
+    if(token) {
+      setToken(token)
+      this.$router.push('/')
     }
+  },
+
+  mounted() {
+    // if (this.loginForm.username === '') {
+    //   this.$refs.username.focus()
+    // } else if (this.loginForm.password === '') {
+    //   this.$refs.password.focus()
+    // }
+    
   },
   destroyed() {
     // window.removeEventListener('storage', this.afterQRScan)

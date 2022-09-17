@@ -43,8 +43,16 @@ module.exports = {
     port: port,
     open: true,
     proxy: {
-      '/api/': {
-         target: 'http://47.98.119.34:8887', // 目标路径，别忘了加http和端口号
+      '/account/': {
+        // https://account.axisnow.xyz/user/sign-in-callback
+         target: 'https://account.axisnow.xyz', // 目标路径，别忘了加http和端口号
+         pathRewrite: {
+           '^/account': '/' // 重写路径
+         }
+       },
+       '/api/': {
+        // https://account.axisnow.xyz/user/sign-in-callback
+         target: 'https://api.axisnow.xyz', // 目标路径，别忘了加http和端口号
          pathRewrite: {
            '^/api': '/' // 重写路径
          }

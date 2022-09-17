@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <component :is="currentRole" />
+    <adminDashboard/>
   </div>
 </template>
 

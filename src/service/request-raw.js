@@ -3,6 +3,7 @@ import { Message } from 'element-ui'
 import { uuid } from '@/utils/uuid'
 import Lockr from 'lockr'
 import router from '@/router'
+import { getToken } from '@/utils/auth'
 const service = axios.create({
   // baseURL: '/api',
   timeout: 30000,
@@ -29,23 +30,27 @@ service.interceptors.response.use(
       code = _status.code
       msg = _status.msg || _status.message || msg
     }
+
     // console.log("_status---",_status)
     // agw
     if (code !== 0 && msg) {
       Message.warning(msg)
       return Promise.reject(body)
     }
+
+    if (code === 20007) {
+      // 退出登录
+      // TODO ACCESS
+      Message.warning(msg)
+      window.open('http://47.98.119.34:8887/user/sign-in??redirect_url=' + window.location.origin+window.location.pathname,'_self');
+      Lockr.rm('user_id')
+    }
     // if (status) {
       // const { message } = status
       // const code = Number(code)
       if (status === 200) {
         if (code !== 0) {
-          if (code === 16149) {
-            // 退出登录
-            // TODO ACCESS
-            window.location.href = '/login'
-            Lockr.rm('user_id')
-          } else if (code === 142005) { // 无权限
+          if (code === 142005) { // 无权限
             router.push({
               name: 'home.router.access'
             })
