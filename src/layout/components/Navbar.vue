@@ -12,19 +12,17 @@
         </el-tooltip> -->
 
       </template>
-
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <el-avatar :src="th_default" size="medium" />
-          <span style="display: inline-block;vertical-align: super;font-size: 13px;">{{name}}</span>
-          <!-- <img :src="th_default+'?imageView2/1/w/80/h/80'" class="user-avatar"> -->
+          <el-avatar :src="account_th" size="medium" />
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/news">
-            <el-dropdown-item>新闻页</el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided @click.native="logout">
+          <el-dropdown-item >{{ name }}</el-dropdown-item>
+          <!-- <router-link to="/news">
+            <el-dropdown-item divided>新闻页</el-dropdown-item>
+          </router-link> -->
+          <el-dropdown-item  @click.native="logout">
             <span style="display:block;">退 出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -38,7 +36,10 @@ import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
+import th from '@/assets/images/th.png'
 import th_default from '@/assets/images/th.jpg'
+import th_zhangpan from '@/assets/images/th_zhangpan.jpg'
+import th_zhaojinlei from '@/assets/images/zhaojinlei.png'
 import defaultSettings from '@/settings'
 export default {
   components: {
@@ -57,7 +58,17 @@ export default {
       'avatar',
       'name',
       'device'
-    ])
+    ]),
+
+    account_th() {
+      const th_url = {
+        'zhoutaiping': th,
+        'zhangpan': th_zhangpan,
+        'lixuan': th_default,
+        'zhaojinlei': th_zhaojinlei
+      }
+      return this.avatar || th_url['zhoutaiping'] || th_default
+    }
   },
   methods: {
     toggleSideBar() {
@@ -65,9 +76,8 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
-      if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
-      // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://www.axisnow.xyz/' : 'http://localhost:4670/'
+      if (defaultSettings.signOutUrl) window.open(defaultSettings.signOutUrl + '?redirect_url=' + redirect_url,'_self');
     }
   }
 }

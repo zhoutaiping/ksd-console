@@ -25,11 +25,23 @@ export default {
       locale: zhCN
     }
   },
+  watch:{
+    $route:{
+      handler(val) {
+        if(['/login', '/', '/dashboard'].includes(this.$route.path)) {
+          this.signCallback()
+        }else {
+          const _token = getQueryVariable('token')
+          const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
+          if(_token) this.verifyToken(_token, redirect_url)
+        }
+        console.log('route', val)
+      },
+      deep: true
+    }
+  },
   beforeMount() {
-    if(['/login', '/', '/dashboard'].includes(this.$route.path)) {
-      console.log(this.$route)
-      this.signCallback()
-    }  
+    console.log(1,this.$route)
   },
   methods:{
     async signCallback() {
@@ -44,28 +56,30 @@ export default {
       if (Token) {
         setToken(Token)
         console.log("---------2")
-        // this.$store.dispatch('user/verifyToken',Token).then(res =>{
-          this.$router.push({ path: '/' })
-        // })
+        this.$router.push({ path: '/dashboard' })
         return
       }
       const _token = getQueryVariable('token') // defaultSettings.code
-      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
+      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/dashboard'
       if(!_token) {
         removeToken()
         localStorage.clear()
         if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
         return
       }
+      Token = _token || Token
+      await this.verifyToken(Token)
+    },
+
+    async verifyToken(Token, redirect_url) {
       try {
-        Token = _token || Token
+        Token = Token
         setToken(Token)
         this.$store.dispatch('user/verifyToken',Token).then(res =>{
-          this.$router.push({ path: '/' })
+          this.$router.push({ path: '/dashboard' })
         })
        } catch (error) {
         window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
-        // window.location.href = defaultSettings.expireUrl + '?redirect_url=' + redirect_url
        }
     }
   }

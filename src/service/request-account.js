@@ -4,8 +4,9 @@ import { uuid } from '@/utils/uuid'
 import Lockr from 'lockr'
 import router from '@/router'
 import { getToken } from '@/utils/auth'
+import defaultSettings from '@/settings'
 const service = axios.create({
-  // baseURL: '/api',
+  baseURL: process.env.NODE_ENV !== 'development' ?  'https://account.axisnow.xyz' : '/account' ,
   timeout: 30000,
   headers: {
     'content-type': 'application/json; charset=utf-8'
@@ -30,7 +31,6 @@ service.interceptors.response.use(
       code = _status.code
       msg = _status.msg || _status.message || msg
     }
-
     if (code === 20007) {
       // 退出登录
       // TODO ACCESS
@@ -39,7 +39,6 @@ service.interceptors.response.use(
       const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
       if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
     }
-    
     // console.log("_status---",_status)
     // agw
     if (code !== 0 && msg) {

@@ -69,8 +69,14 @@
         </router-link>
       </div>
       <div class="box-r">
+        <router-link to="/dashboard" >
+          <div v-show="name" class="login-btn" style="border: none; position: relative; right: 20px; top: -10px;">
+            立即体验
+          </div>
+          </router-link>
+        
         <div v-show="!name" class="login-btn bg-primary" @click="handleLogin">
-          登 陆
+          LogIn
         </div>
         <el-dropdown
           trigger="click"
@@ -108,6 +114,8 @@ import th from '@/assets/images/th.png'
 import th_default from '@/assets/images/th.jpg'
 import th_zhangpan from '@/assets/images/th_zhangpan.jpg'
 import th_zhaojinlei from '@/assets/images/zhaojinlei.png'
+import defaultSettings from '@/settings'
+import { removeToken } from '@/utils/auth' 
 export default {
   data() {
     return {
@@ -117,6 +125,7 @@ export default {
   computed: {
     ...mapGetters([
       'user',
+      'avatar',
       'name'
     ]),
     year() {
@@ -129,16 +138,21 @@ export default {
         'lixuan': th_default,
         'zhaojinlei': th_zhaojinlei
       }
-      return th_url['zhoutaiping'] || th_default
+      return this.avatar || th_url['zhoutaiping'] || th_default
     }
   },
   methods: {
     handleLogin() {
-      this.$router.push('/login')
+      removeToken()
+      localStorage.clear()
+      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
+      if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push(`/login`)
+      // this.$router.push(`/login`)
+      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
+      if (defaultSettings.signOutUrl) window.open(defaultSettings.signOutUrl + '?redirect_url=' + redirect_url,'_self');
     }
   }
 }

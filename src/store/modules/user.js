@@ -85,7 +85,7 @@ const actions = {
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      signOut(JSON.stringify(getToken())).then(() => {
+      // signOut(JSON.stringify(getToken())).then(() => {
           localStorage.clear()
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
@@ -93,10 +93,10 @@ const actions = {
           resetRouter()
           dispatch('tagsView/delAllViews', null, { root: true })
           resolve()
-          Message.success("退出成功!")
-      }).catch(error => {
-        reject(error)
-      })
+      //     Message.success("退出成功!")
+      // }).catch(error => {
+      //   reject(error)
+      // })
     })
   },
 
@@ -109,7 +109,7 @@ const actions = {
         commit('SET_TOKEN', token)
         commit('SET_ROLES', ['admin'])
         commit('SET_USER_ID', data.id)
-        commit('SET_NAME', data.nick_name)
+        commit('SET_NAME', data.nick_name || data.user_name)
         commit('SET_AVATAR', data.avatar)
         commit('SET_INTRODUCTION', data.introduction)
         resolve(data)

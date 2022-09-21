@@ -33,5 +33,6 @@ module.exports = {
    */
   errorLog: 'production',
 
-  expireUrl: 'https://account.axisnow.xyz/user/sign-in'
+  expireUrl: 'https://account.axisnow.xyz/user/sign-in',
+  signOutUrl: 'https://account.axisnow.xyz/user/sign-out'
 }
