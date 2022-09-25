@@ -38,6 +38,7 @@ service.interceptors.response.use(
       Lockr.rm('user_id')
       const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
       if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
+      return Promise.reject(body)
     }
     // console.log("_status---",_status)
     // agw
