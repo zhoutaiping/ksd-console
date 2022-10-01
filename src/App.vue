@@ -25,65 +25,7 @@ export default {
       locale: zhCN
     }
   },
-  watch:{
-    // $route:{
-    //   handler(val) {
-    //     if(['/login', '/', '/dashboard'].includes(this.$route.path)) {
-    //       this.signCallback()
-    //     }else {
-    //       const _token = getQueryVariable('token')
-    //       const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
-    //       if(_token) this.verifyToken(_token, redirect_url)
-    //     }
-    //     console.log('route', val)
-    //   },
-    //   deep: true
-    // }
-  },
-  beforeMount() {
-    // if(['/login', '/', '/dashboard'].includes(this.$route.path)) {
-    //   this.signCallback()
-    // }
-  },
   methods:{
-    async signCallback() {
-
-      let Token
-      if (process.env.NODE_ENV !== 'development') {
-        Token = localStorage.getItem('token')
-      } else {
-        Token = localStorage.getItem('token')
-      }
-
-      if (Token) {
-        setToken(Token)
-        console.log("---------2")
-        this.$router.push({ path: '/dashboard' })
-        return
-      }
-      const _token = getQueryVariable('token') // defaultSettings.code
-      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/dashboard'
-      if(!_token) {
-        removeToken()
-        localStorage.clear()
-        if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
-        return
-      }
-      Token = _token || Token
-      await this.verifyToken(Token)
-    },
-
-    async verifyToken(Token, redirect_url) {
-      try {
-        Token = Token
-        setToken(Token)
-        this.$store.dispatch('user/verifyToken',Token).then(res =>{
-          this.$router.push({ path: '/dashboard' })
-        })
-       } catch (error) {
-        window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
-       }
-    }
   }
 }
 
