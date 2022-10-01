@@ -27,29 +27,32 @@
       >
         <el-table :data="list" @selection-change="handleSelectionChange">
           <el-table-column type="selection" />
-          <el-table-column label="ID" prop="id" />
-          <el-table-column label="IP" prop="ip" />
+          <el-table-column label="节点IP/ID" prop="id">
+            <template slot-scope="{row}">
+              {{row.ip || '--' }} <br/>
+              {{row.id || '--' }}
+            </template>
+          </el-table-column>
           <el-table-column label="ISP" prop="isp" />
           <el-table-column label="节点池" prop="isp" >
             <template slot-scope="{row}">
               {{ip_pool[row.ip_pool] || '--' }}
             </template>
           </el-table-column>
-          <el-table-column label="大洲-国家" prop="continent_country" />
           <el-table-column label="归属地" prop="location" />
-          <el-table-column label="共享类型">
+          <el-table-column label="风险等级" />
+          <el-table-column label="类型">
             <template slot-scope="{row}">
               {{row.unshared ===1 ? '独享': '共享' }}
             </template>
           </el-table-column>
-          <!-- <el-table-column label="分配状态" prop="ip_type" /> -->
           <el-table-column label="监控状态" prop="unshared" />
-          <el-table-column label="是否删除" prop="is_delete" >
+          <!-- <el-table-column label="是否删除" prop="is_delete" >
             <template slot-scope="{row}">
               {{row.is_delete ===1 ? '是': '否' }}
             </template>
-          </el-table-column>
-          <el-table-column label="当前状态" prop="status" >
+          </el-table-column> -->
+          <el-table-column label="使用状态" prop="status" >
             <template slot-scope="{row}">
               {{row.status ===1 ? '启用': '禁用' }}
             </template>

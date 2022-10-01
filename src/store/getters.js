@@ -11,6 +11,7 @@ const getters = {
   avatar: state => state.user.avatar,
   introduction: state => state.user.introduction,
   roles: state => state.user.roles,
+  account_console:state => state.user.account_console,
   permission_routes: state => state.permission.routes,
   errorLogs: state => state.errorLog.logs
 }

@@ -26,22 +26,24 @@ export default {
     }
   },
   watch:{
-    $route:{
-      handler(val) {
-        if(['/login', '/', '/dashboard'].includes(this.$route.path)) {
-          this.signCallback()
-        }else {
-          const _token = getQueryVariable('token')
-          const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
-          if(_token) this.verifyToken(_token, redirect_url)
-        }
-        console.log('route', val)
-      },
-      deep: true
-    }
+    // $route:{
+    //   handler(val) {
+    //     if(['/login', '/', '/dashboard'].includes(this.$route.path)) {
+    //       this.signCallback()
+    //     }else {
+    //       const _token = getQueryVariable('token')
+    //       const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
+    //       if(_token) this.verifyToken(_token, redirect_url)
+    //     }
+    //     console.log('route', val)
+    //   },
+    //   deep: true
+    // }
   },
   beforeMount() {
-    console.log(1,this.$route)
+    // if(['/login', '/', '/dashboard'].includes(this.$route.path)) {
+    //   this.signCallback()
+    // }
   },
   methods:{
     async signCallback() {

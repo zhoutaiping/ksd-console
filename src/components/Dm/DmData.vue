@@ -2,7 +2,7 @@
 .DmData {
   background: #fff;
   overflow: auto;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+  //box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
 
   &-pagination {
     &__desc {
@@ -99,16 +99,18 @@ export default {
       }
       const { page, per_page } = this.pagination
       this.$emit('init', {
-        page: page,
-        per_size: per_page
+        page,
+        per_page,
+        size: per_page,
+        pagesize: per_page
       })
     },
 
     getPagination() {
-      const { page, per_page } = this.pagination
       return {
-        page: page,
-        per_size: per_page
+        ...this.pagination,
+        pagesize: this.pagination.per_page,
+        size: this.pagination.per_page
       }
     },
 

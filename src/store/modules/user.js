@@ -9,7 +9,8 @@ const state = {
   avatar: '',
   introduction: '',
   user_id: '',
-  roles: []
+  roles: [],
+  account_console:[]
 }
 
 const mutations = {
@@ -30,7 +31,10 @@ const mutations = {
   },
   SET_USER_ID: (state, user_id) => {
     state.user_id = user_id
-  }
+  },
+  SET_USER_KK: (state, list) => {
+    state.account_console = list
+  },
 }
 
 const actions = {
@@ -54,49 +58,30 @@ const actions = {
   // get user info
   getInfo({ commit, state,dispatch }, token) {
     return new Promise((resolve, reject) => {
-        const user = JSON.parse(localStorage.getItem('user'))
-        if(user) {
-          const { nick_name, avatar } = user
-          commit('SET_ROLES', ['admin'])
-          commit('SET_NAME', nick_name)
-          commit('SET_AVATAR', avatar)
-          resolve(data)
-        } else {
-          const data = {
-            roles: ['admin'],
-            introduction: 'I am a super administrator',
-            avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-            name: 'Super Admin'
-          }
-    
-          if (!data) {
-            return reject('Verification failed, please Login again.')
-          }
-    
-          const { name, avatar } = data
-    
-          commit('SET_NAME', name)
-          commit('SET_AVATAR', avatar)
-          resolve(data)
-        }
+      const user = JSON.parse(localStorage.getItem('user'))
+      if(user  && Object.keys(user).length) {
+        const { nick_name, avatar } = user
+        commit('SET_ROLES', ['admin'])
+        commit('SET_NAME', nick_name)
+        commit('SET_AVATAR', avatar)
+        commit('SET_USER_KK', ['andao-console'])
+        resolve(user)
+      } else {
+        reject()
+      }
     })
   },
 
   // user logout
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
-      // signOut(JSON.stringify(getToken())).then(() => {
-          localStorage.clear()
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
-          resetRouter()
-          dispatch('tagsView/delAllViews', null, { root: true })
-          resolve()
-      //     Message.success("退出成功!")
-      // }).catch(error => {
-      //   reject(error)
-      // })
+      localStorage.clear()
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
+      resetRouter()
+      dispatch('tagsView/delAllViews', null, { root: true })
+      resolve()
     })
   },
 

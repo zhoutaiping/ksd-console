@@ -112,20 +112,27 @@ export const asyncRoutes = [
     path: '/source',
     component: Layout,
     alwaysShow: true,
-    meta: { title: '资源管理', icon: 'tab' },
+    meta: { title: '资源池管理', icon: 'tab' },
     redirect: '/node-list',
     children: [
       {
         path: 'node-list',
         component: () => import('@/views/source/page/node-list'),
         name: 'SOURCE_NODE',
-        meta: { title: 'IP资源列表', icon: 'component', noCache: true }
+        meta: { title: '节点列表', icon: 'component', noCache: true }
       },
       {
         path: 'source-list',
         component: () => import('@/views/source/page/source-list'),
         name: 'SOURCE_SOURCE',
         meta: { title: '资源池管理', icon: 'component', noCache: true }
+      },
+      {
+        path: 'source-list/:id',
+        component: () => import('@/views/source/page/source-list-detail'),
+        name: 'SOURCE_SOURCE',
+        hidden: true,
+        meta: { title: '节点列表', icon: 'component', noCache: true }
       }
     ]
   },

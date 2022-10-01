@@ -19,29 +19,7 @@
       label-position="right"
       label-width="150px"
     >
-      <el-form-item
-        prop="pool_name"
-        label="资源池名称"
-      >
-        <el-input
-          v-model="form.pool_name"
-          class="input-box"
-        />
-      </el-form-item>
-      <!-- <el-form-item
-        prop="type"
-        label="类型"
-      >
-        <el-select
-          v-model="form.type"
-          class="input-box"
-        >
-          <el-option :value="0" label="默认"></el-option>
-          <el-option :value="1" label="全家配置"></el-option>
-          <el-option :value="2" label="高风险池"></el-option>
-        </el-select>
-      </el-form-item> -->
-      <el-form-item
+    <el-form-item
         prop="risk_level"
         label="风险等级"
       >
@@ -55,30 +33,13 @@
         </el-select>
       </el-form-item>
       <el-form-item
-        prop="unshared"
-        label="是否独享"
+        prop="ip"
+        label="IP"
       >
-        <el-checkbox
-          v-model="form.unshared"
-          :true-label="1"
-          :false-label="0"
-        />
-      </el-form-item>
-      <!-- <el-form-item
-        prop="is_delete"
-        label="是否删除"
-      >
-        <el-checkbox
-          v-model="form.is_delete"
-          :true-label="1"
-          :false-label="0"
-        />
-      </el-form-item> -->
-      <el-form-item label="备注">
         <el-input
-          v-model="form.remark"
-          placeholder="备注"
+          v-model="form.ip"
           type="textarea"
+          placeholder="ip"
           class="input-box"
         />
       </el-form-item>
@@ -143,27 +104,20 @@ export default createDialog({
         mode: 'Create',
         listView: []
       },
-      formDefault: {
-        "is_delete": 0,
-        "pool_name": "",
-        "pool_uuid": "",
-        "remark": "",
+      formDefault:{
         "risk_level": 1,
-        "type": 0,
-        "unshared": 0
+        "ip": "",
       },
       rules: {
-        port: [
-          { required: true, message: '请输入端口', trigger: 'blur' },
-          { validator: portValidator, trigger: 'blur' }
+        risk_level: [
+          { required: true, message: '请选择风险等级', trigger: 'blur' },
         ],
-        domain: [
+        ip: [
           {
-
+            required: true, message: '请输入IP', trigger: 'blur'
           }
         ]
-      },
-      mode: 'Created'
+      }
     }
   },
 
@@ -172,9 +126,19 @@ export default createDialog({
       this.$nextTick(async() => {
         this.$refs.Form.clearValidate()
         this.loading = false
+        if(this.options.mode ==='Edit') {
+          this.getDetail()
+        }
       })
     },
-
+    async getDetail() {
+      try {
+        const data = await this.Fetch.get('/poolNodeDetail', {id:this.form.id})
+        console.log(data)
+      } catch (error) {
+        return
+      }
+    },
     async fetchSubmit(form) {
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error()
@@ -185,10 +149,11 @@ export default createDialog({
       }
 
       try {
+       
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/pooolAdd', form)
+          await this.Fetch.post('/poolNodeAdd', form)
         } else {
-          await this.Fetch.post('/pooolNodify', form)
+          await this.Fetch.post('/poolNodeModify', form)
         }
       } catch (e) {
         throw new Error()

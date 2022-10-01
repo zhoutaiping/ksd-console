@@ -10,7 +10,6 @@
         <!-- <el-tooltip content="Global Size" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip> -->
-
       </template>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
@@ -19,10 +18,9 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item >{{ name }}</el-dropdown-item>
-          <!-- <router-link to="/news">
-            <el-dropdown-item divided>新闻页</el-dropdown-item>
-          </router-link> -->
-          <el-dropdown-item  @click.native="logout">
+          <el-dropdown-item v-if="is_console" @click.native="handleOpen('register')"  divided>创建网络</el-dropdown-item>
+          <el-dropdown-item v-if="is_console" @click.native="handleOpen('network')" divided>网络切换</el-dropdown-item>
+          <el-dropdown-item  @click.native="logout" divided>
             <span style="display:block;">退 出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -38,8 +36,6 @@ import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import th from '@/assets/images/th.png'
 import th_default from '@/assets/images/th.jpg'
-import th_zhangpan from '@/assets/images/th_zhangpan.jpg'
-import th_zhaojinlei from '@/assets/images/zhaojinlei.png'
 import defaultSettings from '@/settings'
 export default {
   components: {
@@ -59,25 +55,31 @@ export default {
       'name',
       'device'
     ]),
-
+    is_console() {
+      return window.location.host === 'console.axisnow.xyz'
+    },
     account_th() {
-      const th_url = {
-        'zhoutaiping': th,
-        'zhangpan': th_zhangpan,
-        'lixuan': th_default,
-        'zhaojinlei': th_zhaojinlei
-      }
-      return this.avatar || th_url['zhoutaiping'] || th_default
+      return this.avatar || th_default
     }
   },
   methods: {
+    handleOpen(type) {
+      if(!type) return
+      const Token = localStorage.getItem('token')
+      if (process.env.NODE_ENV === 'development'){
+        this.$router.push(type)
+        return
+      }
+      window.location.replace("https://console.axisnow.xyz/"+ type + '?token=' + Token,'_self');
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://www.axisnow.xyz/' : 'http://localhost:4670/'
-      if (defaultSettings.signOutUrl) window.open(defaultSettings.signOutUrl + '?redirect_url=' + redirect_url,'_self');
+    logout() {
+      this.$store.dispatch('user/logout').then(res =>{
+        if (defaultSettings.signOutUrl) window.location.replace(defaultSettings.signOutUrl + '?redirect_url=' + 'https://www.axisnow.xyz','_self');
+      })
+      
     }
   }
 }

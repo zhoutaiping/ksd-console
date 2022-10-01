@@ -4,7 +4,7 @@
   margin-bottom: 16px;
   overflow: hidden;
   vertical-align: top;
-
+  padding: 5px;
   .el-range-editor {
     vertical-align: top;
   }
@@ -30,9 +30,9 @@
 </style>
 <template>
   <div :class="b()">
-    <slot/>
+    <slot />
     <div :class="b('right')">
-      <slot name="right"/>
+      <slot name="right" />
     </div>
   </div>
 </template>

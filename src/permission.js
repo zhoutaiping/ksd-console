@@ -2,12 +2,12 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
-import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import defaultSettings from '@/settings'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login','/news'] // no redirect whitelist
+const whiteList = [] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -17,54 +17,38 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
-  const hasToken = getToken()
-  console.log("---------3",to.path)
-
-  if (hasToken) {
-    console.log("---------4")
-    if (to.path === '/login') {
-      console.log(5)
-      // if is logged in, redirect to the home page
-      next({ path: '/' })
-      NProgress.done() // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
-    } else {
-      console.log(6)
-      const hasGetUserInfo = store.getters.user_id
-      if (hasGetUserInfo) {
-        console.log(7)
-        const accessRoutes = await store.dispatch('permission/generateRoutes', ['admin'])
-        router.addRoutes(accessRoutes)
-        next()
-        next()
-      } else {
-        console.log(8)
-        try {
-          // get user info
-          // await store.dispatch('user/getInfo')
-          console.log(9)
-          const accessRoutes = await store.dispatch('permission/generateRoutes', ['admin'])
-          router.addRoutes(accessRoutes)
-          next()
-        } catch (error) {
-          console.log(10)
-          // remove token and go to login page to re-login
-          await store.dispatch('user/resetToken')
-          next(`/dashboard`)
-          NProgress.done()
-        }
-      }
-    }
-  } else {
-    /* has no token*/
-
-    if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
+  let token = localStorage.getItem('token')
+  if(token) {
+    console.log(1)
+    const account_console = store.getters.account_console
+    if (account_console && account_console.length > 0) {
       next()
     } else {
-      // other pages that do not have permission to access are redirected to the login page.
-      // next(`/login?redirect=${to.path}`)
-      next(`/news?redirect=${to.path}`)
-      NProgress.done()
+      await store.dispatch('user/getInfo')
+      const accessRoutes = await store.dispatch('permission/generateRoutes', window.location.host)
+      router.addRoutes(accessRoutes)
+      next({ ...to, replace: true })
+    }
+  }else {
+    console.log(2)
+    token = getQueryVariable('token')
+    console.log(3)
+    if(token) {
+      console.log(4)
+      await store.dispatch('user/verifyToken', token)
+      await store.dispatch('user/getInfo')
+      const accessRoutes = await store.dispatch('permission/generateRoutes', window.location.host)
+      router.addRoutes(accessRoutes)
+      next('/dashboard')
+    }else {
+      console.log(5)
+      if (whiteList.indexOf(to.path) !== -1) {
+        next()
+      } else {
+        store.dispatch('user/logout').then(res => {
+          window.location.href = defaultSettings.expireUrl + '?redirect_url=' + window.location.origin
+        })
+      }
     }
   }
 })

@@ -20,6 +20,16 @@
       label-width="150px"
     >
       <el-form-item
+        prop="ip_pool"
+        label="节点类型"
+      >
+      <el-select v-model="form.ip_pool" placeholder="节点池" clearable class="input-box">
+        <el-option :value="2" label="良好池"/>
+        <el-option :value="1" label="普通池"/>
+        <el-option :value="0" label="风险池"/>
+      </el-select>
+      </el-form-item>
+      <el-form-item
         prop="ip"
         label="IP"
       >
@@ -29,16 +39,6 @@
           placeholder="ip"
           class="input-box"
         />
-      </el-form-item>
-      <el-form-item
-        prop="ip_pool"
-        label="节点池"
-      >
-      <el-select v-model="form.ip_pool" placeholder="节点池" clearable class="input-box">
-        <el-option :value="2" label="良好池"/>
-        <el-option :value="1" label="普通池"/>
-        <el-option :value="0" label="风险池"/>
-      </el-select>
       </el-form-item>
       <el-form-item
         prop="status"
@@ -57,7 +57,7 @@
           class="input-box"
         />
       </el-form-item>
-      <el-form-item
+      <!-- <el-form-item
         prop="continent_country"
         label="大洲-国家"
       >
@@ -66,7 +66,7 @@
           placeholder=""
           class="input-box"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item
         prop="location"
         label="归属地"

@@ -2,7 +2,7 @@
 .ConsolePageLayout {
   position: relative;
   // background: rgb(242, 242, 242);
-  padding: 0 12px;
+  padding: 12px;
   .el-main {
     padding: 16px;
   }
@@ -26,9 +26,9 @@
   }
 
   .PageHeader {
-    margin-top: 16px;
+    //margin-top: 16px;
     margin-bottom: 20px;
-    padding: 0px 12px;
+    padding:0 12px;
     color: $--color-text-primary;
     background: #fff;
     border: $--border-base;
@@ -38,8 +38,7 @@
       display: inline-block;
       margin: 0px;
       padding: 0px;
-      font-size: 15px;
-      font-weight: 700;
+      font-size: 14px;
       padding-left: 12px;
       height: 40px;
       line-height: 40px;
