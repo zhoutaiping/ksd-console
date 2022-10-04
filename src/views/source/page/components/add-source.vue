@@ -9,7 +9,7 @@
     :fetch-submit="fetchSubmit"
     :mode="options.mode"
     width="700px"
-    title-label="IP资源"
+    title-label="资源池"
     @submit="handleSubmit"
   >
     <el-form
@@ -172,6 +172,8 @@ export default createDialog({
       this.$nextTick(async() => {
         this.$refs.Form.clearValidate()
         this.loading = false
+
+        console.log({...form})
       })
     },
 
@@ -186,9 +188,11 @@ export default createDialog({
 
       try {
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/pooolAdd', form)
+          await this.FetchAccount.post('/poolAdd', form)
         } else {
-          await this.Fetch.post('/pooolNodify', form)
+          // http://47.98.119.34:24680/poolModify
+
+          await this.FetchAccount.post('/poolModify', form)
         }
       } catch (e) {
         throw new Error()

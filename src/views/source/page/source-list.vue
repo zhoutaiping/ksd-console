@@ -1,6 +1,6 @@
 <template>
   <ConsolePageLayout>
-    <DmData ref="DmData" @init="fetchList" :auto-init="false">
+    <DmData ref="DmData" @init="fetchList" :auto-init="true">
       <DmToolbar>
         <el-button type="primary" @click="$refs.addedit.handleOpen()">新增</el-button>
         <div slot="right">
@@ -11,11 +11,7 @@
         :loading="loading"
         min-height
       >
-        <el-table :data="[{
-          id:2,
-          pool_name:'资源池一',
-          nodelist:[]
-        }]">
+        <el-table :data="list">
           <el-table-column label="资源池名称/ID" prop="pool_name"  >
             <template slot-scope="{row}">
               {{row.pool_name || '--' }} <br/>
@@ -40,7 +36,7 @@
           <el-table-column label="资源分配" prop="LVEL" >
             <template slot-scope="{row}">
              <span>
-              共有{{row.nodelist.length || 0}} 个节点
+              <!-- 共有{{row.nodelist.length || 0}} 个节点 -->
              </span>
             </template>
           </el-table-column>
@@ -93,7 +89,8 @@ export default {
   mixins: [consoleData],
   data() {
     return {
-      // API_INDEX: '/poolList',
+      Fetch: this.FetchAccount,
+      API_INDEX: '/poolList',
       bindParams:{pool_name:''},
       risk_level:{
         1:'低风险',2:'中风险',3:'高风险'
@@ -106,7 +103,7 @@ export default {
   methods: {
     handleOption(TYPE, data) {
       if(TYPE === 'Edit') {
-        this.$refs.addedit.handleOpen(data, 'Edit')
+        this.$refs.addedit.handleOpen(data, {mode:'Edit'})
       } else if(TYPE === 'SERVER') {
         this.$router.push({
         path: "/source/source-list/" + data.id,
@@ -123,7 +120,7 @@ export default {
     async del(data) {
       if(!data.id) return
       try {
-        await this.Fetch.post('/poolNodeDelete', {id: data.id})
+        await this.Fetch.post('/poolDelete', {id: data.id})
         await this.$refs.DmData.initPage()
         this.Message('ACTION_SUCCESS')
       } catch (error) {

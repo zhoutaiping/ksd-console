@@ -21,13 +21,22 @@
     >
       <el-form-item
         prop="ip_pool"
-        label="节点类型"
+        label="风险等级"
       >
-      <el-select v-model="form.ip_pool" placeholder="节点池" clearable class="input-box">
+      <el-select v-model="form.ip_pool" placeholder="风险等级" clearable class="input-box">
         <el-option :value="2" label="良好池"/>
         <el-option :value="1" label="普通池"/>
         <el-option :value="0" label="风险池"/>
       </el-select>
+      </el-form-item>
+      <el-form-item
+        prop="ip_type"
+        label="节点类型"
+      >
+        <el-select v-model="form.ip_type" placeholder="节点类型" clearable class="input-box">
+          <el-option :value="1" label="优质、良好"/>
+          <el-option :value="0" label="默认"/>
+        </el-select>
       </el-form-item>
       <el-form-item
         prop="ip"
@@ -41,11 +50,13 @@
         />
       </el-form-item>
       <el-form-item
-        prop="status"
+        prop="block_overseas"
         label="封禁海外"
       >
         <el-checkbox
-          v-model="form.status"
+          v-model="form.block_overseas"
+          :true-label="0"
+          :false-label="1"
         />
       </el-form-item>
       <el-form-item
@@ -88,11 +99,13 @@
         />
       </el-form-item>
       <el-form-item
-        prop="ip_pool"
+        prop="unshared"
         label="独享配置"
       >
         <el-checkbox
-          v-model="form.ip_pool"
+          v-model="form.unshared"
+          :true-label="1"
+          :false-label="0"
         />
       </el-form-item>
       <el-form-item label="备注">
@@ -205,7 +218,7 @@ export default createDialog({
     },
     async getDetail() {
       try {
-        const data = await this.Fetch.get('/poolNodeDetail', {id:this.form.id})
+        const data = await this.FetchAccount.get('/poolNodeDetail', {id:this.form.id})
         console.log(data)
       } catch (error) {
         return
@@ -223,9 +236,9 @@ export default createDialog({
       try {
        
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/poolNodeAdd', form)
+          await this.FetchAccount.post('/poolNodeAdd', form)
         } else {
-          await this.Fetch.post('/poolNodeModify', form)
+          await this.FetchAccount.post('/poolNodeModify', form)
         }
       } catch (e) {
         throw new Error()

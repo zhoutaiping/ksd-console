@@ -34,24 +34,18 @@
             </template>
           </el-table-column>
           <el-table-column label="ISP" prop="isp" />
-          <el-table-column label="节点池" prop="isp" >
-            <template slot-scope="{row}">
-              {{ip_pool[row.ip_pool] || '--' }}
-            </template>
-          </el-table-column>
           <el-table-column label="归属地" prop="location" />
-          <el-table-column label="风险等级" />
-          <el-table-column label="类型">
+          <el-table-column label="风险等级" >
             <template slot-scope="{row}">
-              {{row.unshared ===1 ? '独享': '共享' }}
+              {{ip_pool[row.ip_pool] || '--'}}
+            </template>
+            </el-table-column>
+          <el-table-column label="独享类型">
+            <template slot-scope="{row}">
+              {{Number(row.unshared) === 1 ? '独享': '共享' }}
             </template>
           </el-table-column>
-          <el-table-column label="监控状态" prop="unshared" />
-          <!-- <el-table-column label="是否删除" prop="is_delete" >
-            <template slot-scope="{row}">
-              {{row.is_delete ===1 ? '是': '否' }}
-            </template>
-          </el-table-column> -->
+          <el-table-column label="监控状态" />
           <el-table-column label="使用状态" prop="status" >
             <template slot-scope="{row}">
               {{row.status ===1 ? '启用': '禁用' }}
@@ -82,6 +76,7 @@ export default {
   mixins: [consoleData],
   data() {
     return {
+      Fetch: this.FetchAccount,
       API_INDEX: '/poolNodeList',
       ip_pool:{
         0:'风险池', 1:'普通池', 2:'良好池'
