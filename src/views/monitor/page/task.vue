@@ -1,52 +1,51 @@
 <template>
   <ConsolePageLayout>
     <div slot="header" style="margin-bottom: 10px">
-      <span> 加入到监控中的监控任务信息 </span>
+      <span>加入到监控中的监控任务信息</span>
       <div style="position: absolute; right: 20px; top: 20px">
         <el-button>启用</el-button>
         <el-button>暂停</el-button>
         <!-- <el-button type="primary" @click="$refs.AddEditTaskVue.handleOpen()"
           >添加监控任务</el-button
-        > -->
+        >-->
       </div>
     </div>
-    <DmToolbar>
-      <InputSearch
-        v-model="bindParams.app_name"
-        :placeholder="'任务目标/ID'"
-        class="input-box"
-        @submit="handleSearch"
-      />
-      <div slot="right">
-        <el-select
-          v-model="bindParams.type"
-          :placeholder="'目标状态'"
-          @click="handleSearch"
-          class="input-box"
-        />
-        <el-select
-          v-model="bindParams.group"
-          :placeholder="'监控组'"
-          @click="handleSearch"
-          class="input-box"
-        />
-      </div>
-    </DmToolbar>
     <DmData ref="DmData" @init="fetchList">
+      <DmToolbar>
+        <InputSearch
+          v-model="bindParams.app_name"
+          :placeholder="'任务目标/ID'"
+          class="input-box"
+          @submit="handleSearch"
+        />
+        <div slot="right">
+          <el-select
+            v-model="bindParams.type"
+            :placeholder="'目标状态'"
+            @click="handleSearch"
+            class="input-box"
+          />
+          <el-select
+            v-model="bindParams.group"
+            :placeholder="'监控组'"
+            @click="handleSearch"
+            class="input-box"
+          />
+        </div>
+      </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column
-            label="监控任务名称/ID"
-            prop="app_name"
-            min-width="150"
-            >
+          <el-table-column label="监控任务名称/ID" prop="app_name" min-width="150">
             <template slot-scope="scope">
-              <router-link :to="{
+              <router-link
+                :to="{
                   path:'/monitor/task-dashboard/'+ scope.row.uuid 
-              }">
+              }"
+              >
                 <span style="font-weight: 700;">{{ scope.row.name }}</span>
-              </router-link><br>
+              </router-link>
+              <br />
               {{ scope.row.uuid }}
             </template>
           </el-table-column>
@@ -89,59 +88,58 @@
 </template>
 
 <script>
-import consoleData from "@/mixins/consoleData";
-import InputSearch from "@/components/Input/InputSearch.vue";
-import AddEditTaskVue from "../components/AddEditTask.vue";
+import consoleData from '@/mixins/consoleData';
+import InputSearch from '@/components/Input/InputSearch.vue';
+import AddEditTaskVue from '../components/AddEditTask.vue';
 export default {
-  name: "",
+  name: '',
   mixins: [consoleData],
   components: { InputSearch, AddEditTaskVue },
   data() {
     return {
-      API_INDEX: "/monitor/task/list",
-      API_METHOD: "post",
+      API_INDEX: '/monitor/task/list',
+      API_METHOD: 'post'
     };
   },
   methods: {
     handleOption(e, data) {
       console.log(e, data);
 
-      if (e === "eidt") {
+      if (e === 'eidt') {
         this.$refs.AddEditTaskVue.handleOpen(data, {
-          mode: "Edit",
+          mode: 'Edit'
         });
-      } else if (e === "delte") {
+      } else if (e === 'delte') {
         this.handleDel(data);
-      } else if (e === "up" || e === "down") {
+      } else if (e === 'up' || e === 'down') {
         this.editStatus(data);
-      } else if(e === 'dashboard') {
+      } else if (e === 'dashboard') {
         this.$router.push({
-          path:'/monitor/task-dashboard/'+ data.id
-        })
+          path: '/Monitor/task-dashboard/' + data.id
+        });
       }
     },
     editStatus(data) {
       const params = {
-        id: data.id,
+        id: data.id
       };
       console.log(params);
 
-      this.Message("ACTION_SUCCESS");
+      this.Message('ACTION_SUCCESS');
     },
     async handleDel(data) {
       const params = {
-        uuid: data.uuid,
+        uuid: data.uuid
       };
       try {
-        await this.Fetch.post('/monitor/task/delete', params)
-        this.Message("ACTION_SUCCESS");
-        this.handleSearch()
+        await this.Fetch.post('/monitor/task/delete', params);
+        this.Message('ACTION_SUCCESS');
+        this.handleSearch();
       } catch (error) {
-        return
+        return;
       }
-
-    },
-  },
+    }
+  }
 };
 </script>
 

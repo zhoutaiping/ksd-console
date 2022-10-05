@@ -1,27 +1,26 @@
 <template>
   <ConsolePageLayout>
     <div slot="header" style="margin-bottom: 10px">
-      <span style="color: #606266"> 监控组中的监控点管理 </span>
+      <span style="color: #606266">监控组中的监控点管理</span>
       <div style="position: absolute; right: 20px; top: 20px">
         <el-button
           @click="$refs.AddEditServe.handleOpen({}, { mode: 'Create' })"
           type="primary"
-          >添加监控点</el-button
-        >
+        >添加监控点</el-button>
       </div>
     </div>
-    <DmToolbar>
-      <InputSearch
-        v-model="bindParams.app_name"
-        :placeholder="'组名称'"
-        class="input-box"
-        @submit="handleSearch"
-      />
-      <div slot="right">
-        <!-- <el-select v-model="bindParams.type" :placeholder="'使用状态'" class="input-box"/> -->
-      </div>
-    </DmToolbar>
     <DmData ref="DmData" @init="fetchList">
+      <DmToolbar>
+        <InputSearch
+          v-model="bindParams.app_name"
+          :placeholder="'组名称'"
+          class="input-box"
+          @submit="handleSearch"
+        />
+        <div slot="right">
+          <!-- <el-select v-model="bindParams.type" :placeholder="'使用状态'" class="input-box"/> -->
+        </div>
+      </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
@@ -61,29 +60,29 @@
 </template>
 
 <script>
-import consoleData from "@/mixins/consoleData";
-import InputSearch from "@/components/Input/InputSearch.vue";
-import AddEditServe from "../components/AddEditServe.vue";
+import consoleData from '@/mixins/consoleData';
+import InputSearch from '@/components/Input/InputSearch.vue';
+import AddEditServe from '../components/AddEditServe.vue';
 export default {
-  name: "",
+  name: '',
   mixins: [consoleData],
   components: { InputSearch, AddEditServe },
   data() {
     return {
-      API_INDEX: "/monitor/group/list_node",
-      API_METHOD: "post",
+      API_INDEX: '/monitor/group/list_node',
+      API_METHOD: 'post',
       bindParams: {
-        group_uuid: this.$route.params.id,
-      },
+        group_uuid: this.$route.params.id
+      }
     };
   },
   methods: {
     handleOption(e, data) {
-      if (e === "eidt") {
+      if (e === 'eidt') {
         this.$refs.AddEditServe.handleOpen(data, {
-          mode: "Edit",
+          mode: 'Edit'
         });
-      } else if (e === "delte") {
+      } else if (e === 'delte') {
         this.handleDel(data);
       }
     },
@@ -91,17 +90,17 @@ export default {
     async handleDel(data) {
       const params = {
         group_uuid: this.$route.params.id,
-        node_uuid: [data.uuid],
+        node_uuid: [data.uuid]
       };
       try {
-        await this.Fetch.post("/monitor/group/delete_node", params);
-        this.Message("ACTION_SUCCESS");
+        await this.Fetch.post('/monitor/group/delete_node', params);
+        this.Message('ACTION_SUCCESS');
         this.handleSearch();
       } catch (error) {
         return;
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

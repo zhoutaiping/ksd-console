@@ -1,43 +1,40 @@
 <template>
   <ConsolePageLayout>
     <div slot="header" style="margin-bottom: 10px">
-      <span> 网关和源站可用性监控点维护管理 </span>
+      <span>网关和源站可用性监控点维护管理</span>
       <div style="position: absolute; right: 20px; top: 20px">
-        <el-button @click="$refs.AddEditPrint.handleOpen({}, {
+        <el-button
+          @click="$refs.AddEditPrint.handleOpen({}, {
           mode:'Create'
-        })" type="primary"
-          >添加监控点</el-button
-        >
+        })"
+          type="primary"
+        >添加监控点</el-button>
       </div>
     </div>
-    <DmToolbar>
-      <InputSearch
-        v-model="bindParams.ip"
-        :placeholder="'搜索IP'"
-        class="input-box"
-        @submit="handleSearch"
-      />
-      <div slot="right">
-        <el-select
-          v-model="bindParams.type"
-          :placeholder="'使用状态'"
-          class="input-box"
-          @change="handleSearch"
-        />
-      </div>
-    </DmToolbar>
     <DmData ref="DmData" @init="fetchList">
+      <DmToolbar>
+        <InputSearch
+          v-model="bindParams.ip"
+          :placeholder="'搜索IP'"
+          class="input-box"
+          @submit="handleSearch"
+        />
+        <div slot="right">
+          <el-select
+            v-model="bindParams.type"
+            :placeholder="'使用状态'"
+            class="input-box"
+            @change="handleSearch"
+          />
+        </div>
+      </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column
-            label="监控点名称/ID"
-            prop="app_name"
-            min-width="150"
-          >
+          <el-table-column label="监控点名称/ID" prop="app_name" min-width="150">
             <template slot-scope="{ row }">
-              <span>{{ row.name }}</span
-              ><br />
+              <span>{{ row.name }}</span>
+              <br />
               <span>{{ row.uuid }}</span>
             </template>
           </el-table-column>
@@ -48,13 +45,15 @@
           </el-table-column>
           <el-table-column label="IPV4/IPV6" prop="desc" min-width="150">
             <template slot-scope="{ row }">
-              <span>{{ row.ipv4 }}</span><br />
+              <span>{{ row.ipv4 }}</span>
+              <br />
               <span>{{ row.ipv6 }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="归属地/ISP" prop="status" min-width="150" >
+          <el-table-column label="归属地/ISP" prop="status" min-width="150">
             <template slot-scope="{ row }">
-              <span>{{ row.country }}-{{ row.province }}-{{ row.city }}</span><br />
+              <span>{{ row.country }}-{{ row.province }}-{{ row.city }}</span>
+              <br />
               <span>{{ row.isp }}</span>
             </template>
           </el-table-column>
@@ -89,20 +88,20 @@
 </template>
 
 <script>
-import consoleData from "@/mixins/consoleData";
-import InputSearch from "@/components/Input/InputSearch.vue";
-import AddEditPrint from "../components/AddEditPrint.vue";
-import Template from "./template.vue";
+import consoleData from '@/mixins/consoleData';
+import InputSearch from '@/components/Input/InputSearch.vue';
+import AddEditPrint from '../components/AddEditPrint.vue';
+import Template from './template.vue';
 export default {
-  name: "",
+  name: '',
   mixins: [consoleData],
   components: { InputSearch, AddEditPrint },
   data() {
     return {
-      API_INDEX: "/monitor/node/list",
-      API_METHOD: "post",
-      type:{
-        1:'节点监控',
+      API_INDEX: '/monitor/node/list',
+      API_METHOD: 'post',
+      type: {
+        1: '节点监控',
         2: '源站监控'
       }
     };
@@ -111,29 +110,28 @@ export default {
     handleOption(e, data) {
       console.log(e, data);
 
-      if (e === "eidt") {
+      if (e === 'eidt') {
         this.$refs.AddEditPrint.handleOpen(data, {
-          mode: "Edit",
+          mode: 'Edit'
         });
-      } else if (e === "delte") {
+      } else if (e === 'delte') {
         this.handleDel(data);
       }
     },
 
     async handleDel(data) {
       const params = {
-        uuid: data.uuid,
+        uuid: data.uuid
       };
       try {
-        await this.Fetch.post('/monitor/node/delete', params)
-        this.Message("ACTION_SUCCESS");
-        this.handleSearch()
+        await this.Fetch.post('/monitor/node/delete', params);
+        this.Message('ACTION_SUCCESS');
+        this.handleSearch();
       } catch (error) {
-        return
+        return;
       }
-
-    },
-  },
+    }
+  }
 };
 </script>
 

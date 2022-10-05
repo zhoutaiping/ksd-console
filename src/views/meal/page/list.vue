@@ -1,14 +1,14 @@
 <template>
   <ConsolePageLayout style="padding:12px;">
-    <DmToolbar>
-      <el-button type="primary" @click="$refs.Add.handleOpen()">新增应用</el-button>
-      <el-button @click="$refs.DmData.initPage()">刷新</el-button>
-      <!-- <el-button :disabled="!multipleSelection.length" @click="">删除</el-button>
-      <div slot="right">
-        <InputSearch />
-      </div>-->
-    </DmToolbar>
     <DmData ref="DmData" @init="fetchList">
+      <DmToolbar>
+        <el-button type="primary" @click="$refs.Add.handleOpen()">新增应用</el-button>
+        <el-button @click="$refs.DmData.initPage()">刷新</el-button>
+        <!-- <el-button :disabled="!multipleSelection.length" @click="">删除</el-button>
+        <div slot="right">
+          <InputSearch />
+        </div>-->
+      </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list" @selection-change="handleSelectionChange">
           <!-- <el-table-column type="selection" /> -->
