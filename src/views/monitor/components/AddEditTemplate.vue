@@ -32,9 +32,9 @@
             }
           }"
             >
-              <el-option value="http" label="HTTP" />
-              <el-option value="https" label="HTTPS" />
-              <el-option value="tcp" label="TCP" />
+              <el-option value="HTTP" label="HTTP" />
+              <el-option value="HTTPS" label="HTTPS" />
+              <el-option value="TCP" label="TCP" />
             </el-select>
           </el-form-item>
           <el-form-item prop="port" label="监控端口">
@@ -145,7 +145,7 @@ export default createDialog({
     return {
       formDefault: {
         name: '',
-        protocol: 'http',
+        protocol: 'HTTP',
         port: '80',
         method: '',
         domain: '',

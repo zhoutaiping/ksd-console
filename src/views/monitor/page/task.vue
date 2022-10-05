@@ -40,7 +40,7 @@
             <template slot-scope="scope">
               <router-link
                 :to="{
-                  path:'/monitor/task-dashboard/'+ scope.row.uuid 
+                  path:'/Monitor/Monitor-dashboard/'+ scope.row.uuid 
               }"
               >
                 <span style="font-weight: 700;">{{ scope.row.name }}</span>

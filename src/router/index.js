@@ -93,7 +93,7 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: "/meal",
+    path: "/app",
     component: Layout,
     alwaysShow: true,
     meta: { title: "应用管理", icon: "tab" },
