@@ -1,7 +1,13 @@
 <template>
   <div :class="'mode-' + mode" class="yd-form">
-    <el-form ref="form" :label-width="labelWidth" :model="options" :rules="options.$rules" :label-position="labelPosition">
-      <slot/>
+    <el-form
+      ref="form"
+      :label-width="labelWidth"
+      :model="options"
+      :rules="options.$rules"
+      :label-position="labelPosition"
+    >
+      <slot />
     </el-form>
   </div>
 </template>
@@ -9,14 +15,14 @@
 <script>
 /*
 +-----------------------------------------------------------------------------------------------------------------------
-| Yundun
+
 +-----------------------------------------------------------------------------------------------------------------------
 | yd-form
 | 表单组件，推荐配合 Form service 使用
 */
 
-import ElForm from './el-form'
-const NAME = 'yd-form'
+import ElForm from './el-form';
+const NAME = 'yd-form';
 
 export default {
   name: NAME,
@@ -29,7 +35,7 @@ export default {
     options: {
       type: Object,
       default() {
-        return {}
+        return {};
       }
     }
   },
@@ -49,13 +55,12 @@ export default {
     //   return true
     // },
     validate(callback) {
-      return this.$refs.form.validate(callback)
+      return this.$refs.form.validate(callback);
     }
   }
-}
+};
 </script>
 <style lang="scss">
-
 .yd-form-item--flex {
   .el-select {
     width: 100%;

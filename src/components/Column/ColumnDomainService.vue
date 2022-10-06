@@ -33,26 +33,17 @@
       width="180"
       trigger="hover"
     >
-      <p class="title">{{ $t('cloud-speed.title') }}
-        <yd-badge
-          v-if="data.hwws_status"
-          status="success"
-        >已开通</yd-badge>
-        <yd-badge
-          v-else
-          status="default"
-        >未开通</yd-badge>
+      <p class="title">
+        {{ $t('cloud-speed.title') }}
+        <yd-badge v-if="data.hwws_status" status="success">已开通</yd-badge>
+        <yd-badge v-else status="default">未开通</yd-badge>
       </p>
       <a href="/console/cloud-speed">
-        <el-button
-          type="primary"
-          plain
-          size="mini"
-        >了解详情</el-button>
+        <el-button type="primary" plain size="mini">了解详情</el-button>
       </a>
       <yd-icon-status
         slot="reference"
-        :active="data.use_yundun_cname === '1' || data.use_yundun_dns === '1'"
+        :active="data.use_default_cname === '1' || data.use_default_dns === '1'"
         icon="ya-jiasu"
         status="processing"
       />
@@ -65,15 +56,13 @@
       width="180"
       trigger="hover"
     >
-      <p class="title">{{ $t('cloud-wall.title') }}
+      <p class="title">
+        {{ $t('cloud-wall.title') }}
         <yd-badge
           v-if="data.tjkd_status === '1' || data.tjkd_plus_status === '1'"
           status="success"
         >已开通</yd-badge>
-        <yd-badge
-          v-else
-          status="default"
-        >未开通</yd-badge>
+        <yd-badge v-else status="default">未开通</yd-badge>
       </p>
       <yd-icon-status
         slot="reference"
@@ -82,11 +71,7 @@
         icon="ya-cloud-wall"
       />
       <a href="/console/cloud-wall">
-        <el-button
-          type="primary"
-          plain
-          size="mini"
-        >了解详情</el-button>
+        <el-button type="primary" plain size="mini">了解详情</el-button>
       </a>
     </el-popover>
     <el-popover
@@ -97,22 +82,13 @@
       width="180"
       trigger="hover"
     >
-      <p class="title">{{ $t('red-guard.title') }}
-        <yd-badge
-          v-if="data.hwws_status === '1'"
-          status="success"
-        >已开通</yd-badge>
-        <yd-badge
-          v-if="data.hwws_status === '0'"
-          status="default"
-        >未开通</yd-badge>
+      <p class="title">
+        {{ $t('red-guard.title') }}
+        <yd-badge v-if="data.hwws_status === '1'" status="success">已开通</yd-badge>
+        <yd-badge v-if="data.hwws_status === '0'" status="default">未开通</yd-badge>
       </p>
       <a href="/console/red-guard#/websiteList">
-        <el-button
-          type="primary"
-          plain
-          size="mini"
-        >了解详情</el-button>
+        <el-button type="primary" plain size="mini">了解详情</el-button>
       </a>
       <yd-icon-status
         slot="reference"
@@ -133,9 +109,9 @@ export default {
     showList: {
       type: Array,
       default: () => {
-        return ['cdn', 'tjkd-plus', 'red-guard']
+        return ['cdn', 'tjkd-plus', 'red-guard'];
       }
     }
   }
-}
+};
 </script>

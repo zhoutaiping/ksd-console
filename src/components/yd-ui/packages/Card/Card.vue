@@ -8,7 +8,7 @@
     box-shadow: none;
     border: 1px solid $--border-color-base;
 
-    .DmTable{
+    .DmTable {
       border: none;
     }
   }
@@ -113,39 +113,18 @@
     }"
     class="yd-card"
   >
-    <yd-loading
-      v-if="vLoading"
-      :style="{top: `${headerHeight}px`}"
-      class="loader-wp"
-    />
-    <div
-      v-if="$slots.header || header || title"
-      ref="header"
-      class="yd-card__header"
-    >
-      <h2
-        v-if="title"
-        class="yd-card__title"
-      >{{ title }}</h2>
+    <yd-loading v-if="vLoading" :style="{top: `${headerHeight}px`}" class="loader-wp" />
+    <div v-if="$slots.header || header || title" ref="header" class="yd-card__header">
+      <h2 v-if="title" class="yd-card__title">{{ title }}</h2>
       <slot name="header">{{ header }}</slot>
     </div>
-    <div
-      ref="body"
-      class="yd-card__body"
-    >
-      <p
-        v-if="$slots.tips"
-        :class="{'padding-action': $slots.action}"
-        class="yd-card__text--tips"
-      >
+    <div ref="body" class="yd-card__body">
+      <p v-if="$slots.tips" :class="{'padding-action': $slots.action}" class="yd-card__text--tips">
         <slot name="tips" />
       </p>
       <slot />
     </div>
-    <div
-      v-if="$slots.action || action"
-      class="yd-card__action"
-    >
+    <div v-if="$slots.action || action" class="yd-card__action">
       <slot name="action">{{ action }}</slot>
     </div>
   </div>
@@ -154,13 +133,13 @@
 <script>
 /*
 +-----------------------------------------------------------------------------------------------------------------------
-| Yundun
+
 +-----------------------------------------------------------------------------------------------------------------------
 | yd-card
 | 卡片组件
 */
 
-const NAME = 'yd-card'
+const NAME = 'yd-card';
 
 export default {
   name: NAME,
@@ -194,29 +173,30 @@ export default {
     return {
       vLoading: false,
       headerHeight: 0
-    }
+    };
   },
 
   watch: {
     loading(val) {
-      this.vLoading = val
+      this.vLoading = val;
       if (val === false && this.loadingDelay > 0) {
         setTimeout(() => {
-          this.vLoading = false
-        }, this.loadingDelay)
+          this.vLoading = false;
+        }, this.loadingDelay);
       } else {
-        this.vLoading = val
+        this.vLoading = val;
       }
     }
   },
 
   created() {
-    this.vLoading = this.loading
+    this.vLoading = this.loading;
   },
 
   mounted() {
-    if (this.$refs.header && this.loadingBody) this.headerHeight = this.$refs.header.offsetHeight + 15
+    if (this.$refs.header && this.loadingBody)
+      this.headerHeight = this.$refs.header.offsetHeight + 15;
   }
-}
+};
 </script>
 

@@ -1,19 +1,19 @@
 <template>
   <div :class="{'is-border-bottom': borderBottom}" class="yd-tips">
-    <slot/>
+    <slot />
   </div>
 </template>
 
 <script>
 /*
 +-----------------------------------------------------------------------------------------------------------------------
-| Yundun
+
 +-----------------------------------------------------------------------------------------------------------------------
 | yd-tips
 | 提示组件
 */
 
-const NAME = 'yd-tips'
+const NAME = 'yd-tips';
 
 export default {
   name: NAME,
@@ -27,13 +27,13 @@ export default {
   },
 
   data() {
-    return {}
+    return {};
   },
 
   computed: {},
 
   methods: {}
-}
+};
 </script>
 
 <style lang="scss">

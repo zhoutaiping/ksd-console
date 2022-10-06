@@ -49,9 +49,9 @@
     class="Dialog"
     @close="handleClose"
   >
-    <slot/>
+    <slot />
     <div slot="footer">
-      <slot name="footer"/>
+      <slot name="footer" />
     </div>
   </el-dialog>
 </template>
@@ -59,7 +59,7 @@
 <script>
 /*
 +-----------------------------------------------------------------------------------------------------------------------
-| Yundun
+
 +-----------------------------------------------------------------------------------------------------------------------
 | yd-dialog
 | 弹框组件，支持 aside
@@ -82,24 +82,24 @@ export default {
   data() {
     return {
       open: this.visible
-    }
+    };
   },
 
   watch: {
     visible(val) {
-      this.open = val
+      this.open = val;
     }
   },
 
   methods: {
     handleOpen() {
-      this.$emit('update:visible', true)
+      this.$emit('update:visible', true);
     },
 
     handleClose() {
-      this.$emit('close')
-      this.$emit('update:visible', false)
+      this.$emit('close');
+      this.$emit('update:visible', false);
     }
   }
-}
+};
 </script>

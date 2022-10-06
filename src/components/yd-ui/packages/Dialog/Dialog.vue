@@ -204,13 +204,13 @@
 <script>
 /*
 +-----------------------------------------------------------------------------------------------------------------------
-| Yundun
+
 +-----------------------------------------------------------------------------------------------------------------------
 | yd-dialog
 | 弹框组件，支持 aside
 */
 
-const NAME = 'yd-dialog'
+const NAME = 'yd-dialog';
 
 export default {
   name: NAME,
@@ -239,24 +239,24 @@ export default {
     return {
       closeOnPressEscape: false,
       open: this.visible
-    }
+    };
   },
 
   watch: {
     visible(val) {
       if (val) {
-        this.open = true
+        this.open = true;
       } else {
-        this.open = false
+        this.open = false;
       }
     }
   },
 
   methods: {
     handleClose() {
-      this.$emit('close')
-      this.$emit('update:visible', false)
+      this.$emit('close');
+      this.$emit('update:visible', false);
     }
   }
-}
+};
 </script>

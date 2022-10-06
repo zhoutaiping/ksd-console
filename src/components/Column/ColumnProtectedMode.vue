@@ -1,30 +1,16 @@
 <template>
-  <el-tooltip
-    v-if="open"
-    content="已接入"
-    placement="top"
-  >
-    <yd-icon-status
-      class="el-icon-circle-check"
-      status="success"
-    />
+  <el-tooltip v-if="open" content="已接入" placement="top">
+    <yd-icon-status class="el-icon-circle-check" status="success" />
   </el-tooltip>
-  <el-tooltip
-    v-else
-    content="未接入"
-    placement="top"
-  >
-    <yd-icon-status
-      class="el-icon-circle-close"
-      status="default"
-    />
+  <el-tooltip v-else content="未接入" placement="top">
+    <yd-icon-status class="el-icon-circle-close" status="default" />
   </el-tooltip>
 </template>
 
 <script>
 /*
 +-----------------------------------------------------------------------------------------------------------------------
-| Yundun
+
 +-----------------------------------------------------------------------------------------------------------------------
 | 网站接入状态
 |
@@ -37,21 +23,21 @@ export default {
 
   computed: {
     open() {
-      const { protected_mode, use_yundun_cname, use_yundun_dns } = this.data
+      const { protected_mode, use_defalut_cname, use_defalut_dns } = this.data;
       if (protected_mode === '1') {
-        if (use_yundun_cname === '1') {
-          return true
+        if (use_defalut_cname === '1') {
+          return true;
         } else {
-          return false
+          return false;
         }
       } else if (protected_mode === '2') {
-        if (use_yundun_dns === '1') {
-          return true
+        if (use_defalut_dns === '1') {
+          return true;
         } else {
-          return false
+          return false;
         }
       }
     }
   }
-}
+};
 </script>

@@ -15,9 +15,6 @@
           <el-table-column label="应用名称" prop="app_name" min-width="150">
             <template slot-scope="{ row }">{{row.app_name || '--'}}</template>
           </el-table-column>
-          <el-table-column label="资源池" prop="pool_name" min-width="150">
-            <template slot-scope="{ row }">{{row.pool_name || '--'}}</template>
-          </el-table-column>
           <el-table-column label="AccessKey" min-width="150">
             <template slot-scope="scope">
               <span>{{ scope.row.access_key }}</span>
@@ -27,6 +24,9 @@
                 </el-button>
               </el-tooltip>
             </template>
+          </el-table-column>
+          <el-table-column label="资源池" prop="pool_name" min-width="150">
+            <template slot-scope="{ row }">{{row.pool_name || '--'}}</template>
           </el-table-column>
           <el-table-column label="创建时间" prop="created_at" />
           <el-table-column label="备注" prop="remark" />
