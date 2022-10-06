@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'KDS Console',
+  title: "KDS Console",
 
   /**
    * @type {boolean} true | false
@@ -31,8 +31,8 @@ module.exports = {
    * The default is only used in the production env
    * If you want to also use it in dev, you can pass ['production', 'development']
    */
-  errorLog: 'production',
-
-  expireUrl: 'https://account.axisnow.xyz/user/sign-in',
-  signOutUrl: 'https://account.axisnow.xyz/user/sign-out'
-}
+  errorLog: "production",
+  logo: "https://auth.axisnow.xyz/img/logo/logo-02.png",
+  expireUrl: "https://account.axisnow.xyz/user/sign-in",
+  signOutUrl: "https://account.axisnow.xyz/user/sign-out",
+};

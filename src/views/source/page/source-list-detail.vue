@@ -16,11 +16,11 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column label="节点IP/ID" prop="id">
+          <el-table-column label="节点IP" prop="id">
             <template slot-scope="{row}">
               {{row.ip || '--' }}
-              <br />
-              {{row.id || '--' }}
+              <!-- <br />
+              {{row.id || '--' }}-->
             </template>
           </el-table-column>
           <el-table-column label="ISP" prop="isp" />

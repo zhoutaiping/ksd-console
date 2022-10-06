@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Message } from "element-ui";
 import { uuid } from "@/utils/uuid";
-import Lockr from "lockr";
+import store from "@/store";
+import * as Lockr from "lockr";
 import router from "@/router";
 import { getToken } from "@/utils/auth";
 import defaultSettings from "@/settings";
@@ -36,16 +37,16 @@ service.interceptors.response.use(
       // 退出登录
       // TODO ACCESS
       Message.warning("用户未登录");
-      Lockr.rm("user_id");
-      const redirect_url =
-        process.env.NODE_ENV !== "development"
-          ? "http://admin.axisnow.xyz/"
-          : "http://localhost:4670/";
-      if (defaultSettings.expireUrl)
-        window.open(
-          defaultSettings.expireUrl + "?redirect_url=" + redirect_url,
-          "_self"
-        );
+      store.dispatch("user/logout").then((res) => {
+        if (defaultSettings.signOutUrl)
+          window.location.replace(
+            defaultSettings.signOutUrl +
+              "?redirect_url=" +
+              window.location.origin,
+            "_self"
+          );
+      });
+
       return Promise.reject(body);
     }
     // console.log("_status---",_status)
