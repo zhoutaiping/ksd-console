@@ -75,7 +75,7 @@ export default createDialog({
   data() {
     return {
       Fetch: this.FetchAccount,
-      API_INDEX: '/poolList',
+      API_INDEX: '/pool/list',
       loading: true,
       Label,
       optionsDefault: {
