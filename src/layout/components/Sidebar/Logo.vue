@@ -2,11 +2,17 @@
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/dashboard">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title">{{ title }}</h1>
+        <!-- <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <h1 v-else class="sidebar-title">{{ title }}</h1>-->
+        <svg-icon icon-class="logo" class="sidebar-logo" style="margin-left:5px;color: #1e212a;" />
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/dashboard">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
+        <!-- <img v-if="logo" :src="logo" class="sidebar-logo" /> -->
+        <svg-icon
+          icon-class="logo"
+          class="sidebar-logo"
+          style="margin-left:16px;margin-right: 0px;color: #1e212a;"
+        />
         <h1 class="sidebar-title">{{ title }}</h1>
       </router-link>
     </transition>
@@ -49,7 +55,7 @@ export default {
   height: 50px;
   line-height: 50px;
   // background: #2b2f3a;
-  text-align: center;
+  text-align: left;
   overflow: hidden;
 
   & .sidebar-logo-link {
@@ -57,8 +63,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 50px;
+      height: 50px;
       vertical-align: middle;
       margin-right: 12px;
     }
@@ -66,7 +72,7 @@ export default {
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: $menuActiveText;
+      //color: $menuActiveText;
       font-weight: 600;
       line-height: 50px;
       font-size: 14px;
@@ -77,6 +83,8 @@ export default {
 
   &.collapse {
     .sidebar-logo {
+      width: 50px;
+      height: 50px;
       margin-right: 0px;
     }
   }
