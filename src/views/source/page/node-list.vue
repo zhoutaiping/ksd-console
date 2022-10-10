@@ -55,7 +55,10 @@
           </el-table-column>
           <el-table-column label="监控状态" />
           <el-table-column label="使用状态" prop="status">
-            <template slot-scope="{row}">{{row.status ===1 ? '启用': '禁用' }}</template>
+            <template slot-scope="{row}">
+              <span v-if="row.status === 1" class="success--color">启用</span>
+              <span v-if="row.status === 0" class="red--color">禁用</span>
+            </template>
           </el-table-column>
           <el-table-column label="机器配置" prop="server_config" />
           <el-table-column label="操作" width="200" align="right">
@@ -83,7 +86,10 @@ export default {
   data() {
     return {
       Fetch: this.FetchAccount,
-      API_INDEX: '/poolNodeList',
+      API_INDEX: '/pool/node/list',
+      bindParams: {
+        token: localStorage.getItem('token')
+      },
       ip_pool: {
         0: '风险池',
         1: '普通池',
@@ -107,16 +113,33 @@ export default {
       } else if (option === 'del') {
         this.del(data);
       } else if (option === 'on') {
-        //
+        const params = {
+          ids: this.multipleSelection.map(i => i.id).join(','),
+          status: 1
+        };
+        this.editStatus(params);
       } else if (option === 'off') {
-        //
+        const params = {
+          ids: this.multipleSelection.map(i => i.id).join(','),
+          status: 0
+        };
+        this.editStatus(params);
       }
     },
-
+    async editStatus(params) {
+      try {
+        await this.Fetch.post('/pool/node/statusSet', params);
+        await this.$refs.DmData.initPage();
+        this.Message('ACTION_SUCCESS');
+      } catch (error) {
+        this.Message('ACTION_ERROR');
+        return;
+      }
+    },
     async del(data) {
       if (!data.id) return;
       try {
-        await this.Fetch.post('/poolNodeDelete', { id: data.id });
+        await this.Fetch.post('/pool/node/delete', { id: data.id });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {

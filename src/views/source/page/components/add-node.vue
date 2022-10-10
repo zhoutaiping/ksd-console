@@ -158,7 +158,7 @@ export default createDialog({
     },
     async getDetail() {
       try {
-        const data = await this.FetchAccount.get('/poolNodeDetail', {
+        const data = await this.FetchAccount.get('/pool/node/detail', {
           id: this.form.id
         });
         console.log(data);
@@ -177,9 +177,9 @@ export default createDialog({
 
       try {
         if (this.options.mode === 'Create') {
-          await this.FetchAccount.post('/poolNodeAdd', form);
+          await this.FetchAccount.post('/pool/node/add', form);
         } else {
-          await this.FetchAccount.post('/poolNodeModify', form);
+          await this.FetchAccount.post('/pool/node/modify', form);
         }
       } catch (e) {
         throw new Error();

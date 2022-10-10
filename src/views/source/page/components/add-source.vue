@@ -137,11 +137,20 @@ export default createDialog({
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
         this.loading = false;
-
+        if (form.id) {
+          // this.getDetail({ pool_id: Number(form.id) });
+        }
         console.log({ ...form });
       });
     },
-
+    async getDetail(params = {}) {
+      try {
+        const data = await this.FetchAccount.get('pool/detail', params);
+        console.log('detail---', data);
+      } catch (error) {
+        return;
+      }
+    },
     async fetchSubmit(form) {
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();
@@ -153,11 +162,11 @@ export default createDialog({
 
       try {
         if (this.options.mode === 'Create') {
-          await this.FetchAccount.post('/poolAdd', form);
+          await this.FetchAccount.post('/pool/add', form);
         } else {
           // http://47.98.119.34:24680/poolModify
 
-          await this.FetchAccount.post('/poolModify', form);
+          await this.FetchAccount.post('/pool/modify', form);
         }
       } catch (e) {
         throw new Error();

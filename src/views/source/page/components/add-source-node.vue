@@ -138,7 +138,7 @@ export default createDialog({
     },
     getIP(params = { page: 1, pageSize: 9999 }) {
       this.ipList = [];
-      this.Fetch.get('/poolNodeList', params).then(res => {
+      this.Fetch.get('/pool/node/list', params).then(res => {
         let { list = [] } = res || {};
         list = list.filter(i => !this.ips.includes(i.id)) || [];
         this.ipList = list.map(i => {
@@ -151,7 +151,7 @@ export default createDialog({
     },
     async getDetail() {
       try {
-        const data = await this.Fetch.get('/poolNodeDetail', {
+        const data = await this.Fetch.get('/pool/node/detail', {
           id: this.form.id
         });
       } catch (error) {
@@ -169,9 +169,9 @@ export default createDialog({
 
       try {
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/poolNodeBind', form);
+          await this.Fetch.post('/pool/node/bind', form);
         } else {
-          await this.Fetch.post('/poolNodeUnBind', form);
+          await this.Fetch.post('/pool/node/unBind', form);
         }
       } catch (e) {
         throw new Error();

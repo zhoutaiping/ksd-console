@@ -33,9 +33,7 @@
           </el-table-column>
           <el-table-column label="资源分配" prop="LVEL">
             <template slot-scope="{row}">
-              <span>
-                <!-- 共有{{row.nodelist.length || 0}} 个节点 -->
-              </span>
+              <span>共有{{row.node_num || 0}} 个节点</span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="是否删除" prop="is_delete" >
@@ -89,7 +87,7 @@ export default {
   data() {
     return {
       Fetch: this.FetchAccount,
-      API_INDEX: '/poolList',
+      API_INDEX: '/pool/list',
       bindParams: { pool_name: '' },
       risk_level: {
         1: '低风险',
@@ -123,7 +121,7 @@ export default {
     async del(data) {
       if (!data.id) return;
       try {
-        await this.Fetch.post('/poolDelete', { id: data.id });
+        await this.Fetch.post('/pool/delete', { id: data.id });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {

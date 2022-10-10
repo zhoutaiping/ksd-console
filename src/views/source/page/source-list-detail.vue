@@ -14,7 +14,7 @@
         </div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>
-        <el-table :data="list">
+        <el-table :data="list" @selection-change="handleSelectionChange">
           <el-table-column type="selection" />
           <el-table-column label="节点IP" prop="id">
             <template slot-scope="{row}">
@@ -26,7 +26,7 @@
           <el-table-column label="ISP" prop="isp" />
           <el-table-column label="归属地" prop="location" />
           <el-table-column label="节点风险等级">
-            <template slot-scope="{row}"></template>
+            <template slot-scope="{row}">{{ip_pool[row.ip_pool] || '--'}}</template>
           </el-table-column>
           <el-table-column label="类型">
             <template slot-scope="{row}">{{row.unshared ===1 ? '独享': '共享' }}</template>
@@ -38,7 +38,10 @@
             </template>
           </el-table-column>-->
           <el-table-column label="使用状态" prop="status">
-            <template slot-scope="{row}">{{row.status ===1 ? '启用': '禁用' }}</template>
+            <template slot-scope="{row}">
+              <span v-if="row.status === 1" class="success--color">启用</span>
+              <span v-if="row.status === 0" class="red--color">禁用</span>
+            </template>
           </el-table-column>
           <el-table-column label="机器配置" prop="server_config" />
           <el-table-column label width="80px">
@@ -88,9 +91,10 @@ export default {
     return {
       // http://47.98.119.34:24680/poolBoundNodeList
       Fetch: this.FetchAccount,
-      API_INDEX: '/poolBoundNodeList',
+      API_INDEX: '/pool/node/boundList',
       bindParams: {
         ip: '',
+        token: localStorage.getItem('token'),
         pool_id: this.$route.params.id
       },
       ip_pool: {
@@ -112,20 +116,43 @@ export default {
   },
   computed: {
     ips() {
-      return this.list.map(i => i.id);
+      return (this.list && this.list.length && this.list.map(i => i.id)) || [];
     }
   },
   methods: {
-    handleOption(TYPE, data) {
-      if (TYPE === 'DEL') {
+    handleOption(option, data) {
+      console.log(this.multipleSelection);
+      if (option === 'DEL') {
         this.del(data);
+      } else if (option === 'on') {
+        const params = {
+          ids: this.multipleSelection.map(i => i.id).join(','),
+          status: 1
+        };
+        this.editStatus(params);
+      } else if (option === 'off') {
+        const params = {
+          ids: this.multipleSelection.map(i => i.id).join(','),
+          status: 0
+        };
+        this.editStatus(params);
+      }
+    },
+    async editStatus(params) {
+      try {
+        await this.Fetch.post('/pool/node/statusSet', params);
+        await this.$refs.DmData.initPage();
+        this.Message('ACTION_SUCCESS');
+      } catch (error) {
+        this.Message('ACTION_ERROR');
+        return;
       }
     },
     async del(data) {
       if (!data.id) return;
       try {
         // http://47.98.119.34:24680/poolNodeUnBound
-        await this.Fetch.post('/poolNodeUnBound', {
+        await this.Fetch.post('/pool/node/unBound', {
           node_id: Number(data.id),
           pool_id: Number(this.$route.params.id)
         });
