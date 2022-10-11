@@ -139,6 +139,16 @@
 
 <script>
 import createDialog from '@/utils/createDialog';
+import RULE from '@/utils/verify';
+
+function portVaildate(rule, value, callback) {
+  if (!value) callback(new Error('请填写'));
+  value = parseInt(value, 10);
+  if (value < 1 || value > 65535) {
+    callback(new Error('端口有误1-65535'));
+  }
+  callback();
+}
 export default createDialog({
   name: 'AddEditTask',
   data() {
@@ -165,9 +175,9 @@ export default createDialog({
       rules: {
         name: [{ required: true, message: ' ', trigger: 'blur' }],
         protocol: [{ required: true, message: ' ', trigger: 'blur' }],
-        port: [{ required: true, message: ' ', trigger: 'blur' }],
         method: [{ required: true, message: ' ', trigger: 'blur' }],
         domain: [],
+        port: { validator: portVaildate, trigger: 'blur' },
         path: [{ required: true, message: ' ', trigger: 'blur' }],
         is_default: [{ required: true, message: ' ', trigger: 'blur' }],
         frequency: [{ required: true, message: ' ', trigger: 'blur' }],

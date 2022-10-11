@@ -19,7 +19,7 @@
           @submit="handleSearch"
         />
         <div slot="right">
-          <el-select
+          <!-- <el-select
             v-model="bindParams.type"
             :placeholder="'目标状态'"
             @click="handleSearch"
@@ -30,7 +30,7 @@
             :placeholder="'监控组'"
             @click="handleSearch"
             class="input-box"
-          />
+          />-->
         </div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>

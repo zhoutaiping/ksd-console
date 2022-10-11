@@ -13,17 +13,20 @@
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
-      <el-form-item prop="ip_pool" label="风险等级">
+      <!-- <el-form-item prop="ip_pool" label="风险等级">
         <el-select v-model="form.ip_pool" placeholder="风险等级" clearable class="input-box">
           <el-option :value="2" label="良好池" />
           <el-option :value="1" label="普通池" />
           <el-option :value="0" label="风险池" />
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item prop="ip_type" label="节点类型">
         <el-select v-model="form.ip_type" placeholder="节点类型" clearable class="input-box">
-          <el-option :value="1" label="优质、良好" />
-          <el-option :value="0" label="默认" />
+          <el-option :value="1" label="优质" />
+          <el-option :value="2" label="良好" />
+          <el-option :value="3" label="普通" />
+          <el-option :value="4" label="风险" />
+          <el-option :value="5" label="高风险" />
         </el-select>
       </el-form-item>
       <el-form-item prop="ip" label="IP">
@@ -33,7 +36,8 @@
         <el-checkbox v-model="form.block_overseas" :true-label="0" :false-label="1" />
       </el-form-item>
       <el-form-item prop="isp" label="ISP">
-        <el-input v-model="form.isp" class="input-box" />
+        <yd-form-select :selects="Label.ISP_TYPE" v-model="form.isp" class="input-box" />
+        <!-- <el-input v-model="form.isp" class="input-box" /> -->
       </el-form-item>
       <!-- <el-form-item
         prop="continent_country"
@@ -46,7 +50,9 @@
         />
       </el-form-item>-->
       <el-form-item prop="location" label="归属地">
-        <el-input v-model="form.location" placeholder class="input-box" />
+        <!-- <InputArea v-model="form.location" class="input-box" style="width: 400px;" /> -->
+        <FormItemArea v-model="form.location" ref="FormItemArea" class="input-box" />
+        <!-- <el-input v-model="form.location" placeholder class="input-box" /> -->
       </el-form-item>
       <el-form-item prop="server_config" label="机器配置">
         <el-input v-model="form.server_config" placeholder class="input-box" />
@@ -63,7 +69,9 @@
 
 <script>
 import createDialog from '@/utils/createDialog';
-
+import FormItemArea from '@/components/FormItem/FormItemArea';
+import InputArea from '@/components/Input/InputArea';
+import RULE from '@/utils/verify';
 const Label = {
   protocol: [
     {
@@ -94,6 +102,36 @@ const Label = {
       label: '域名',
       value: 2
     }
+  ],
+  ISP_TYPE: [
+    {
+      label: '电信',
+      value: '电信'
+    },
+    {
+      label: '联通',
+      value: '联通'
+    },
+    {
+      label: '移动',
+      value: '移动'
+    },
+    {
+      label: 'BGP',
+      value: 'BGP'
+    },
+    {
+      label: 'CN2',
+      value: 'CN2'
+    },
+    {
+      label: '国际线路',
+      value: '国际线路'
+    },
+    {
+      label: '其他',
+      value: '其他'
+    }
   ]
 };
 
@@ -103,9 +141,18 @@ function portValidator(rule, value, callback) {
   if (value.length > 1000) callback(new Error('最多同时添加1000个端口'));
   callback();
 }
-
+function validatorValue(message = '格式错误') {
+  function _validator(rule, value, callback) {
+    if (RULE.ipReg.test(value) || RULE.Ipv6Reg.test(value)) {
+      callback();
+    } else {
+      callback(new Error(message));
+    }
+  }
+  return _validator;
+}
 export default createDialog({
-  components: {},
+  components: { FormItemArea, InputArea },
 
   mixins: [],
 
@@ -123,10 +170,10 @@ export default createDialog({
         continent_country: '',
         ip: '',
         ip_pool: 0,
-        ip_type: 0,
+        ip_type: 1,
         is_delete: 0,
         isp: '',
-        location: '',
+        location: [],
         remark: '',
         server_config: '',
         status: 0,
@@ -138,7 +185,11 @@ export default createDialog({
         ip_pool: [{ required: true, message: ' ' }],
         ip_type: [{ required: true, message: ' ' }],
         isp: [{ required: true, message: ' ' }],
-        ip: [{ required: true, message: ' ' }],
+        ip: [
+          { required: true, trigger: 'blur', message: '请填写IP' },
+          { validator: validatorValue() }
+        ],
+        location: [],
         unshared: [],
         location: [],
         remark: []
@@ -172,7 +223,8 @@ export default createDialog({
       });
 
       form = {
-        ...this.form
+        ...this.form,
+        continent_country: this.form.location
       };
 
       try {

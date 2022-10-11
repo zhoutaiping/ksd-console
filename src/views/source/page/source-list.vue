@@ -1,13 +1,19 @@
 <template>
   <ConsolePageLayout>
+    <div slot="header" style="margin-bottom: 10px">
+      <span>管理网关节点</span>
+      <div style="position: absolute; right: 20px; top: 20px">
+        <el-button type="primary" @click="$refs.addedit.handleOpen()">新增</el-button>
+      </div>
+    </div>
     <DmData ref="DmData" @init="fetchList" :auto-init="true">
       <DmToolbar>
-        <el-button type="primary" @click="$refs.addedit.handleOpen()">新增</el-button>
-        <div slot="right">
+        <div>
           <InputSearch
             v-model="bindParams.pool_name"
             placeholder="资源池名称"
             @submit="$refs.DmData.initPage()"
+            class="input-box"
           />
         </div>
       </DmToolbar>
@@ -44,7 +50,7 @@
           <el-table-column label="备注" prop="remark" />
           <el-table-column label="创建时间" prop="created_at" />
           <!-- <el-table-column label="更新时间" prop="updated_at" /> -->
-          <el-table-column label width="80px">
+          <el-table-column label="操作" width="80px">
             <template slot-scope="{row}">
               <el-dropdown
                 @command="
@@ -134,4 +140,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.input-box {
+  width: 200px;
+}
 </style>

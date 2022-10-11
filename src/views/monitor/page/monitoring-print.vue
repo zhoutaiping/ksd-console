@@ -3,12 +3,7 @@
     <div slot="header" style="margin-bottom: 10px">
       <span>网关和源站可用性监控点维护管理</span>
       <div style="position: absolute; right: 20px; top: 20px">
-        <el-button
-          @click="$refs.AddEditPrint.handleOpen({}, {
-          mode:'Create'
-        })"
-          type="primary"
-        >添加监控点</el-button>
+        <el-button @click="$refs.AddEditPrint.handleOpen({}, {mode:'Create'})" type="primary">添加监控点</el-button>
       </div>
     </div>
     <DmData ref="DmData" @init="fetchList">
@@ -111,9 +106,12 @@ export default {
       console.log(e, data);
 
       if (e === 'eidt') {
-        this.$refs.AddEditPrint.handleOpen(data, {
-          mode: 'Edit'
-        });
+        this.$refs.AddEditPrint.handleOpen(
+          { ...data },
+          {
+            mode: 'Edit'
+          }
+        );
       } else if (e === 'delte') {
         this.handleDel(data);
       }

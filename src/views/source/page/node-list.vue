@@ -1,13 +1,23 @@
 <template>
   <ConsolePageLayout>
-    <DmData ref="DmData" @init="fetchList">
-      <DmToolbar>
-        <el-button type="primary" @click="handleOption('add')">新增</el-button>
+    <div slot="header" style="margin-bottom: 10px">
+      <span>分布式节点服务，SDK服务网关</span>
+      <div style="position: absolute; right: 20px; top: 20px">
         <el-button :disabled="!multipleSelection.length" @click="handleOption('on')">启用</el-button>
         <el-button :disabled="!multipleSelection.length" @click="handleOption('off')">禁用</el-button>
-        <el-button :disabled="!multipleSelection.length" @click="handleOption('del')">删除</el-button>
+        <el-button type="primary" @click="handleOption('add')">新增</el-button>
+      </div>
+    </div>
+    <DmData ref="DmData" @init="fetchList">
+      <DmToolbar>
+        <InputSearch
+          v-model="bindParams.ip"
+          placeholder="ip"
+          @submit="$refs.DmData.initPage()"
+          style="width:180px;"
+        />
         <div slot="right">
-          <el-select
+          <!-- <el-select
             v-model="bindParams.is_delete"
             clearable
             placeholder="删除状态"
@@ -16,7 +26,7 @@
           >
             <el-option :value="1" label="是" />
             <el-option :value="0" label="否" />
-          </el-select>
+          </el-select>-->
           <el-select
             v-model="bindParams.status"
             clearable
@@ -27,11 +37,13 @@
             <el-option :value="1" label="启用" />
             <el-option :value="0" label="禁用" />
           </el-select>
-          <InputSearch
-            v-model="bindParams.ip"
-            placeholder="ip"
-            @submit="$refs.DmData.initPage()"
-            style="width:180px;"
+          <yd-form-select
+            clearable
+            :selects="ISP_TYPE"
+            v-model="bindParams.isp"
+            placeholder="ISP"
+            class="input-box"
+            @change="$refs.DmData.initPage()"
           />
         </div>
       </DmToolbar>
@@ -48,12 +60,17 @@
           <el-table-column label="ISP" prop="isp" />
           <el-table-column label="归属地" prop="location" />
           <el-table-column label="风险等级">
-            <template slot-scope="{row}">{{ip_pool[row.ip_pool] || '--'}}</template>
+            <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
           <el-table-column label="独享类型">
             <template slot-scope="{row}">{{Number(row.unshared) === 1 ? '独享': '共享' }}</template>
           </el-table-column>
-          <el-table-column label="监控状态" />
+          <el-table-column label="监控状态">
+            <template slot-scope="{row}">
+              <span v-if="row.target_status === 1" class="success--color">正常</span>
+              <span v-if="row.target_status === 0" class="warning--color">宕机</span>
+            </template>
+          </el-table-column>
           <el-table-column label="使用状态" prop="status">
             <template slot-scope="{row}">
               <span v-if="row.status === 1" class="success--color">启用</span>
@@ -90,15 +107,53 @@ export default {
       bindParams: {
         token: localStorage.getItem('token')
       },
-      ip_pool: {
-        0: '风险池',
-        1: '普通池',
-        2: '良好池'
+      // <el-option :value="1" label="优质" />
+      //     <el-option :value="2" label="良好" />
+      //     <el-option :value="3" label="普通" />
+      //     <el-option :value="4" label="风险" />
+      //     <el-option :value="5" label="高风险" />
+      //     <el-option :value="0" label="默认" />
+      ip_type: {
+        1: '优质',
+        2: '良好',
+        3: '普通',
+        4: '风险',
+        5: '高风险'
       },
       status: {
         0: ' 禁用',
         1: '启用'
-      }
+      },
+      ISP_TYPE: [
+        {
+          label: '电信',
+          value: '电信'
+        },
+        {
+          label: '联通',
+          value: '联通'
+        },
+        {
+          label: '移动',
+          value: '移动'
+        },
+        {
+          label: 'BGP',
+          value: 'BGP'
+        },
+        {
+          label: 'CN2',
+          value: 'CN2'
+        },
+        {
+          label: '国际线路',
+          value: '国际线路'
+        },
+        {
+          label: '其他',
+          value: '其他'
+        }
+      ]
     };
   },
   methods: {

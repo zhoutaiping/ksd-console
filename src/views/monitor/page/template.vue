@@ -19,17 +19,24 @@
         />
         <div slot="right">
           <el-select
-            v-model="bindParams.type"
+            clearable
+            v-model="bindParams.method"
             :placeholder="'监控协议'"
             class="input-box"
             @change="handleSearch"
-          />
-          <el-select
+          >
+            <el-option value="get" label="GET" />
+            <el-option value="post" label="POST" />
+            <el-option value="put" label="PUT" />
+            <el-option value="delete" label="DELETE" />
+          </el-select>
+
+          <!-- <el-select
             v-model="bindParams.group"
             :placeholder="'监控组'"
             class="input-box"
             @change="handleSearch"
-          />
+          />-->
         </div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>

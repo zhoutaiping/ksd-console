@@ -1,6 +1,6 @@
 <style lang="scss">
-.yd-form-select{
-  .el-loading-spinner{
+.yd-form-select {
+  .el-loading-spinner {
     margin-top: -10px;
   }
 }
@@ -10,6 +10,7 @@
   <el-select
     v-model="val"
     v-loading="loading"
+    :clearable="clearable"
     :size="size"
     :placeholder="placeholder"
     :disabled="disabled"
@@ -36,15 +37,13 @@
       :disabled="item.disabled"
       :value="item.value"
       :label="item.label"
-    >
-      {{ item.label }}
-    </el-option>
+    >{{ item.label }}</el-option>
   </el-select>
 </template>
 
 <script>
-import create from '@/utils/create-basic'
-import { deepClone } from '@/utils'
+import create from '@/utils/create-basic';
+import { deepClone } from '@/utils';
 
 export default create({
   name: 'yd-form-select',
@@ -57,6 +56,7 @@ export default create({
     allowCreate: Boolean,
     defaultText: String,
     loading: Boolean,
+    clearable: Boolean,
     defaultValue: {
       type: [String, Number],
       default: ''
@@ -68,7 +68,7 @@ export default create({
     selects: {
       type: Array,
       default: () => {
-        return []
+        return [];
       }
     },
     filterable: Boolean,
@@ -79,42 +79,45 @@ export default create({
     return {
       val: this.value,
       selectsView: []
-    }
+    };
   },
 
   mounted() {
-    this.initSelects(this.selects)
+    this.initSelects(this.selects);
   },
 
   watch: {
     selects(val) {
-      this.initSelects(val)
+      this.initSelects(val);
     },
     val(val) {
-      this.$emit('input', val)
+      this.$emit('input', val);
     },
     value(val) {
-      this.val = val
+      this.val = val;
     }
   },
 
   methods: {
     initSelects(selects) {
-      selects = deepClone(selects)
+      selects = deepClone(selects);
       selects.forEach(item => {
-        item.label = typeof item.label === 'string' ? item.label.replace('__companyEN__', 'SDK') : item.label
-      })
-      this.selectsView = selects
+        item.label =
+          typeof item.label === 'string'
+            ? item.label.replace('__companyEN__', 'SDK')
+            : item.label;
+      });
+      this.selectsView = selects;
     },
 
     handleChange(value) {
-      this.$emit('input', value)
-      this.$emit('change', value)
+      this.$emit('input', value);
+      this.$emit('change', value);
     },
 
     handleVisibleChange(e) {
-      this.$emit('visible-change', e)
+      this.$emit('visible-change', e);
     }
   }
-})
+});
 </script>
