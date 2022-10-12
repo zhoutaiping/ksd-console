@@ -47,7 +47,7 @@
           </el-table-column>
           <el-table-column label="归属地/ISP" prop="status" min-width="150">
             <template slot-scope="{ row }">
-              <span>{{ row.country }}-{{ row.province }}-{{ row.city }}</span>
+              <span>{{ formartValue(row, 'location')}}</span>
               <br />
               <span>{{ row.isp }}</span>
             </template>
@@ -86,13 +86,15 @@
 import consoleData from '@/mixins/consoleData';
 import InputSearch from '@/components/Input/InputSearch.vue';
 import AddEditPrint from '../components/AddEditPrint.vue';
-import Template from './template.vue';
+import { areaView } from '@/utils/filter';
+
 export default {
   name: '',
   mixins: [consoleData],
   components: { InputSearch, AddEditPrint },
   data() {
     return {
+      areaView,
       API_INDEX: '/monitor/node/list',
       API_METHOD: 'post',
       type: {
@@ -102,6 +104,16 @@ export default {
     };
   },
   methods: {
+    formartValue(data, prop) {
+      if (prop === 'location') {
+        let location = (data.location && data.location.splic(',')) || [];
+        if (!location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
+        return (location.length && this.areaView(location)) || '--';
+      }
+    },
     handleOption(e, data) {
       console.log(e, data);
 

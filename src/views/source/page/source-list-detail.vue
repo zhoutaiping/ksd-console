@@ -48,7 +48,13 @@
             </template>
           </el-table-column>
           <el-table-column label="ISP" prop="isp" />
-          <el-table-column label="归属地" prop="location" />
+          <el-table-column label="归属地" prop="location">
+            <template slot-scope="{row}">
+              {{
+              formartValue(row, 'location')
+              }}
+            </template>
+          </el-table-column>
           <el-table-column label="节点风险等级">
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
@@ -61,11 +67,6 @@
               <span v-if="row.target_status === 0" class="warning--color">宕机</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="是否删除" prop="is_delete" >
-            <template slot-scope="{row}">
-              {{row.is_delete ===1 ? '是': '否' }}
-            </template>
-          </el-table-column>-->
           <el-table-column label="使用状态" prop="status">
             <template slot-scope="{row}">
               <span v-if="row.status === 1" class="success--color">启用</span>
@@ -153,15 +154,15 @@ export default {
       ISP_TYPE: [
         {
           label: '电信',
-          value: '电信'
+          value: 'dx'
         },
         {
           label: '联通',
-          value: '联通'
+          value: 'lt'
         },
         {
           label: '移动',
-          value: '移动'
+          value: 'yd'
         },
         {
           label: 'BGP',
@@ -172,11 +173,11 @@ export default {
           value: 'CN2'
         },
         {
-          label: '国际线路',
+          label: 'dxcn2',
           value: '国际线路'
         },
         {
-          label: '其他',
+          label: 'oth',
           value: '其他'
         }
       ]
@@ -188,20 +189,28 @@ export default {
     }
   },
   methods: {
+    formartValue(data, prop) {
+      if (prop === 'location') {
+        let location = (data.location && data.location.splic(',')) || [];
+        if (!location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
+        return (location.length && this.areaView(location)) || '--';
+      }
+    },
     handleOption(option, data) {
-      console.log(this.multipleSelection);
       if (option === 'DEL') {
         this.del(data);
-      } else if (option === 'on') {
-        const params = {
-          ids: this.multipleSelection.map(i => i.id).join(','),
-          status: 1
+      } else if (option === 'on' || option === 'off') {
+        var status = {
+          on: 1,
+          off: 0
         };
-        this.editStatus(params);
-      } else if (option === 'off') {
         const params = {
           ids: this.multipleSelection.map(i => i.id).join(','),
-          status: 0
+          status: status[option],
+          token: this.bindParams.token
         };
         this.editStatus(params);
       }
@@ -212,7 +221,6 @@ export default {
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {
-        this.Message('ACTION_ERROR');
         return;
       }
     },
@@ -222,12 +230,12 @@ export default {
         // http://47.98.119.34:24680/poolNodeUnBound
         await this.Fetch.post('/pool/node/unBound', {
           node_id: Number(data.id),
-          pool_id: Number(this.$route.params.id)
+          pool_id: Number(this.$route.params.id),
+          token: this.bindParams.token
         });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {
-        this.Message('ACTION_ERROR');
         return;
       }
     }

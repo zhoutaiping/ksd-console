@@ -13,7 +13,7 @@
       z-index: 1;
       background: #fff;
 
-      &-content{
+      &-content {
         padding: 0 16px;
       }
     }
@@ -43,15 +43,9 @@
     aside-type="top"
     @close="onClose"
   >
-    <yd-skeleton
-      v-if="loading"
-      active
-    />
+    <yd-skeleton v-if="loading" active />
     <slot />
-    <div
-      v-if="footer"
-      slot="footer"
-    >
+    <div v-if="footer" slot="footer">
       <slot name="footer" />
       <template v-if="actionVisible">
         <el-button
@@ -73,8 +67,8 @@
 </template>
 
 <script>
-import create from '@/utils/create-basic'
-import dialogBase from '@/mixins/dialogBase'
+import create from '@/utils/create-basic';
+import dialogBase from '@/mixins/dialogBase';
 
 export default create({
   name: 'DmDialog',
@@ -140,50 +134,53 @@ export default create({
     return {
       form: {},
       submitLoading: false
-    }
+    };
   },
 
   computed: {
     titleShow() {
       if (this.title) {
-        return this.title
+        return this.title;
       } else {
-        return this.mode === 'Edit' ? `编辑${this.titleLabel}` : `创建${this.titleLabel}`
+        return this.mode === 'Edit'
+          ? `编辑${this.titleLabel}`
+          : `创建${this.titleLabel}`;
       }
     }
   },
 
   methods: {
     onClose() {
-      this.$emit('close')
+      this.$emit('close');
     },
     // 重置提交 Loading
     resetSubmitLoading() {
-      this.submitLoading = false
+      this.submitLoading = false;
     },
     // hook: 打开前
     beforeOpen() {
-      this.form.resetFields && this.form.resetFields()
-      this.resetSubmitLoading()
+      this.form.resetFields && this.form.resetFields();
+      this.resetSubmitLoading();
     },
 
     async handleSubmit(data) {
-      this.submitLoading = true
+      this.submitLoading = true;
       if (this.fetchSubmit) {
         try {
-          await this.fetchSubmit(data)
+          console.log(1);
+          await this.fetchSubmit(data);
         } catch (e) {
-          this.resetSubmitLoading()
-          return
+          this.resetSubmitLoading();
+          return;
         }
       }
-      this.$emit('submit')
+      this.$emit('submit');
     },
     // hook: 验证后
     afterValidate(valid) {
       // 验证不通过
-      if (!valid) this.resetSubmitLoading()
+      if (!valid) this.resetSubmitLoading();
     }
   }
-})
+});
 </script>

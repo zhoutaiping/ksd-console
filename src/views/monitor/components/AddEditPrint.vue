@@ -56,6 +56,7 @@
         ></el-select>
       </el-form-item>-->
       <el-form-item prop="isp" label="线路">
+        <!-- {{form.isp}} -->
         <yd-form-select :selects="Label.ISP_TYPE" v-model="form.isp" class="input-box" />
       </el-form-item>
       <el-form-item label="备注">
@@ -105,15 +106,15 @@ const Label = {
   ISP_TYPE: [
     {
       label: '电信',
-      value: '电信'
+      value: 'dx'
     },
     {
       label: '联通',
-      value: '联通'
+      value: 'lt'
     },
     {
       label: '移动',
-      value: '移动'
+      value: 'yd'
     },
     {
       label: 'BGP',
@@ -124,11 +125,11 @@ const Label = {
       value: 'CN2'
     },
     {
-      label: '国际线路',
+      label: 'dxcn2',
       value: '国际线路'
     },
     {
-      label: '其他',
+      label: 'oth',
       value: '其他'
     }
   ]
@@ -199,6 +200,15 @@ export default createDialog({
     };
   },
   methods: {
+    afterOpen(form) {
+      this.$nextTick(async () => {
+        this.$refs.Form.clearValidate();
+        let location = [];
+        if (form.country) location.push(form.country);
+        if (form.province) location.push(form.province);
+        this.form.location = location;
+      });
+    },
     async fetchSubmit(form) {
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();

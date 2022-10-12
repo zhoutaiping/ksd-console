@@ -131,12 +131,14 @@ export default createDialog({
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
         this.loading = false;
-        if (this.options.mode === 'Edit') {
-          this.getDetail();
-        }
+        // if (this.options.mode === 'Edit') {
+        //   this.getDetail();
+        // }
       });
     },
-    getIP(params = { page: 1, pageSize: 9999 }) {
+    getIP(
+      params = { page: 1, pageSize: 9999, token: localStorage.getItem('token') }
+    ) {
       this.ipList = [];
       this.Fetch.get('/pool/node/list', params).then(res => {
         let { list = [] } = res || {};
@@ -152,7 +154,8 @@ export default createDialog({
     async getDetail() {
       try {
         const data = await this.Fetch.get('/pool/node/detail', {
-          id: this.form.id
+          id: this.form.id,
+          token: localStorage.getItem('token')
         });
       } catch (error) {
         return;
@@ -164,7 +167,8 @@ export default createDialog({
       });
 
       form = {
-        ...this.form
+        ...this.form,
+        token: localStorage.getItem('token')
       };
 
       try {

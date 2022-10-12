@@ -104,7 +104,13 @@ export default createDialog({
         this.loading = false;
       });
     },
-    async getPool(params = { page: 1, page_size: 9999 }) {
+    async getPool(
+      params = {
+        page: 1,
+        page_size: 9999,
+        token: localStorage.getItem('token')
+      }
+    ) {
       this.poollist = [];
       try {
         const data = await this.Fetch.get(this.API_INDEX, params);

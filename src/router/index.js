@@ -103,7 +103,7 @@ export const asyncRoutes = [
         path: "list",
         component: () => import("@/views/meal/page/list"),
         name: "MEAL_LIST",
-        meta: { title: "应用列表", icon: "应用", noCache: true },
+        meta: { title: "应用列表", icon: "yingyong", noCache: true },
       },
     ],
   },

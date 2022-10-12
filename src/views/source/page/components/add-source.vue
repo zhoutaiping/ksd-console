@@ -138,15 +138,18 @@ export default createDialog({
         this.$refs.Form.clearValidate();
         this.loading = false;
         if (form.id) {
-          // this.getDetail({ pool_id: Number(form.id) });
+          this.getDetail({
+            id: Number(form.id),
+            token: localStorage.getItem('token')
+          });
         }
-        console.log({ ...form });
       });
     },
     async getDetail(params = {}) {
       try {
         const data = await this.FetchAccount.get('pool/detail', params);
         console.log('detail---', data);
+        this.form = { ...data };
       } catch (error) {
         return;
       }
@@ -157,7 +160,8 @@ export default createDialog({
       });
 
       form = {
-        ...this.form
+        ...this.form,
+        token: localStorage.getItem('token')
       };
 
       try {

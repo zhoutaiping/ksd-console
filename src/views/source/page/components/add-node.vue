@@ -13,13 +13,6 @@
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
-      <!-- <el-form-item prop="ip_pool" label="风险等级">
-        <el-select v-model="form.ip_pool" placeholder="风险等级" clearable class="input-box">
-          <el-option :value="2" label="良好池" />
-          <el-option :value="1" label="普通池" />
-          <el-option :value="0" label="风险池" />
-        </el-select>
-      </el-form-item>-->
       <el-form-item prop="ip_type" label="节点类型">
         <el-select v-model="form.ip_type" placeholder="节点类型" clearable class="input-box">
           <el-option :value="1" label="优质" />
@@ -39,19 +32,9 @@
         <yd-form-select :selects="Label.ISP_TYPE" v-model="form.isp" class="input-box" />
         <!-- <el-input v-model="form.isp" class="input-box" /> -->
       </el-form-item>
-      <!-- <el-form-item
-        prop="continent_country"
-        label="大洲-国家"
-      >
-        <el-input
-          v-model="form.continent_country"
-          placeholder=""
-          class="input-box"
-        />
-      </el-form-item>-->
       <el-form-item prop="location" label="归属地">
-        <!-- <InputArea v-model="form.location" class="input-box" style="width: 400px;" /> -->
         <FormItemArea v-model="form.location" ref="FormItemArea" class="input-box" />
+        <!-- <InputArea v-model="form.location" class="input-box" style="width: 400px;" /> -->
         <!-- <el-input v-model="form.location" placeholder class="input-box" /> -->
       </el-form-item>
       <el-form-item prop="server_config" label="机器配置">
@@ -106,15 +89,15 @@ const Label = {
   ISP_TYPE: [
     {
       label: '电信',
-      value: '电信'
+      value: 'dx'
     },
     {
       label: '联通',
-      value: '联通'
+      value: 'lt'
     },
     {
       label: '移动',
-      value: '移动'
+      value: 'yd'
     },
     {
       label: 'BGP',
@@ -125,11 +108,11 @@ const Label = {
       value: 'CN2'
     },
     {
-      label: '国际线路',
+      label: 'dxcn2',
       value: '国际线路'
     },
     {
-      label: '其他',
+      label: 'oth',
       value: '其他'
     }
   ]
@@ -168,6 +151,8 @@ export default createDialog({
       formDefault: {
         block_overseas: 0,
         continent_country: '',
+        country: '',
+        province: '',
         ip: '',
         ip_pool: 0,
         ip_type: 1,
@@ -210,9 +195,15 @@ export default createDialog({
     async getDetail() {
       try {
         const data = await this.FetchAccount.get('/pool/node/detail', {
-          id: this.form.id
+          id: this.form.id,
+          token: localStorage.getItem('token')
         });
-        console.log(data);
+
+        this.form = Object.assign({ ...this.formDefault }, { ...data });
+        let location = [];
+        if (data.country) location.push(data.country);
+        if (data.province) location.push(data.province);
+        this.form.location = location;
       } catch (error) {
         return;
       }
@@ -221,12 +212,17 @@ export default createDialog({
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();
       });
-
+      if (this.form.location[0] === 'CN' && !this.form.location[1]) {
+        this.$message.warning('请选择地区！');
+        throw new Error();
+      }
       form = {
         ...this.form,
-        continent_country: this.form.location
+        country: (this.form.location[0] && this.form.location[0]) || '',
+        province: (this.form.location[1] && this.form.location[1]) || '',
+        location: this.form.location.join(','),
+        token: localStorage.getItem('token')
       };
-
       try {
         if (this.options.mode === 'Create') {
           await this.FetchAccount.post('/pool/node/add', form);

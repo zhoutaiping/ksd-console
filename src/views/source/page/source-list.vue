@@ -94,7 +94,7 @@ export default {
     return {
       Fetch: this.FetchAccount,
       API_INDEX: '/pool/list',
-      bindParams: { pool_name: '' },
+      bindParams: { pool_name: '', token: localStorage.getItem('token') },
       risk_level: {
         1: '低风险',
         2: '中风险',

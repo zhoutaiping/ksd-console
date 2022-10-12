@@ -58,7 +58,13 @@
             </template>
           </el-table-column>
           <el-table-column label="ISP" prop="isp" />
-          <el-table-column label="归属地" prop="location" />
+          <el-table-column label="归属地" prop="location">
+            <template slot-scope="{row}">
+              {{
+              formartValue(row, 'location')
+              }}
+            </template>
+          </el-table-column>
           <el-table-column label="风险等级">
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
@@ -96,12 +102,15 @@
 import consoleData from '@/mixins/consoleData';
 import DmTable from '@/components/Dm/DmTable.vue';
 import AddEdit from './components/add-node.vue';
+import { areaView } from '@/utils/filter';
+
 export default {
   name: 'NodeList',
   components: { DmTable, AddEdit },
   mixins: [consoleData],
   data() {
     return {
+      areaView,
       Fetch: this.FetchAccount,
       API_INDEX: '/pool/node/list',
       bindParams: {
@@ -127,15 +136,15 @@ export default {
       ISP_TYPE: [
         {
           label: '电信',
-          value: '电信'
+          value: 'dx'
         },
         {
           label: '联通',
-          value: '联通'
+          value: 'lt'
         },
         {
           label: '移动',
-          value: '移动'
+          value: 'yd'
         },
         {
           label: 'BGP',
@@ -146,25 +155,33 @@ export default {
           value: 'CN2'
         },
         {
-          label: '国际线路',
+          label: 'dxcn2',
           value: '国际线路'
         },
         {
-          label: '其他',
+          label: 'oth',
           value: '其他'
         }
       ]
     };
   },
   methods: {
+    formartValue(data, prop) {
+      if (prop === 'location') {
+        let location = (data.location && data.location.splic(',')) || [];
+        if (!location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
+        return (location.length && this.areaView(location)) || '--';
+      }
+    },
     handleOption(option, data) {
       console.log(this.multipleSelection);
       if (option === 'add') {
         this.$refs.addedit.handleOpen();
-        //
       } else if (option === 'edit') {
         this.$refs.addedit.handleOpen(data, { mode: 'Edit' });
-        //
       } else if (option === 'del') {
         this.del(data);
       } else if (option === 'on') {
@@ -176,7 +193,8 @@ export default {
       } else if (option === 'off') {
         const params = {
           ids: this.multipleSelection.map(i => i.id).join(','),
-          status: 0
+          status: 0,
+          token: this.bindParams.token
         };
         this.editStatus(params);
       }
@@ -187,18 +205,21 @@ export default {
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {
-        this.Message('ACTION_ERROR');
+        // this.Message('ACTION_ERROR');
         return;
       }
     },
     async del(data) {
       if (!data.id) return;
       try {
-        await this.Fetch.post('/pool/node/delete', { id: data.id });
+        await this.Fetch.post('/pool/node/delete', {
+          id: Number(data.id),
+          token: this.bindParams.token
+        });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {
-        this.Message('ACTION_ERROR');
+        // this.Message('ACTION_ERROR');
         return;
       }
     }
