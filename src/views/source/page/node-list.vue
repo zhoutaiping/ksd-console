@@ -168,7 +168,10 @@ export default {
   methods: {
     formartValue(data, prop) {
       if (prop === 'location') {
-        let location = (data.location && data.location.splic(',')) || [];
+        let location = [];
+        if (!!data[prop]) {
+          location = (!!data[prop] && data[prop].split(',')) || [];
+        }
         if (!location.length) {
           if (data.country) location.push(data.country);
           if (data.province) location.push(data.province);

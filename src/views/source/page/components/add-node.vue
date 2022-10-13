@@ -200,9 +200,15 @@ export default createDialog({
         });
 
         this.form = Object.assign({ ...this.formDefault }, { ...data });
+        this.form.ip_type = Number(data.ip_type) === 0 ? '' : data.ip_type;
         let location = [];
-        if (data.country) location.push(data.country);
-        if (data.province) location.push(data.province);
+        if (!!data.location) {
+          location = data.location.split(',');
+        }
+        if (location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
         this.form.location = location;
       } catch (error) {
         return;
