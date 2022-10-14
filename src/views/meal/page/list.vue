@@ -3,11 +3,15 @@
     <DmData ref="DmData" @init="fetchList">
       <DmToolbar>
         <!-- <el-button type="primary" @click="$refs.Add.handleOpen()">新增应用</el-button> -->
-        <el-button @click="handleSearch">刷新</el-button>
+        <InputSearch
+          v-model="bindParams.app_name"
+          placeholder="应用名称"
+          @submit="handleSearch"
+          style="width:200px"
+        />
+        <!-- <el-button @click="handleSearch">刷新</el-button> -->
         <!-- <el-button :disabled="!multipleSelection.length" @click="">删除</el-button>-->
-        <div slot="right">
-          <InputSearch v-model="bindParams.app_name" placeholder="应用名称" @submit="handleSearch" />
-        </div>
+        <div slot="right"></div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list" @selection-change="handleSelectionChange">

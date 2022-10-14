@@ -125,12 +125,12 @@ const Label = {
       value: 'CN2'
     },
     {
-      label: 'dxcn2',
-      value: '国际线路'
+      label: '国际线路',
+      value: 'dxcn2'
     },
     {
-      label: 'oth',
-      value: '其他'
+      label: '其他',
+      value: 'oth'
     }
   ]
 };

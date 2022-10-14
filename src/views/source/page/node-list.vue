@@ -57,7 +57,9 @@
               {{row.id || '--' }}-->
             </template>
           </el-table-column>
-          <el-table-column label="ISP" prop="isp" />
+          <el-table-column label="ISP" prop="isp">
+            <template slot-scope="{row}">{{ formartValue(row, 'isp') }}</template>
+          </el-table-column>
           <el-table-column label="归属地" prop="location">
             <template slot-scope="{row}">
               {{
@@ -155,12 +157,12 @@ export default {
           value: 'CN2'
         },
         {
-          label: 'dxcn2',
-          value: '国际线路'
+          label: '国际线路',
+          value: 'dxcn2'
         },
         {
-          label: 'oth',
-          value: '其他'
+          label: '其他',
+          value: 'oth'
         }
       ]
     };
@@ -177,6 +179,14 @@ export default {
           if (data.province) location.push(data.province);
         }
         return (location.length && this.areaView(location)) || '--';
+      }
+
+      if (prop === 'isp') {
+        let isp = data[prop];
+        isp = this.ISP_TYPE.find(i => i.value === isp)
+          ? this.ISP_TYPE.find(i => i.value === isp).label
+          : '';
+        return isp;
       }
     },
     handleOption(option, data) {

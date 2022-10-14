@@ -4,7 +4,7 @@
   z-index: 100;
   width: 100%;
   height: 64px;
-  border-bottom: 1px solid rgba(229,235,255,.08);
+  border-bottom: 1px solid rgba(229, 235, 255, 0.08);
   .head-conter {
     max-width: 1200px;
     margin: auto;
@@ -16,7 +16,7 @@
   display: inline-block;
   height: 100%;
   padding: 5px 0;
-  .img{
+  .img {
     width: 160px;
   }
 }
@@ -36,7 +36,7 @@
   color: #fff;
   text-align: center;
   cursor: pointer;
-  border: 1px solid rgba(229,235,255,.08);
+  border: 1px solid rgba(229, 235, 255, 0.08);
   margin: 10px 0;
   display: inline-block;
 }
@@ -61,27 +61,22 @@
 <template>
   <div class="header-box">
     <div class="head-conter">
-      <div class="logo ">
-        <router-link
-          to="/home"
-        >
+      <div class="logo">
+        <router-link to="/home">
           <!-- <img :src="login_console" alt="avatar_logo" class="img"> -->
         </router-link>
       </div>
       <div class="box-r">
-        <router-link to="/dashboard" >
-          <div v-show="name" class="login-btn" style="border: none; position: relative; right: 20px; top: -10px;">
-            立即体验
-          </div>
-          </router-link>
-        
-        <div v-show="!name" class="login-btn bg-primary" @click="handleLogin">
-          LogIn
-        </div>
-        <el-dropdown
-          trigger="click"
-          style="margin:10px 0;"
-        >
+        <router-link to="/dashboard">
+          <div
+            v-show="name"
+            class="login-btn"
+            style="border: none; position: relative; right: 20px; top: -10px;"
+          >立即体验</div>
+        </router-link>
+
+        <div v-show="!name" class="login-btn bg-primary" @click="handleLogin">LogIn</div>
+        <el-dropdown trigger="click" style="margin:10px 0;">
           <div v-show="name" class="avatar-wrapper">
             <el-avatar :src="account_th+'?imageView2/1/w/80/h/80'" size="medium" />
             <span style="margin-left:10px;">{{ name }}</span>
@@ -89,17 +84,12 @@
           </div>
           <el-dropdown-menu slot="dropdown" style="margin:10px 0;">
             <el-dropdown-item>
-              <router-link
-                to="/dashboard"
-              >
+              <router-link to="/dashboard">
                 <div>控制台</div>
               </router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <span
-                style="display:block;"
-                @click="logout"
-              >退出</span>
+              <span style="display:block;" @click="logout">退出</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -108,52 +98,53 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import login_console from '@/assets/images/logo-console.svg'
-import th from '@/assets/images/th.png'
-import th_default from '@/assets/images/th.jpg'
-import th_zhangpan from '@/assets/images/th_zhangpan.jpg'
-import th_zhaojinlei from '@/assets/images/zhaojinlei.png'
-import defaultSettings from '@/settings'
-import { removeToken } from '@/utils/auth' 
+import { mapGetters } from 'vuex';
+import login_console from '@/assets/images/logo-console.svg';
+import th_default from '@/assets/images/th.jpg';
+import defaultSettings from '@/settings';
+import { removeToken } from '@/utils/auth';
 export default {
   data() {
     return {
       login_console
-    }
+    };
   },
   computed: {
-    ...mapGetters([
-      'user',
-      'avatar',
-      'name'
-    ]),
+    ...mapGetters(['user', 'avatar', 'name']),
     year() {
-      return new Date().getFullYear()
+      return new Date().getFullYear();
     },
     account_th() {
-      const th_url = {
-        'zhoutaiping': th,
-        'zhangpan': th_zhangpan,
-        'lixuan': th_default,
-        'zhaojinlei': th_zhaojinlei
-      }
-      return this.avatar || th_url['zhoutaiping'] || th_default
+      return this.avatar || th_default;
     }
   },
   methods: {
     handleLogin() {
-      removeToken()
-      localStorage.clear()
-      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
-      if (defaultSettings.expireUrl) window.open(defaultSettings.expireUrl + '?redirect_url=' + redirect_url,'_self');
+      removeToken();
+      localStorage.clear();
+      const redirect_url =
+        process.env.NODE_ENV !== 'development'
+          ? 'http://admin.axisnow.xyz/'
+          : 'http://localhost:4670/';
+      if (defaultSettings.expireUrl)
+        window.open(
+          defaultSettings.expireUrl + '?redirect_url=' + redirect_url,
+          '_self'
+        );
     },
     async logout() {
-      await this.$store.dispatch('user/logout')
+      await this.$store.dispatch('user/logout');
       // this.$router.push(`/login`)
-      const redirect_url = process.env.NODE_ENV !== 'development' ?  'http://admin.axisnow.xyz/' : 'http://localhost:4670/'
-      if (defaultSettings.signOutUrl) window.open(defaultSettings.signOutUrl + '?redirect_url=' + redirect_url,'_self');
+      const redirect_url =
+        process.env.NODE_ENV !== 'development'
+          ? 'http://admin.axisnow.xyz/'
+          : 'http://localhost:4670/';
+      if (defaultSettings.signOutUrl)
+        window.open(
+          defaultSettings.signOutUrl + '?redirect_url=' + redirect_url,
+          '_self'
+        );
     }
   }
-}
+};
 </script>
