@@ -78,7 +78,10 @@ export default {
   data() {
     return {
       API_INDEX: '/monitor/group/list',
-      API_METHOD: 'post'
+      API_METHOD: 'post',
+      bindParams: {
+        token: localStorage.getItem('token')
+      }
     };
   },
   methods: {
@@ -100,7 +103,8 @@ export default {
 
     async handleDel(data) {
       const params = {
-        uuid: data.uuid
+        uuid: data.uuid,
+        token: localStorage.getItem('token')
       };
       try {
         await this.Fetch.post('/monitor/group/delete', params);

@@ -98,13 +98,14 @@ export default {
   data() {
     return {
       API_INDEX: '/monitor/task/list',
+      bindParams: {
+        token: localStorage.getItem('token')
+      },
       API_METHOD: 'post'
     };
   },
   methods: {
     handleOption(e, data) {
-      console.log(e, data);
-
       if (e === 'eidt') {
         this.$refs.AddEditTaskVue.handleOpen(data, {
           mode: 'Edit'
@@ -129,7 +130,8 @@ export default {
     },
     async handleDel(data) {
       const params = {
-        uuid: data.uuid
+        uuid: data.uuid,
+        token: localStorage.getItem('token')
       };
       try {
         await this.Fetch.post('/monitor/task/delete', params);

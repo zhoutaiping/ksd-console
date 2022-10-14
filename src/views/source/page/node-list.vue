@@ -105,7 +105,7 @@ import consoleData from '@/mixins/consoleData';
 import DmTable from '@/components/Dm/DmTable.vue';
 import AddEdit from './components/add-node.vue';
 import { areaView } from '@/utils/filter';
-
+import ISP from '@/constants/isp';
 export default {
   name: 'NodeList',
   components: { DmTable, AddEdit },
@@ -135,36 +135,7 @@ export default {
         0: ' 禁用',
         1: '启用'
       },
-      ISP_TYPE: [
-        {
-          label: '电信',
-          value: 'dx'
-        },
-        {
-          label: '联通',
-          value: 'lt'
-        },
-        {
-          label: '移动',
-          value: 'yd'
-        },
-        {
-          label: 'BGP',
-          value: 'BGP'
-        },
-        {
-          label: 'CN2',
-          value: 'CN2'
-        },
-        {
-          label: '国际线路',
-          value: 'dxcn2'
-        },
-        {
-          label: '其他',
-          value: 'oth'
-        }
-      ]
+      ISP_TYPE: ISP
     };
   },
   methods: {

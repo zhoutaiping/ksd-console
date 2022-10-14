@@ -104,6 +104,9 @@ export default {
   data() {
     return {
       API_INDEX: '/monitor/template/list',
+      bindParams: {
+        token: localStorage.getItem('token')
+      },
       API_METHOD: 'post'
     };
   },
@@ -122,7 +125,8 @@ export default {
 
     async handleDel(data) {
       const params = {
-        uuid: data.uuid
+        uuid: data.uuid,
+        token: localStorage.getItem('token')
       };
       try {
         await this.Fetch.post('/monitor/template/delete', params);

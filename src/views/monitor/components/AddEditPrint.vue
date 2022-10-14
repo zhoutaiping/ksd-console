@@ -71,7 +71,7 @@ import createDialog from '@/utils/createDialog';
 import template from '../page/template.vue';
 import FormItemArea from '@/components/FormItem/FormItemArea';
 import RULE from '@/utils/verify';
-
+import ISP from '@/constants/isp';
 const Label = {
   protocol: [
     {
@@ -103,36 +103,7 @@ const Label = {
       value: 2
     }
   ],
-  ISP_TYPE: [
-    {
-      label: '电信',
-      value: 'dx'
-    },
-    {
-      label: '联通',
-      value: 'lt'
-    },
-    {
-      label: '移动',
-      value: 'yd'
-    },
-    {
-      label: 'BGP',
-      value: 'BGP'
-    },
-    {
-      label: 'CN2',
-      value: 'CN2'
-    },
-    {
-      label: '国际线路',
-      value: 'dxcn2'
-    },
-    {
-      label: '其他',
-      value: 'oth'
-    }
-  ]
+  ISP_TYPE: ISP
 };
 function portVaildate(rule, value, callback) {
   if (!value) callback(new Error('请填写'));
@@ -216,6 +187,7 @@ export default createDialog({
 
       form = {
         ...this.form,
+        token: localStorage.getItem('token'),
         country: (this.form.location[0] && this.form.location[0]) || '',
         province: (this.form.location[1] && this.form.location[1]) || ''
       };

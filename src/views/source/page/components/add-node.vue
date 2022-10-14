@@ -55,6 +55,8 @@ import createDialog from '@/utils/createDialog';
 import FormItemArea from '@/components/FormItem/FormItemArea';
 import InputArea from '@/components/Input/InputArea';
 import RULE from '@/utils/verify';
+import ISP from '@/constants/isp';
+
 const Label = {
   protocol: [
     {
@@ -86,36 +88,7 @@ const Label = {
       value: 2
     }
   ],
-  ISP_TYPE: [
-    {
-      label: '电信',
-      value: 'dx'
-    },
-    {
-      label: '联通',
-      value: 'lt'
-    },
-    {
-      label: '移动',
-      value: 'yd'
-    },
-    {
-      label: 'BGP',
-      value: 'BGP'
-    },
-    {
-      label: 'CN2',
-      value: 'CN2'
-    },
-    {
-      label: 'dxcn2',
-      value: '国际线路'
-    },
-    {
-      label: 'oth',
-      value: '其他'
-    }
-  ]
+  ISP_TYPE: ISP
 };
 
 function portValidator(rule, value, callback) {

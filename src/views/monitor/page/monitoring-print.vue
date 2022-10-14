@@ -97,6 +97,9 @@ export default {
       areaView,
       API_INDEX: '/monitor/node/list',
       API_METHOD: 'post',
+      bindParams: {
+        token: localStorage.getItem('token')
+      },
       type: {
         1: '节点监控',
         2: '源站监控'
@@ -131,6 +134,7 @@ export default {
 
     async handleDel(data) {
       const params = {
+        token: localStorage.getItem('token'),
         uuid: data.uuid
       };
       try {

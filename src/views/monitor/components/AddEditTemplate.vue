@@ -209,6 +209,7 @@ export default createDialog({
 
       form = {
         ...this.form,
+        token: localStorage.getItem('token'),
         limit_max_fails_rate: this.form.limit_max_fails_rate * 0.01
       };
       try {

@@ -90,7 +90,8 @@ export default {
     async handleDel(data) {
       const params = {
         group_uuid: this.$route.params.id,
-        node_uuid: [data.uuid]
+        node_uuid: [data.uuid],
+        token: localStorage.getItem('token')
       };
       try {
         await this.Fetch.post('/monitor/group/delete_node', params);
