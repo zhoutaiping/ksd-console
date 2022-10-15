@@ -20,7 +20,6 @@ const data = [
   { label: "加拿大", value: "CA" },
   { label: "墨西哥", value: "MX" },
   { label: "巴西", value: "BR" },
-  { label: "加勒比海地区", value: "CARIBBEAN" },
   { label: "芬兰", value: "FI" },
   { label: "瑞典", value: "SE" },
   { label: "挪威", value: "NO" },

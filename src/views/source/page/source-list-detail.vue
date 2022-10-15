@@ -113,12 +113,15 @@
 import consoleData from '@/mixins/consoleData';
 import DmTable from '@/components/Dm/DmTable.vue';
 import AddEdit from './components/add-source-node.vue';
+import { areaView } from '@/utils/filter';
+
 export default {
   name: 'SourceList',
   components: { DmTable, AddEdit },
   mixins: [consoleData],
   data() {
     return {
+      areaView,
       // http://47.98.119.34:24680/poolBoundNodeList
       Fetch: this.FetchAccount,
       API_INDEX: '/pool/node/boundList',
@@ -191,11 +194,12 @@ export default {
   methods: {
     formartValue(data, prop) {
       if (prop === 'location') {
-        let location = (data.location && data.location.splic(',')) || [];
+        let location = (!!data.location && data.location.split(',')) || [];
         if (!location.length) {
           if (data.country) location.push(data.country);
           if (data.province) location.push(data.province);
         }
+        console.log(location);
         return (location.length && this.areaView(location)) || '--';
       }
     },

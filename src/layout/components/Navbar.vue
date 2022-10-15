@@ -78,13 +78,15 @@ export default {
     },
     logout() {
       this.$store.dispatch('user/logout').then(res => {
-        if (defaultSettings.signOutUrl)
+        if (defaultSettings.signOutUrl) {
+          localStorage.clear();
           window.location.replace(
             defaultSettings.signOutUrl +
               '?redirect_url=' +
               'https://www.axisnow.xyz',
             '_self'
           );
+        }
       });
     }
   }
