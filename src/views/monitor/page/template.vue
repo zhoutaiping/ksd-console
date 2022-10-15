@@ -25,10 +25,8 @@
             class="input-box"
             @change="handleSearch"
           >
-            <el-option value="get" label="GET" />
-            <el-option value="post" label="POST" />
-            <el-option value="put" label="PUT" />
-            <el-option value="delete" label="DELETE" />
+            <el-option value="HTTPS" label="HTTPS" />
+            <el-option value="HTTP" label="HTTP" />
           </el-select>
 
           <!-- <el-select

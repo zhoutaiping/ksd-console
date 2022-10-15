@@ -71,6 +71,7 @@
 
 <script>
 import createDialog from '@/utils/createDialog';
+import waf from '../../sdk/store/waf';
 export default createDialog({
   name: 'AddEditTask',
   data() {
@@ -100,6 +101,19 @@ export default createDialog({
     };
   },
   methods: {
+    afterOpen(form) {
+      if (form.uuid) {
+        this.getDetail({ uuid: form.uuid });
+      }
+    },
+    async getDetail(params) {
+      try {
+        const data = await this.Fetch.get('/task/get', params);
+        console.log(data);
+      } catch (error) {
+        return;
+      }
+    },
     async fetchSubmit(form) {
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();

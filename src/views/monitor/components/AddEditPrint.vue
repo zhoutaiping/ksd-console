@@ -17,12 +17,12 @@
       <el-form-item :prop="form.ipv6? 'ipv6' : ''" label="IPV6">
         <el-input v-model="form.ipv6" class="input-box" />
       </el-form-item>
-      <el-form-item prop="type" label="监测类型">
+      <!-- <el-form-item prop="type" label="监测类型">
         <el-select v-model="form.type" class="input-box" placeholder="监测类型">
           <el-option label="节点监控" :value="1" />
           <el-option label="源站监控" :value="2" />
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
 
       <el-form-item prop="location" label="归属地">
         <FormItemArea v-model="form.location" ref="FormItemArea" class="input-box" />
@@ -144,7 +144,7 @@ export default createDialog({
         name: '',
         ipv4: '',
         ipv6: '',
-        type: '',
+        type: 1,
         location: [],
         country: '',
         province: '',
@@ -191,7 +191,6 @@ export default createDialog({
         country: (this.form.location[0] && this.form.location[0]) || '',
         province: (this.form.location[1] && this.form.location[1]) || ''
       };
-      console.log();
       try {
         if (this.options.mode === 'Create') {
           await this.Fetch.post('/monitor/node/add', form);

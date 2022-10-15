@@ -24,12 +24,30 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column label="监控点名称/ID" prop="name" min-width="150" />
-          <el-table-column label="监控点类型" prop="name" min-width="150" />
-          <el-table-column label="IPV4/IPV6" prop="name" min-width="150" />
-          <el-table-column label="ISP/归属地" prop="name" min-width="150" />
-          <el-table-column label="添加时间" prop="desc" min-width="150" />
-          <el-table-column label="备注" prop="desc" min-width="150" />
+          <el-table-column label="监控点名称/ID" prop="app_name" min-width="150">
+            <template slot-scope="{ row }">
+              <span>{{ row.name }}</span>
+              <br />
+              <span>{{ row.uuid }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="监控点类型" prop="name" min-width="150" /> -->
+          <el-table-column label="IPV4/IPV6" prop="desc" min-width="150">
+            <template slot-scope="{ row }">
+              <span>{{ row.ipv4 }}</span>
+              <br />
+              <span>{{ row.ipv6 }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="归属地/ISP" prop="status" min-width="150">
+            <template slot-scope="{ row }">
+              <span>{{ formartValue(row, 'location')}}</span>
+              <br />
+              <span>{{ row.isp }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="添加时间" prop="created_at" min-width="150" />
+          <el-table-column label="备注" prop="remark" min-width="150" />
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown
@@ -63,12 +81,15 @@
 import consoleData from '@/mixins/consoleData';
 import InputSearch from '@/components/Input/InputSearch.vue';
 import AddEditServe from '../components/AddEditServe.vue';
+import { areaView } from '@/utils/filter';
+
 export default {
   name: '',
   mixins: [consoleData],
   components: { InputSearch, AddEditServe },
   data() {
     return {
+      areaView,
       API_INDEX: '/monitor/group/list_node',
       API_METHOD: 'post',
       bindParams: {
@@ -77,6 +98,16 @@ export default {
     };
   },
   methods: {
+    formartValue(data, prop) {
+      if (prop === 'location') {
+        let location = (data.location && data.location.splic(',')) || [];
+        if (!location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
+        return (location.length && this.areaView(location)) || '--';
+      }
+    },
     handleOption(e, data) {
       if (e === 'eidt') {
         this.$refs.AddEditServe.handleOpen(data, {

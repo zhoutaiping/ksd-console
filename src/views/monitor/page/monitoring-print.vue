@@ -15,12 +15,12 @@
           @submit="handleSearch"
         />
         <div slot="right">
-          <el-select
+          <!-- <el-select
             v-model="bindParams.type"
             :placeholder="'使用状态'"
             class="input-box"
             @change="handleSearch"
-          />
+          />-->
         </div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>
@@ -33,11 +33,11 @@
               <span>{{ row.uuid }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="监控点类型" prop="type" min-width="150">
+          <!-- <el-table-column label="监控点类型" prop="type" min-width="150">
             <template slot-scope="{ row }">
               <span>{{ type[row.type] || '--' }}</span>
             </template>
-          </el-table-column>
+          </el-table-column>-->
           <el-table-column label="IPV4/IPV6" prop="desc" min-width="150">
             <template slot-scope="{ row }">
               <span>{{ row.ipv4 }}</span>
