@@ -37,6 +37,20 @@
           <el-table-column label="风险等级" prop="LVEL">
             <template slot-scope="{row}">{{risk_level[row.risk_level] || '--' }}</template>
           </el-table-column>
+          <el-table-column label="监控模版" prop>
+            <template slot-scope="{row}">
+              {{
+              formartValue(row, 'template_name')
+              }}
+            </template>
+          </el-table-column>
+          <el-table-column label="监控组" prop>
+            <template slot-scope="{row}">
+              {{
+              formartValue(row, 'group_name ')
+              }}
+            </template>
+          </el-table-column>
           <el-table-column label="资源分配" prop="LVEL">
             <template slot-scope="{row}">
               <span>共有{{row.node_num || 0}} 个节点</span>
@@ -108,6 +122,9 @@ export default {
     };
   },
   methods: {
+    formartValue(data, prop) {
+      return data[prop] || '';
+    },
     handleOption(TYPE, data) {
       if (TYPE === 'Edit') {
         this.$refs.addedit.handleOpen(data, { mode: 'Edit' });

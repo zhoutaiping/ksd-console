@@ -36,6 +36,26 @@
           <el-option :value="3" label="高"></el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="监控模版" prop="monitor_template_uuid">
+        <el-select v-model="form.monitor_template_uuid" class="input-box">
+          <el-option
+            v-for="item in template_list"
+            :value="item.value"
+            :key="item.value"
+            :label="item.label"
+          ></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="监控组" prop="monitor_group_uuid">
+        <el-select v-model="form.monitor_group_uuid" class="input-box">
+          <el-option
+            v-for="item in group_list"
+            :value="item.value"
+            :key="item.value"
+            :label="item.label"
+          ></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item prop="unshared" label="是否独享">
         <el-checkbox v-model="form.unshared" :true-label="1" :false-label="0" />
       </el-form-item>
@@ -119,6 +139,8 @@ export default createDialog({
         pool_uuid: '',
         remark: '',
         risk_level: 1,
+        monitor_template_uuid: '',
+        monitor_group_uuid: '',
         type: 0,
         unshared: 0
       },
@@ -126,14 +148,27 @@ export default createDialog({
         pool_name: [{ required: true, message: ' ', trigger: 'blur' }],
         risk_level: [{ required: true, message: ' ' }],
         unshared: [],
-        remark: []
+        remark: [],
+        monitor_template_uuid: [
+          { required: true, message: ' ', trigger: 'blur' }
+        ],
+        monitor_group_uuid: [{ required: true, message: ' ', trigger: 'blur' }]
       },
-      mode: 'Created'
+      mode: 'Created',
+      group_list: [],
+      template_list: []
     };
   },
 
   methods: {
     afterOpen(form) {
+      const params = {
+        page: 1,
+        page_size: 99999,
+        token: localStorage.getItem('token')
+      };
+      this.getGroup(params);
+      this.getTemplate(params);
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
         this.loading = false;
@@ -145,6 +180,37 @@ export default createDialog({
         }
       });
     },
+    async getGroup(params = { page: 1, page_size: 99999 }) {
+      try {
+        const data = await this.Fetch.post('/monitor/group/list', params);
+        const { list = [] } = data || {};
+        this.group_list = list.map(i => {
+          return {
+            label: i.name,
+            value: i.uuid
+          };
+        });
+        console.log(data);
+      } catch (error) {
+        return;
+      }
+    },
+    async getTemplate(params = { page: 1, page_size: 99999 }) {
+      try {
+        const data = await this.Fetch.post('/monitor/template/list', params);
+        const { list = [] } = data || {};
+        this.template_list = list.map(i => {
+          return {
+            label: i.name,
+            value: i.uuid
+          };
+        });
+        console.log(data);
+      } catch (error) {
+        return;
+      }
+    },
+
     async getDetail(params = {}) {
       try {
         const data = await this.FetchAccount.get('pool/detail', params);

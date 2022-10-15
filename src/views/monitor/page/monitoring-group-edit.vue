@@ -93,7 +93,8 @@ export default {
       API_INDEX: '/monitor/group/list_node',
       API_METHOD: 'post',
       bindParams: {
-        group_uuid: this.$route.params.id
+        group_uuid: this.$route.params.id,
+        token: localStorage.getItem('token')
       }
     };
   },

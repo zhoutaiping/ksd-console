@@ -67,6 +67,7 @@
               }}
             </template>
           </el-table-column>
+
           <el-table-column label="风险等级">
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
@@ -171,14 +172,15 @@ export default {
       } else if (option === 'on') {
         const params = {
           ids: this.multipleSelection.map(i => i.id).join(','),
-          status: 1
+          status: 1,
+          token: localStorage.getItem('token')
         };
         this.editStatus(params);
       } else if (option === 'off') {
         const params = {
           ids: this.multipleSelection.map(i => i.id).join(','),
           status: 0,
-          token: this.bindParams.token
+          token: localStorage.getItem('token')
         };
         this.editStatus(params);
       }
