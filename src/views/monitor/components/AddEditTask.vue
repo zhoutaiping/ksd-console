@@ -102,9 +102,13 @@ export default createDialog({
   },
   methods: {
     afterOpen(form) {
-      if (form.uuid) {
-        this.getDetail({ uuid: form.uuid });
-      }
+      this.$nextTick(async () => {
+        this.$refs.Form && this.$refs.Form.clearValidate();
+        this.form = Object.assign({ ...this.formDefault }, { ...form });
+        if (form.uuid) {
+          this.getDetail({ uuid: form.uuid });
+        }
+      });
     },
     async getDetail(params) {
       try {

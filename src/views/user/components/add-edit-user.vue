@@ -5,7 +5,7 @@
     :fetch-submit="fetchSubmit"
     :mode="options.mode"
     width="700px"
-    title-label="应用"
+    title-label="用户"
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">

@@ -202,6 +202,12 @@ export default createDialog({
     };
   },
   methods: {
+    afterOpen(form) {
+      this.$nextTick(async () => {
+        this.$refs.Form && this.$refs.Form.clearValidate();
+        this.form = Object.assign({ ...this.formDefault }, { ...form });
+      });
+    },
     async fetchSubmit(form) {
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();

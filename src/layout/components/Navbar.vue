@@ -68,6 +68,7 @@ export default {
         this.$router.push(type);
         return;
       }
+      localStorage.clear();
       window.location.replace(
         'https://console.axisnow.xyz/' + type + '?token=' + Token,
         '_self'

@@ -5,7 +5,7 @@
     :fetch-submit="fetchSubmit"
     :mode="options.mode"
     width="450px"
-    title-label="应用"
+    title="修改密码"
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="120px">
