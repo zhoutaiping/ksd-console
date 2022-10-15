@@ -43,7 +43,7 @@
             <template slot-scope="{ row }">
               <span>{{ formartValue(row, 'location')}}</span>
               <br />
-              <span>{{ row.isp }}</span>
+              <span>{{ formartValue(row, 'isp')}}</span>
             </template>
           </el-table-column>
           <el-table-column label="添加时间" prop="created_at" min-width="150" />
@@ -82,6 +82,7 @@ import consoleData from '@/mixins/consoleData';
 import InputSearch from '@/components/Input/InputSearch.vue';
 import AddEditServe from '../components/AddEditServe.vue';
 import { areaView } from '@/utils/filter';
+import ISP from '@/constants/isp';
 
 export default {
   name: '',
@@ -95,7 +96,8 @@ export default {
       bindParams: {
         group_uuid: this.$route.params.id,
         token: localStorage.getItem('token')
-      }
+      },
+      ISP
     };
   },
   methods: {
@@ -107,6 +109,10 @@ export default {
           if (data.province) location.push(data.province);
         }
         return (location.length && this.areaView(location)) || '--';
+      }
+      if (prop === 'isp') {
+        const find = this.ISP.find(i => i.value === data[prop]);
+        return find ? find.label : '--';
       }
     },
     handleOption(e, data) {

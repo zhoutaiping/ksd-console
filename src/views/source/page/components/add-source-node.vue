@@ -13,14 +13,8 @@
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
-      <!-- <el-form-item
-        prop="risk_level"
-        label="风险等级"
-      >
-        <el-select
-          v-model="form.risk_level"
-          class="input-box"
-        >
+      <!-- <el-form-item prop="risk_level" label="风险等级">
+        <el-select v-model="form.risk_level" class="input-box">
           <el-option :value="1" label="低"></el-option>
           <el-option :value="2" label="中"></el-option>
           <el-option :value="3" label="高"></el-option>
@@ -81,6 +75,8 @@ function portValidator(rule, value, callback) {
   if (value.length > 1000) callback(new Error('最多同时添加1000个端口'));
   callback();
 }
+import { areaView } from '@/utils/filter';
+import ISP from '@/constants/isp';
 
 export default createDialog({
   components: {},
@@ -94,6 +90,7 @@ export default createDialog({
   },
   data() {
     return {
+      areaView,
       Fetch: this.FetchAccount,
       loading: true,
       Label,
@@ -119,7 +116,8 @@ export default createDialog({
           }
         ]
       },
-      ipList: []
+      ipList: [],
+      ISP
     };
   },
 
@@ -145,11 +143,34 @@ export default createDialog({
         list = list.filter(i => !this.ips.includes(i.id)) || [];
         this.ipList = list.map(i => {
           return {
-            label: i.ip,
+            label:
+              i.ip +
+              this.formartValue(i, 'isp') +
+              this.formartValue(i, 'location'),
             value: i.id
           };
         });
       });
+    },
+    formartValue(data, prop) {
+      if (prop === 'isp') {
+        let isp = data[prop];
+        isp = this.ISP.find(i => i.value === isp)
+          ? this.ISP.find(i => i.value === isp).label
+          : '';
+        return '-' + isp;
+      }
+      if (prop === 'location') {
+        let location = [];
+        if (!!data[prop]) {
+          location = (!!data[prop] && data[prop].split(',')) || [];
+        }
+        if (!location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
+        return (location.length && '-' + this.areaView(location)) || '--';
+      }
     },
     async getDetail() {
       try {

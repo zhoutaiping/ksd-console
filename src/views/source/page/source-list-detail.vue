@@ -47,7 +47,13 @@
               {{row.id || '--' }}-->
             </template>
           </el-table-column>
-          <el-table-column label="ISP" prop="isp" />
+          <el-table-column label="ISP" prop="isp">
+            <template slot-scope="{row}">
+              {{
+              formartValue(row, 'isp')
+              }}
+            </template>
+          </el-table-column>
           <el-table-column label="归属地" prop="location">
             <template slot-scope="{row}">
               {{
@@ -114,6 +120,7 @@ import consoleData from '@/mixins/consoleData';
 import DmTable from '@/components/Dm/DmTable.vue';
 import AddEdit from './components/add-source-node.vue';
 import { areaView } from '@/utils/filter';
+import ISP from '@/constants/isp';
 
 export default {
   name: 'SourceList',
@@ -132,6 +139,7 @@ export default {
         token: localStorage.getItem('token'),
         pool_id: this.$route.params.id
       },
+      ISP,
       ip_pool: {
         0: '风险池',
         1: '普通池',
@@ -201,6 +209,10 @@ export default {
         }
         console.log(location);
         return (location.length && this.areaView(location)) || '--';
+      }
+      if (prop === 'isp') {
+        const find = this.ISP.find(i => i.value === data[prop]);
+        return find ? find.label : '--';
       }
     },
     handleOption(option, data) {

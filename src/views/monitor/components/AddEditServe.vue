@@ -15,7 +15,11 @@
             :key="item.uuid"
             :label="item.name"
             :value="item.uuid"
-          />
+          >
+            {{item.ipv4}}-
+            {{item.name}}-
+            {{formartValue(item, 'location')}}
+          </el-option>
         </el-select>
       </el-form-item>
     </el-form>
@@ -24,13 +28,13 @@
 
 <script>
 import createDialog from '@/utils/createDialog';
-import { throwStatement } from '@babel/types';
-import template from '../page/template.vue';
+import { areaView } from '@/utils/filter';
+
 export default createDialog({
-  components: { template },
   name: 'AddEditServe',
   data() {
     return {
+      areaView,
       formDefault: {
         node_uuid: [],
         group_uuid: this.$route.params.id
@@ -43,6 +47,19 @@ export default createDialog({
     };
   },
   methods: {
+    formartValue(data, prop) {
+      if (prop === 'location') {
+        let location = [];
+        if (!!data[prop]) {
+          location = (!!data[prop] && data[prop].split(',')) || [];
+        }
+        if (!location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
+        return (location.length && this.areaView(location)) || '--';
+      }
+    },
     beforeOpen(form) {
       this.getNodeList();
     },

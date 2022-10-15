@@ -177,7 +177,7 @@ export default createDialog({
         protocol: [{ required: true, message: ' ', trigger: 'blur' }],
         method: [{ required: true, message: ' ', trigger: 'blur' }],
         domain: [],
-        port: { validator: portVaildate, trigger: 'blur' },
+        port: { required: true, validator: portVaildate, trigger: 'blur' },
         path: [{ required: true, message: ' ', trigger: 'blur' }],
         is_default: [{ required: true, message: ' ', trigger: 'blur' }],
         frequency: [{ required: true, message: ' ', trigger: 'blur' }],
