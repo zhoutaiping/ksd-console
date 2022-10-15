@@ -23,40 +23,10 @@
           <el-option label="源站监控" :value="2" />
         </el-select>
       </el-form-item>-->
-
       <el-form-item prop="location" label="归属地">
         <FormItemArea v-model="form.location" ref="FormItemArea" class="input-box" />
-        <!-- <el-select
-          v-model="form.country"
-          class="input-box"
-          placeholder
-          filterable
-          allow-create
-          default-first-option
-        ></el-select>-->
       </el-form-item>
-      <!-- <el-form-item prop="province" label="省/地区">
-        <el-select
-          v-model="form.province"
-          class="input-box"
-          placeholder
-          filterable
-          allow-create
-          default-first-option
-        ></el-select>
-      </el-form-item>
-      <el-form-item prop="city" label="城市">
-        <el-select
-          v-model="form.city"
-          class="input-box"
-          placeholder
-          filterable
-          allow-create
-          default-first-option
-        ></el-select>
-      </el-form-item>-->
       <el-form-item prop="isp" label="线路">
-        <!-- {{form.isp}} -->
         <yd-form-select :selects="Label.ISP_TYPE" v-model="form.isp" class="input-box" />
       </el-form-item>
       <el-form-item label="备注">
@@ -173,7 +143,8 @@ export default createDialog({
   methods: {
     afterOpen(form) {
       this.$nextTick(async () => {
-        this.$refs.Form.clearValidate();
+        this.$refs.Form && this.$refs.Form.clearValidate();
+        this.form = Object.assign({ ...this.formDefault }, { ...form });
         let location = [];
         if (form.country) location.push(form.country);
         if (form.province) location.push(form.province);
