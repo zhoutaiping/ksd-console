@@ -7,12 +7,7 @@
     title-label="监控模板"
     @submit="handleSubmit"
   >
-    <div
-      style="max-height: 600px;
-    overflow-y: auto;
-    display: flex;
-    position: relative;"
-    >
+    <div class="center-box">
       <yd-scroll ref="scroll">
         <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
           <el-form-item prop="name" label="模板名称">
@@ -23,9 +18,9 @@
               v-model="form.protocol"
               class="input-box"
               @change="e => {
-            if(e === 'http') {
+            if(e === 'http'|| e === 'HTTP') {
               form.port = 80
-            }else if(e === 'https') {
+            }else if(e === 'https' || e === 'HTTPS') {
               form.port = 443
             }else {
               form.port = 61081
@@ -40,7 +35,7 @@
           <el-form-item prop="port" label="监控端口">
             <el-input-number :controls="false" v-model="form.port" class="input-box" />
           </el-form-item>
-          <template v-if="form.protocol!=='tcp'">
+          <template v-if="!['tcp','TCP'].includes(form.protocol)">
             <el-form-item prop="method" label="监控请求方法">
               <el-select v-model="form.method" class="input-box">
                 <el-option value="get" label="GET" />
@@ -59,7 +54,11 @@
           <el-form-item prop="frequency" label="监控频率">
             <el-input-number :controls="false" v-model="form.frequency" class="input-box" />秒
           </el-form-item>
-          <el-form-item v-if="form.protocol!=='tcp'" prop="expect_status_code" label="预期状态码">
+          <el-form-item
+            v-if="!['tcp','TCP'].includes(form.protocol)"
+            prop="expect_status_code"
+            label="预期状态码"
+          >
             <el-input-number
               :controls="false"
               placeholder="200"
@@ -242,6 +241,12 @@ export default createDialog({
 </script>
 
 <style lang="scss" scoped>
+.center-box {
+  max-height: 600px;
+  overflow-y: auto;
+  display: flex;
+  position: relative;
+}
 .input-box {
   width: 400px;
   /deep/ .el-input__inner {
