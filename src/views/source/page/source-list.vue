@@ -144,7 +144,10 @@ export default {
     async del(data) {
       if (!data.id) return;
       try {
-        await this.Fetch.post('/pool/delete', { id: data.id });
+        await this.Fetch.post('/pool/delete', {
+          id: data.id,
+          token: localStorage.getItem('token')
+        });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {

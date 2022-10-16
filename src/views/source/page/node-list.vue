@@ -193,7 +193,7 @@ export default {
       try {
         await this.Fetch.post('/pool/node/delete', {
           id: Number(data.id),
-          token: this.bindParams.token
+          token: localStorage.getItem('token')
         });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');

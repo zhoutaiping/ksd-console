@@ -197,7 +197,7 @@ export default {
         const params = {
           ids: this.multipleSelection.map(i => i.id).join(','),
           status: status[option],
-          token: this.bindParams.token
+          token: localStorage.getItem('token')
         };
         this.editStatus(params);
       }
@@ -218,7 +218,7 @@ export default {
         await this.Fetch.post('/pool/node/unBound', {
           node_id: Number(data.id),
           pool_id: Number(this.$route.params.id),
-          token: this.bindParams.token
+          token: localStorage.getItem('token')
         });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
