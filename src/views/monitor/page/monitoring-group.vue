@@ -86,8 +86,6 @@ export default {
   },
   methods: {
     handleOption(e, data) {
-      console.log(e, data);
-
       if (e === 'eidt') {
         this.$refs.AddEditGroup.handleOpen(data, {
           mode: 'Edit'

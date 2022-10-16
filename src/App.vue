@@ -7,15 +7,15 @@
 </template>
 
 <script>
-import { ConfigProvider } from 'ant-design-vue'
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
-import { getToken, setToken, removeToken } from '@/utils/auth' 
-import defaultSettings from '@/settings'
+import { ConfigProvider } from 'ant-design-vue';
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
+import { getToken, setToken, removeToken } from '@/utils/auth';
+import defaultSettings from '@public/settings';
 function getQueryVariable(name) {
-  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
-  var r = window.location.search.substr(1).match(reg)
-  if (r != null) return unescape(r[2])
-  return null
+  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)');
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return unescape(r[2]);
+  return null;
 }
 export default {
   name: 'App',
@@ -23,11 +23,8 @@ export default {
   data() {
     return {
       locale: zhCN
-    }
+    };
   },
-  methods:{
-  }
-}
-
-
+  methods: {}
+};
 </script>

@@ -12,7 +12,7 @@
     <DmData ref="DmData" @init="fetchList">
       <DmToolbar>
         <InputSearch
-          v-model="bindParams.app_name"
+          v-model="bindParams.name"
           :placeholder="'名称'"
           class="input-box"
           @submit="handleSearch"
@@ -20,13 +20,13 @@
         <div slot="right">
           <el-select
             clearable
-            v-model="bindParams.method"
+            v-model="bindParams.protocol"
             :placeholder="'监控协议'"
             class="input-box"
             @change="handleSearch"
           >
-            <el-option value="HTTPS" label="HTTPS" />
-            <el-option value="HTTP" label="HTTP" />
+            <el-option value="https" label="HTTPS" />
+            <el-option value="hppt" label="HTTP" />
           </el-select>
 
           <!-- <el-select

@@ -13,8 +13,8 @@
     <DmData ref="DmData" @init="fetchList">
       <DmToolbar>
         <InputSearch
-          v-model="bindParams.app_name"
-          :placeholder="'任务目标/ID'"
+          v-model="bindParams.target"
+          :placeholder="'监控目标'"
           class="input-box"
           @submit="handleSearch"
         />
@@ -41,9 +41,9 @@
               <!-- :to="{
                 path:'/Monitor/Monitor-dashboard/'+ scope.row.uuid 
               }"-->
-              <router-link>
-                <span style="font-weight: 700;">{{ scope.row.name }}</span>
-              </router-link>
+              <!-- <router-link> -->
+              <span style="font-weight: 700;">{{ scope.row.name }}</span>
+              <!-- </router-link> -->
               <br />
               {{ scope.row.uuid }}
             </template>
@@ -58,15 +58,15 @@
           </el-table-column>
           <el-table-column label="监控目标状态" prop="status" min-width="150">
             <template slot-scope="{row}">
-              <span v-if="Number(row.target_status) === 1" class="success--color">启用</span>
-              <span v-else-if="Number(row.target_status) === 2" class="warning--color">暂停</span>
+              <span v-if="Number(row.target_status) === 1" class="success--color">正常</span>
+              <span v-else-if="Number(row.target_status) === 2" class="warning--color">宕机</span>
               <span v-else>未知</span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="延迟" prop="desc" min-width="150" />
           <el-table-column label="可用率" prop="desc" min-width="150" />-->
           <el-table-column label="添加时间" prop="created_at" min-width="150" />
-          <el-table-column label="操作" fixed="right" width="150" align="right">
+          <el-table-column v-if="false" label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown
                 type="primary"
@@ -80,7 +80,7 @@
                   <i class="el-icon-more" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="eidt">任务详情</el-dropdown-item>
+                  <!-- <el-dropdown-item command="eidt">任务详情</el-dropdown-item> -->
                   <!-- <el-dropdown-item command="dashboard">Dashboard</el-dropdown-item> -->
                   <el-dropdown-item command="delte">
                     <span style="color: red">删除</span>
@@ -146,7 +146,6 @@ export default {
       const params = {
         id: data.id
       };
-      console.log(params);
 
       this.Message('ACTION_SUCCESS');
     },

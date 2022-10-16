@@ -3,7 +3,7 @@ import store from "./store";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 import getPageTitle from "@/utils/get-page-title";
-import defaultSettings from "@/settings";
+import defaultSettings from "@public/settings";
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
@@ -34,20 +34,31 @@ router.beforeEach(async (to, from, next) => {
   } else {
     token = getQueryVariable("token");
     if (token) {
-      await store.dispatch("user/verifyToken", token);
-      await store.dispatch("user/getInfo");
-      const accessRoutes = await store.dispatch(
-        "permission/generateRoutes",
-        window.location.host
-      );
-      router.addRoutes(accessRoutes);
-      next("/dashboard");
+      const user_info = await store.dispatch("user/verifyToken", token);
+      console.log(user_info);
+      if (user_info.is_inner) {
+        await store.dispatch("user/getInfo");
+        const accessRoutes = await store.dispatch(
+          "permission/generateRoutes",
+          window.location.host
+        );
+        router.addRoutes(accessRoutes);
+        next("/dashboard");
+      } else {
+        store.dispatch("user/logout").then((res) => {
+          localStorage.clear();
+          window.location.href =
+            defaultSettings.expireUrl +
+            "?redirect_url=" +
+            window.location.origin;
+        });
+      }
     } else {
-      console.log(5);
       if (whiteList.indexOf(to.path) !== -1) {
         next();
       } else {
         store.dispatch("user/logout").then((res) => {
+          localStorage.clear();
           window.location.href =
             defaultSettings.expireUrl +
             "?redirect_url=" +

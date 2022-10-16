@@ -69,8 +69,9 @@
           </el-table-column>
           <el-table-column label="监控状态">
             <template slot-scope="{row}">
-              <span v-if="row.target_status === 1" class="success--color">正常</span>
-              <span v-if="row.target_status === 0" class="warning--color">宕机</span>
+              <span v-if="Number(row.target_status) === 1" class="success--color">正常</span>
+              <span v-else-if="Number(row.target_status) === 2" class="warning--color">宕机</span>
+              <span v-else>未知</span>
             </template>
           </el-table-column>
           <el-table-column label="使用状态" prop="status">
@@ -178,7 +179,6 @@ export default {
           if (data.country) location.push(data.country);
           if (data.province) location.push(data.province);
         }
-        console.log(location);
         return (location.length && this.areaView(location)) || '--';
       }
       if (prop === 'isp') {

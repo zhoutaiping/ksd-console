@@ -3,7 +3,8 @@
     <div slot="header" style="margin-bottom: 10px">
       <span>管理员平台账号管理，非租户账号</span>
       <div style="position: absolute; right: 20px; top: 20px">
-        <el-button :disabled="!multipleSelection.length" @click="editStatus">禁用</el-button>
+        <el-button :disabled="!multipleSelection.length" @click="editStatus(0)">禁用</el-button>
+        <el-button :disabled="!multipleSelection.length" @click="editStatus(1)">启用</el-button>
         <el-button type="primary" @click="$refs.Add.handleOpen({}, {mode:'Create'})">新增</el-button>
         <!-- <el-button type="primary" @click="$refs.AddEditTaskVue.handleOpen()"
             >添加监控任务</el-button
@@ -14,15 +15,27 @@
       <DmToolbar>
         <!-- <el-button type="primary" @click="$refs.Add.handleOpen()">新增应用</el-button> -->
         <InputSearch
-          v-model="bindParams.name"
+          v-model="bindParams.user_name"
           placeholder="用户名称"
+          @submit="handleSearch"
+          style="width:200px"
+        />
+        <InputSearch
+          v-model="bindParams.nick_name"
+          placeholder="用户昵称"
+          @submit="handleSearch"
+          style="width:200px"
+        />
+        <InputSearch
+          v-model="bindParams.email"
+          placeholder="邮箱"
           @submit="handleSearch"
           style="width:200px"
         />
         <!-- <el-button @click="handleSearch">刷新</el-button> -->
         <!-- <el-button :disabled="!multipleSelection.length" @click="">删除</el-button>-->
         <div slot="right">
-          <el-select v-model="bindParams.status" placeholder="状态" clearable>
+          <el-select v-model="bindParams.status" placeholder="状态" clearable @change="handleSearch">
             <el-option label="启用" value="1"></el-option>
             <el-option label="禁用" value="0"></el-option>
           </el-select>
@@ -30,15 +43,19 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list" @selection-change="handleSelectionChange">
-          <el-table-column label="序号" type="index" width="55" />
+          <el-table-column type="selection" />
+          <el-table-column label="用户ID" prop="user_id" width="100" />
           <el-table-column label="用户名" min-width="150">
-            <template slot-scope="{ row }">{{row.name || '--'}}</template>
+            <template slot-scope="{ row }">{{row.user_name || '--'}}</template>
           </el-table-column>
           <el-table-column label="昵称" min-width="150">
             <template slot-scope="{ row }">{{row.nick_name || '--'}}</template>
           </el-table-column>
+          <el-table-column label="邮箱" min-width="150">
+            <template slot-scope="{ row }">{{row.email || '--'}}</template>
+          </el-table-column>
           <el-table-column label="角色" min-width="150">
-            <template slot-scope="{ row }">{{row.role_name || '--'}}</template>
+            <template slot-scope="{ row }">{{role[row.role_id] || '--'}}</template>
           </el-table-column>
           <el-table-column label="状态" min-width="150">
             <template slot-scope="scope">
@@ -90,9 +107,13 @@ export default {
   data() {
     return {
       Fetch: this.FetchAccount,
-      API_INDEX: '',
+      API_INDEX: '/user/list',
       bindParams: {
         token: localStorage.getItem('token')
+      },
+      role: {
+        1: '普通用户',
+        2: '管理员'
       }
     };
   },
@@ -100,19 +121,18 @@ export default {
   methods: {
     handleOption(key, data) {
       if (key === 'delte') this.del(data);
-      if (key === 'edit') {
-        console.log(data);
+      if (key === 'eidt') {
         this.$refs.Add.handleOpen({ ...data }, { mode: 'Edit' });
       }
       if (key === 'password') {
         this.$refs.password.handleOpen({ ...data }, { mode: 'Edit' });
       }
     },
-    async editStatus() {
+    async editStatus(status) {
       try {
-        await this.Fetch.post('/user/status', {
-          ids: this.multipleSelection.map(i => i.id),
-          status: 0,
+        await this.Fetch.post('/user/setStatus', {
+          id: this.multipleSelection.map(i => i.user_id).join(','),
+          status: status,
           token: localStorage.getItem('token')
         });
         await this.$refs.DmData.initPage();
@@ -122,13 +142,12 @@ export default {
       }
     },
     async del(data) {
-      if (!data.id) return;
+      if (!data.user_id) return;
       try {
-        await this.Fetch.post('/user/delete', { id: data.id });
+        await this.Fetch.post('/user/delete', { id: data.user_id });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {
-        this.Message('ACTION_ERROR');
         return;
       }
     }

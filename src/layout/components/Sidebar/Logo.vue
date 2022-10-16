@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import defaulSetting from '@/settings';
+import defaulSetting from '@public/settings';
 export default {
   name: 'SidebarLogo',
   props: {

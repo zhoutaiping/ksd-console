@@ -74,12 +74,6 @@
           <el-table-column label="独享类型">
             <template slot-scope="{row}">{{Number(row.unshared) === 1 ? '独享': '共享' }}</template>
           </el-table-column>
-          <el-table-column label="监控状态">
-            <template slot-scope="{row}">
-              <span v-if="row.target_status === 1" class="success--color">正常</span>
-              <span v-if="row.target_status === 0" class="warning--color">宕机</span>
-            </template>
-          </el-table-column>
           <el-table-column label="使用状态" prop="status">
             <template slot-scope="{row}">
               <span v-if="row.status === 1" class="success--color">启用</span>
@@ -162,7 +156,6 @@ export default {
       }
     },
     handleOption(option, data) {
-      console.log(this.multipleSelection);
       if (option === 'add') {
         this.$refs.addedit.handleOpen();
       } else if (option === 'edit') {

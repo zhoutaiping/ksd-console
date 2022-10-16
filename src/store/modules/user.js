@@ -62,9 +62,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       const user = JSON.parse(localStorage.getItem("user"));
       if (user && Object.keys(user).length) {
-        const { nick_name, user_neme, avatar } = user;
+        const { nick_name, user_name, avatar } = user;
+        console.log(user_name, nick_name);
         commit("SET_ROLES", ["admin"]);
-        commit("SET_NAME", user_neme || nick_name);
+        commit("SET_NAME", user_name || nick_name);
         commit("SET_AVATAR", avatar);
         commit("SET_USER_KK", ["andao-console"]);
         resolve(user);

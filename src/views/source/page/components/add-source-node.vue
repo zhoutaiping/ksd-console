@@ -91,6 +91,7 @@ export default createDialog({
   data() {
     return {
       areaView,
+      ISP,
       Fetch: this.FetchAccount,
       loading: true,
       Label,
@@ -116,8 +117,7 @@ export default createDialog({
           }
         ]
       },
-      ipList: [],
-      ISP
+      ipList: []
     };
   },
 
@@ -146,7 +146,9 @@ export default createDialog({
             label:
               i.ip +
               this.formartValue(i, 'isp') +
-              this.formartValue(i, 'location'),
+              this.formartValue(i, 'location') +
+              this.formartValue(i, 'risk_level') +
+              this.formartValue(i, 'unshared'),
             value: i.id
           };
         });
@@ -160,6 +162,17 @@ export default createDialog({
           : '';
         return '-' + isp;
       }
+      if (prop === 'risk_level') {
+        const risk_level = {
+          1: '低风险',
+          2: '中风险',
+          3: '高风险'
+        };
+        return (risk_level[data[prop]] && '-' + risk_level[data[prop]]) || '';
+      }
+      if (prop === 'unshared') {
+        return Number(data[prop]) === 1 ? '- 独享' : '- 共享';
+      }
       if (prop === 'location') {
         let location = [];
         if (!!data[prop]) {
@@ -169,7 +182,7 @@ export default createDialog({
           if (data.country) location.push(data.country);
           if (data.province) location.push(data.province);
         }
-        return (location.length && '-' + this.areaView(location)) || '--';
+        return (location.length && '-' + this.areaView(location)) || '';
       }
     },
     async getDetail() {

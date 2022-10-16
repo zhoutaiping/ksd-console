@@ -1,0 +1,38 @@
+module.exports = {
+  title: "KDS Console",
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether show the settings right-panel
+   */
+  showSettings: true,
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether need tagsView
+   */
+  tagsView: false,
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether fix the header
+   */
+  fixedHeader: false,
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether show the logo in sidebar
+   */
+  sidebarLogo: true,
+
+  /**
+   * @type {string | array} 'production' | ['production', 'development']
+   * @description Need show err logs component.
+   * The default is only used in the production env
+   * If you want to also use it in dev, you can pass ['production', 'development']
+   */
+  errorLog: "production",
+  logo: "https://auth.axisnow.xyz/img/logo/logo-02.png",
+  expireUrl: "https://account.axisnow.xyz/user/sign-in",
+  signOutUrl: "https://account.axisnow.xyz/user/sign-out",
+};

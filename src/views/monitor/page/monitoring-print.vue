@@ -9,8 +9,8 @@
     <DmData ref="DmData" @init="fetchList">
       <DmToolbar>
         <InputSearch
-          v-model="bindParams.ip"
-          :placeholder="'搜索IP'"
+          v-model="bindParams.name"
+          :placeholder="'搜索名称/IP'"
           class="input-box"
           @submit="handleSearch"
         />

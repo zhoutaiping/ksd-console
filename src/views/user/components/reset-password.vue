@@ -8,9 +8,9 @@
     title="修改密码"
     @submit="handleSubmit"
   >
-    <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="120px">
-      <el-form-item prop="password" label="密码">
-        <el-input v-model="form.password" type="password" class="input-box" />
+    <el-form ref="Form" :model="form" :rules="rules" label-position="right">
+      <el-form-item prop="password">
+        <el-input v-model="form.password" type="password" />
       </el-form-item>
     </el-form>
   </DmDialog>
@@ -39,10 +39,10 @@ export default createDialog({
         { label: '普通用户', value: 2 }
       ],
       rules: {
-        name: [
+        password: [
           {
             required: true,
-            message: ' ',
+            message: '请输入密码',
             trigger: 'blur'
           }
         ],
@@ -56,6 +56,10 @@ export default createDialog({
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
         this.loading = false;
+
+        if (form.user_id) {
+          (this.form.id = form.user_id), (this.form.password = '');
+        }
       });
     },
 
@@ -70,7 +74,7 @@ export default createDialog({
       };
 
       try {
-        await this.Fetch.post('/user/password', form);
+        await this.FetchAccount.post('/user/reset/pass', form);
       } catch (e) {
         throw new Error();
       }

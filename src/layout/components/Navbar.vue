@@ -19,7 +19,7 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <el-avatar :src="account_th" size="medium" />
-          <i class="el-icon-caret-bottom" />
+          <!-- <i class="el-icon-caret-bottom" /> -->
         </div>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>{{ name }}</el-dropdown-item>
@@ -39,7 +39,7 @@ import Hamburger from '@/components/Hamburger';
 import Screenfull from '@/components/Screenfull';
 import th from '@/assets/images/th.png';
 import th_default from '@/assets/images/th.jpg';
-import defaultSettings from '@/settings';
+import defaultSettings from '@public/settings';
 export default {
   components: {
     Breadcrumb,
@@ -152,7 +152,7 @@ export default {
     }
 
     .avatar-container {
-      margin-right: 30px;
+      margin-right: 10px;
 
       .avatar-wrapper {
         margin-top: 5px;

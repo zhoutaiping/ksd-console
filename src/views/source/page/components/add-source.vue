@@ -190,7 +190,6 @@ export default createDialog({
             value: i.uuid
           };
         });
-        console.log(data);
       } catch (error) {
         return;
       }
@@ -205,7 +204,6 @@ export default createDialog({
             value: i.uuid
           };
         });
-        console.log(data);
       } catch (error) {
         return;
       }
@@ -214,7 +212,6 @@ export default createDialog({
     async getDetail(params = {}) {
       try {
         const data = await this.FetchAccount.get('pool/detail', params);
-        console.log('detail---', data);
         this.form = { ...data };
       } catch (error) {
         return;

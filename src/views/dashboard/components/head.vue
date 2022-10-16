@@ -101,7 +101,7 @@
 import { mapGetters } from 'vuex';
 import login_console from '@/assets/images/logo-console.svg';
 import th_default from '@/assets/images/th.jpg';
-import defaultSettings from '@/settings';
+import defaultSettings from '@public/settings';
 import { removeToken } from '@/utils/auth';
 export default {
   data() {
