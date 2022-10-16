@@ -124,7 +124,7 @@
             />次
             <h5>设定时间周期内up/down状态改变次数达到阈值,则在周期时间内视为任务"down"(即使"up")</h5>
           </el-form-item>
-          <el-form-item prop="limit_avg_delay" label="平均可用延时监控">
+          <el-form-item prop="limit_avg_delay" label="平均延时监控">
             <el-input-number :controls="false" v-model="form.limit_avg_delay" class="input-box" />毫秒
             <h5>一次监控如果所有监测点平均延迟达到该值，则视本次监控不可用 (阈值必须大于50ms)</h5>
           </el-form-item>
@@ -164,7 +164,6 @@ export default createDialog({
         expect_status_code: 200,
         limit_max_fail: 3,
         limit_max_fails_rate: 60,
-        limit_avg_delay: 0,
         limit_up_down_count: 5,
         limit_up_down_interval: 600,
         limit_max_delay: 5,
@@ -186,7 +185,6 @@ export default createDialog({
         limit_max_fails_rate: [
           { required: true, message: ' ', trigger: 'blur' }
         ],
-        limit_avg_delay: [{ required: true, message: ' ', trigger: 'blur' }],
         limit_up_down_count: [
           { required: true, message: ' ', trigger: 'blur' }
         ],
@@ -196,7 +194,7 @@ export default createDialog({
         down_time: [{ required: true, message: ' ', trigger: 'blur' }],
         limit_max_delay: [{ required: true, message: ' ', trigger: 'blur' }],
         limit_max_rise: [{ required: true, message: ' ', trigger: 'blur' }],
-        limit_avg_delay: [{ required: true, message: ' ', trigger: 'blur' }],
+        limit_avg_delay: [],
         remark: []
       }
     };
