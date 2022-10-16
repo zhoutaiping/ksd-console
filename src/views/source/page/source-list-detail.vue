@@ -5,6 +5,7 @@
       <div style="position: absolute; right: 20px; top: 20px">
         <el-button :disabled="!multipleSelection.length" @click="handleOption('on')">启用</el-button>
         <el-button :disabled="!multipleSelection.length" @click="handleOption('off')">禁用</el-button>
+        <el-button :disabled="!multipleSelection.length" @click="handleOption('del')">删除</el-button>
         <el-button type="primary" @click="$refs.addedit.handleOpen()">新增</el-button>
       </div>
     </div>
@@ -188,7 +189,19 @@ export default {
     },
     handleOption(option, data) {
       if (option === 'DEL') {
-        this.del(data);
+        const params = {
+          node_ids: [data.id].join(','),
+          pool_id: Number(this.$route.params.id),
+          token: localStorage.getItem('token')
+        };
+        this.del(params);
+      } else if (option === 'del') {
+        const params = {
+          node_ids: this.multipleSelection.map(i => i.id).join(','),
+          pool_id: Number(this.$route.params.id),
+          token: localStorage.getItem('token')
+        };
+        this.del(params);
       } else if (option === 'on' || option === 'off') {
         var status = {
           on: 1,
@@ -211,15 +224,10 @@ export default {
         return;
       }
     },
-    async del(data) {
-      if (!data.id) return;
+    async del(params) {
+      if (!params.node_ids) return;
       try {
-        // http://47.98.119.34:24680/poolNodeUnBound
-        await this.Fetch.post('/pool/node/unBound', {
-          node_id: Number(data.id),
-          pool_id: Number(this.$route.params.id),
-          token: localStorage.getItem('token')
-        });
+        await this.Fetch.post('/pool/node/batchUnBound', params);
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {

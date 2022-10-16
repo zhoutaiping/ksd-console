@@ -96,7 +96,7 @@ export const asyncRoutes = [
     path: "/app",
     component: Layout,
     alwaysShow: true,
-    meta: { title: "应用管理", icon: "tab" },
+    meta: { title: "应用管理", icon: "Web-application-1" },
     redirect: "/list",
     children: [
       {
@@ -111,7 +111,7 @@ export const asyncRoutes = [
     path: "/source",
     component: Layout,
     alwaysShow: true,
-    meta: { title: "资源池管理", icon: "tab" },
+    meta: { title: "资源池管理", icon: "pc1" },
     redirect: "/node-list",
     children: [
       {
@@ -124,7 +124,7 @@ export const asyncRoutes = [
         path: "source-list",
         component: () => import("@/views/source/page/source-list"),
         name: "SOURCE_SOURCE",
-        meta: { title: "资源池管理", icon: "component", noCache: true },
+        meta: { title: "资源池管理", icon: "ziyuan", noCache: true },
       },
       {
         path: "source-list/:id",
@@ -144,14 +144,14 @@ export const asyncRoutes = [
     path: "/Monitor",
     component: Layout,
     alwaysShow: true,
-    meta: { title: "监控管理", icon: "tab" },
+    meta: { title: "监控管理", icon: "zhongduanjiankong" },
     redirect: "/Monitor-task",
     children: [
       {
         path: "Monitor-task",
         component: () => import("@/views/monitor/page/task"),
         name: "monitor-task",
-        meta: { title: "监控任务", icon: "component", noCache: true },
+        meta: { title: "监控任务", icon: "renwu", noCache: true },
       },
       {
         path: "Monitor-dashboard/:id",
@@ -159,7 +159,7 @@ export const asyncRoutes = [
         name: "task-dashboard",
         meta: {
           title: "Dashboard",
-          icon: "component",
+          icon: "",
           noCache: true,
           back: `monitor-task`,
         },
@@ -169,13 +169,13 @@ export const asyncRoutes = [
         path: "Monitor-template",
         component: () => import("@/views/monitor/page/template"),
         name: "Smonitor_template",
-        meta: { title: "监控模板", icon: "component", noCache: true },
+        meta: { title: "监控模板", icon: "moban", noCache: true },
       },
       {
         path: "Monitor-group",
         component: () => import("@/views/monitor/page/monitoring-group"),
         name: "monitor_group",
-        meta: { title: "监控组", icon: "component", noCache: true },
+        meta: { title: "监控组", icon: "fenzuguanli", noCache: true },
       },
       {
         path: "Monitor-group/:id",
@@ -184,7 +184,7 @@ export const asyncRoutes = [
         name: "monitor_template-server",
         meta: {
           title: "监控点管理",
-          icon: "component",
+          icon: "jiedianleizhukongzhongxin2",
           noCache: true,
           back: `monitor_group`,
         },
@@ -193,7 +193,11 @@ export const asyncRoutes = [
         path: "Monitor-print",
         component: () => import("@/views/monitor/page/monitoring-print"),
         name: "monitor_print",
-        meta: { title: "监控点", icon: "component", noCache: true },
+        meta: {
+          title: "监控点",
+          icon: "jiedianleizhukongzhongxin2",
+          noCache: true,
+        },
       },
     ],
   },
@@ -295,7 +299,7 @@ export const asyncRoutes = [
     name: "User",
     meta: {
       title: "平台管理",
-      icon: "tab",
+      icon: "xitongshezhi",
     },
     component: Layout,
     alwaysShow: true,

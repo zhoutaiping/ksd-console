@@ -53,7 +53,11 @@
           </el-table-column>
           <el-table-column label="资源分配" prop="LVEL">
             <template slot-scope="{row}">
-              <span>共有{{row.node_num || 0}} 个节点</span>
+              <span>
+                共有
+                <span class="primary--color">{{row.node_num || 0}}</span>
+                个节点
+              </span>
             </template>
           </el-table-column>
           <!-- <el-table-column label="是否删除" prop="is_delete" >

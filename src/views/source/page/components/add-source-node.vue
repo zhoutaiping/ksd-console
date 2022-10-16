@@ -13,21 +13,15 @@
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
-      <!-- <el-form-item prop="risk_level" label="风险等级">
-        <el-select v-model="form.risk_level" class="input-box">
-          <el-option :value="1" label="低"></el-option>
-          <el-option :value="2" label="中"></el-option>
-          <el-option :value="3" label="高"></el-option>
-        </el-select>
-      </el-form-item>-->
-      <el-form-item prop="node_id" label="IP">
-        <yd-form-select :selects="ipList" v-model="form.node_id" class="input-box" />
-        <!-- <el-input
-          v-model="form.ip"
-          type="textarea"
-          placeholder="ip"
+      <el-form-item prop="node_ids" label="IP">
+        <yd-form-select
+          :selects="ipList"
+          v-model="form.node_ids"
+          filterable
+          collapseTags
+          multiple
           class="input-box"
-        />-->
+        />
       </el-form-item>
     </el-form>
   </DmDialog>
@@ -102,15 +96,16 @@ export default createDialog({
       },
       formDefault: {
         // "risk_level": 1,
-        node_id: '',
+        node_ids: [],
         pool_id: Number(this.$route.params.id)
       },
       rules: {
         risk_level: [
           { required: true, message: '请选择风险等级', trigger: 'blur' }
         ],
-        node_id: [
+        node_ids: [
           {
+            type: 'array',
             required: true,
             message: '请选择IP',
             trigger: 'blur'
@@ -202,15 +197,16 @@ export default createDialog({
 
       form = {
         ...this.form,
+        node_ids: this.form.node_ids.join(','),
         token: localStorage.getItem('token')
       };
 
       try {
-        if (this.options.mode === 'Create') {
-          await this.Fetch.post('/pool/node/bind', form);
-        } else {
-          await this.Fetch.post('/pool/node/unBind', form);
-        }
+        // if (this.options.mode === 'Create') {
+        await this.Fetch.post('/pool/node/batchBind', form);
+        // } else {
+        //   await this.Fetch.post('/pool/node/unBind', form);
+        // }
       } catch (e) {
         throw new Error();
       }

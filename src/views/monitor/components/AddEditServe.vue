@@ -9,7 +9,7 @@
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
       <el-form-item prop="node_uuid" label="监控节点">
-        <el-select v-model="form.node_uuid" class="input-box" multiple filterable>
+        <el-select v-model="form.node_uuid" class="input-box" collapseTags multiple filterable>
           <el-option
             v-for="item in nodeList"
             :key="item.uuid"
