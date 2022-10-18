@@ -93,6 +93,7 @@ export default {
       areaView,
       API_INDEX: '/monitor/group/list_node',
       API_METHOD: 'post',
+      Fetch: this.FetchAccount,
       bindParams: {
         group_uuid: this.$route.params.id,
         token: localStorage.getItem('token')
@@ -132,7 +133,7 @@ export default {
         token: localStorage.getItem('token')
       };
       try {
-        await this.Fetch.post('/monitor/group/delete_node', params);
+        await this.FetchAccount.post('/monitor/group/delete_node', params);
         this.Message('ACTION_SUCCESS');
         this.handleSearch();
       } catch (error) {

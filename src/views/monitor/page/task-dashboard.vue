@@ -27,6 +27,7 @@ export default {
   components: { InputSearch, SelectDateFilter },
   data() {
     return {
+      Fetch: this.FetchAccount,
       bindParams: {
         ip: '',
         start_time: '',

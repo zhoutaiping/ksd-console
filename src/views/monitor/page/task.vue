@@ -107,6 +107,7 @@ export default {
   data() {
     return {
       API_INDEX: '/monitor/task/list',
+      Fetch: this.FetchAccount,
       bindParams: {
         token: localStorage.getItem('token')
       },
@@ -155,7 +156,7 @@ export default {
         token: localStorage.getItem('token')
       };
       try {
-        await this.Fetch.post('/monitor/task/delete', params);
+        await this.FetchAccount.post('/monitor/task/delete', params);
         this.Message('ACTION_SUCCESS');
         this.handleSearch();
       } catch (error) {

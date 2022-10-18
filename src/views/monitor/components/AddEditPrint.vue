@@ -164,9 +164,9 @@ export default createDialog({
       };
       try {
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/monitor/node/add', form);
+          await this.FetchAccount.post('/monitor/node/add', form);
         } else {
-          await this.Fetch.post('/monitor/node/edit', form);
+          await this.FetchAccount.post('/monitor/node/edit', form);
         }
       } catch (e) {
         throw new Error();

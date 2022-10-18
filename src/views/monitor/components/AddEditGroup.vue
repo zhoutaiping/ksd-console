@@ -48,9 +48,9 @@ export default createDialog({
       };
       try {
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/monitor/group/add', form);
+          await this.FetchAccount.post('/monitor/group/add', form);
         } else {
-          await this.Fetch.post('/monitor/group/edit', form);
+          await this.FetchAccount.post('/monitor/group/edit', form);
         }
       } catch (e) {
         throw new Error();

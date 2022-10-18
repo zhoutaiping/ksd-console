@@ -4,8 +4,8 @@
       <span>管理员平台账号管理，非租户账号</span>
       <div style="position: absolute; right: 20px; top: 20px">
         <el-button :disabled="!multipleSelection.length" @click="editStatus(0)">禁用</el-button>
-        <el-button :disabled="!multipleSelection.length" @click="editStatus(1)">启用</el-button>
-        <el-button type="primary" @click="$refs.Add.handleOpen({}, {mode:'Create'})">新增</el-button>
+        <el-button type="primary" :disabled="!multipleSelection.length" @click="editStatus(1)">启用</el-button>
+        <!-- <el-button type="primary" @click="$refs.Add.handleOpen({}, {mode:'Create'})">新增</el-button> -->
         <!-- <el-button type="primary" @click="$refs.AddEditTaskVue.handleOpen()"
             >添加监控任务</el-button
         >-->
@@ -64,7 +64,7 @@
             </template>
           </el-table-column>
           <el-table-column label="备注" prop="remark" />
-          <el-table-column label="操作" width="200" align="right">
+          <el-table-column label="操作" width="200" align="right" fixed="right">
             <template slot-scope="{row}">
               <el-dropdown
                 type="primary"

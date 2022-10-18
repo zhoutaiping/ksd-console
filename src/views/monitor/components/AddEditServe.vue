@@ -67,7 +67,7 @@ export default createDialog({
       params = { page: 1, page_size: 20, token: localStorage.getItem('token') }
     ) {
       try {
-        const data = await this.Fetch.post('/monitor/node/list', params);
+        const data = await this.FetchAccount.post('/monitor/node/list', params);
         this.nodeList = data.list;
       } catch (error) {
         return;
@@ -84,9 +84,9 @@ export default createDialog({
       };
       try {
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/monitor/group/add_node', form);
+          await this.FetchAccount.post('/monitor/group/add_node', form);
         } else {
-          // await this.Fetch.post("/modify", form);
+          // await this.FetchAccount.post("/modify", form);
         }
       } catch (e) {
         throw new Error();

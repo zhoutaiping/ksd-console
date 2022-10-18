@@ -55,9 +55,9 @@ module.exports = {
           "^/api": "/", // 重写路径
         },
       },
-      "/monitor/": {
-        target: "http://120.55.48.6:8888",
-      },
+      // "/monitor/": {
+      //   target: "https://account.axisnow.xyz",
+      // },
     },
   },
   configureWebpack: {

@@ -98,6 +98,7 @@ export default {
       areaView,
       API_INDEX: '/monitor/node/list',
       API_METHOD: 'post',
+      Fetch: this.FetchAccount,
       bindParams: {
         token: localStorage.getItem('token')
       },
@@ -142,7 +143,7 @@ export default {
         uuid: data.uuid
       };
       try {
-        await this.Fetch.post('/monitor/node/delete', params);
+        await this.FetchAccount.post('/monitor/node/delete', params);
         this.Message('ACTION_SUCCESS');
         this.handleSearch();
       } catch (error) {

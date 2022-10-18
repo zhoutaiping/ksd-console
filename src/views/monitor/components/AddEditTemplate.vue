@@ -222,9 +222,9 @@ export default createDialog({
       };
       try {
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/monitor/template/add', form);
+          await this.FetchAccount.post('/monitor/template/add', form);
         } else {
-          await this.Fetch.post('/monitor/template/edit', form);
+          await this.FetchAccount.post('/monitor/template/edit', form);
         }
       } catch (e) {
         throw new Error();

@@ -105,6 +105,7 @@ export default {
       bindParams: {
         token: localStorage.getItem('token')
       },
+      Fetch: this.FetchAccount,
       API_METHOD: 'post'
     };
   },
@@ -127,7 +128,7 @@ export default {
         token: localStorage.getItem('token')
       };
       try {
-        await this.Fetch.post('/monitor/template/delete', params);
+        await this.FetchAccount.post('/monitor/template/delete', params);
         this.Message('ACTION_SUCCESS');
         this.handleSearch();
       } catch (error) {

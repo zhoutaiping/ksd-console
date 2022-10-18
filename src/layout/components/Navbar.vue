@@ -61,19 +61,6 @@ export default {
     }
   },
   methods: {
-    handleOpen(type) {
-      if (!type) return;
-      const Token = localStorage.getItem('token');
-      if (process.env.NODE_ENV === 'development') {
-        this.$router.push(type);
-        return;
-      }
-      localStorage.clear();
-      window.location.replace(
-        'https://console.axisnow.xyz/' + type + '?token=' + Token,
-        '_self'
-      );
-    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar');
     },
@@ -84,7 +71,7 @@ export default {
           window.location.replace(
             defaultSettings.signOutUrl +
               '?redirect_url=' +
-              'https://www.axisnow.xyz',
+              window.location.origin,
             '_self'
           );
         }

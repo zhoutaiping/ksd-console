@@ -112,7 +112,7 @@ export default createDialog({
     },
     async getDetail(params) {
       try {
-        const data = await this.Fetch.get('/task/get', params);
+        const data = await this.FetchAccount.get('/task/get', params);
         console.log(data);
       } catch (error) {
         return;
@@ -129,9 +129,9 @@ export default createDialog({
       };
       try {
         if (this.options.mode === 'Create') {
-          await this.Fetch.post('/add', form);
+          await this.FetchAccount.post('/add', form);
         } else {
-          await this.Fetch.post('/modify', form);
+          await this.FetchAccount.post('/modify', form);
         }
       } catch (e) {
         throw new Error();

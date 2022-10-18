@@ -10,7 +10,7 @@
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
       <el-form-item prop="user_name" label="用户名">
-        <el-input v-model="form.user_name" class="input-box" />
+        <el-input v-model="form.user_name" class="input-box" :disabled="options.mode !== 'Create'" />
       </el-form-item>
       <el-form-item prop="nick_name" label="昵称">
         <el-input v-model="form.nick_name" class="input-box" />

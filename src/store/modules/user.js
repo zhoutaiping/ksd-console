@@ -65,7 +65,7 @@ const actions = {
         const { nick_name, user_name, avatar } = user;
         console.log(user_name, nick_name);
         commit("SET_ROLES", ["admin"]);
-        commit("SET_NAME", user_name || nick_name);
+        commit("SET_NAME", nick_name || user_name);
         commit("SET_AVATAR", avatar);
         commit("SET_USER_KK", ["andao-console"]);
         resolve(user);
@@ -98,7 +98,7 @@ const actions = {
           commit("SET_TOKEN", token);
           commit("SET_ROLES", ["admin"]);
           commit("SET_USER_ID", data.id);
-          commit("SET_NAME", data.user_name || data.nick_name);
+          commit("SET_NAME", data.nick_name || data.user_name);
           commit("SET_AVATAR", data.avatar);
           commit("SET_INTRODUCTION", data.introduction);
           resolve(data);

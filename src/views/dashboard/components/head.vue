@@ -121,29 +121,22 @@ export default {
   methods: {
     handleLogin() {
       removeToken();
-      const redirect_url =
-        process.env.NODE_ENV !== 'development'
-          ? 'http://admin.axisnow.xyz/'
-          : 'http://localhost:4670/';
       if (defaultSettings.expireUrl) {
         localStorage.clear();
         window.open(
-          defaultSettings.expireUrl + '?redirect_url=' + redirect_url,
+          defaultSettings.expireUrl + '?redirect_url=' + window.location.origin,
           '_self'
         );
       }
     },
     async logout() {
       await this.$store.dispatch('user/logout');
-      // this.$router.push(`/login`)
-      const redirect_url =
-        process.env.NODE_ENV !== 'development'
-          ? 'http://admin.axisnow.xyz/'
-          : 'http://localhost:4670/';
       if (defaultSettings.signOutUrl) {
         localStorage.clear();
         window.open(
-          defaultSettings.signOutUrl + '?redirect_url=' + redirect_url,
+          defaultSettings.signOutUrl +
+            '?redirect_url=' +
+            window.location.origin,
           '_self'
         );
       }

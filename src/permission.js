@@ -48,7 +48,7 @@ router.beforeEach(async (to, from, next) => {
         store.dispatch("user/logout").then((res) => {
           localStorage.clear();
           window.location.href =
-            defaultSettings.expireUrl +
+            defaultSettings.signOutUrl +
             "?redirect_url=" +
             window.location.origin;
         });
@@ -60,7 +60,7 @@ router.beforeEach(async (to, from, next) => {
         store.dispatch("user/logout").then((res) => {
           localStorage.clear();
           window.location.href =
-            defaultSettings.expireUrl +
+            defaultSettings.signOutUrl +
             "?redirect_url=" +
             window.location.origin;
         });

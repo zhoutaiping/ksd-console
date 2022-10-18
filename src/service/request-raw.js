@@ -34,14 +34,10 @@ service.interceptors.response.use(
       // TODO ACCESS
       Message.warning("用户未登录");
       Lockr.rm("user_id");
-      const redirect_url =
-        process.env.NODE_ENV !== "development"
-          ? "http://admin.axisnow.xyz/"
-          : "http://localhost:4670/";
       if (defaultSettings.expireUrl) {
         localStorage.clear();
         window.open(
-          defaultSettings.expireUrl + "?redirect_url=" + redirect_url,
+          defaultSettings.expireUrl + "?redirect_url=" + window.location.origin,
           "_self"
         );
       }
