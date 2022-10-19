@@ -121,10 +121,10 @@ export default {
   methods: {
     handleLogin() {
       removeToken();
-      if (defaultSettings.expireUrl) {
+      if (defaultSettings.signIn) {
         localStorage.clear();
         window.open(
-          defaultSettings.expireUrl + '?redirect_url=' + window.location.origin,
+          defaultSettings.signIn + '?redirect_url=' + window.location.origin,
           '_self'
         );
       }

@@ -40,14 +40,14 @@
           <el-table-column label="监控模版" prop>
             <template slot-scope="{row}">
               {{
-              formartValue(row, 'template_name')
+              formartValue(row, 'monitor_template_name')
               }}
             </template>
           </el-table-column>
           <el-table-column label="监控组" prop>
             <template slot-scope="{row}">
               {{
-              formartValue(row, 'group_name ')
+              formartValue(row, 'monitor_group_name ')
               }}
             </template>
           </el-table-column>

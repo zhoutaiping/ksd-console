@@ -53,9 +53,6 @@ export default {
   },
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'name', 'device']),
-    is_console() {
-      return window.location.host === 'console.axisnow.xyz';
-    },
     account_th() {
       return this.avatar || th_default;
     }
@@ -71,7 +68,7 @@ export default {
           window.location.replace(
             defaultSettings.signOutUrl +
               '?redirect_url=' +
-              window.location.origin,
+              defaultSettings.signIn,
             '_self'
           );
         }

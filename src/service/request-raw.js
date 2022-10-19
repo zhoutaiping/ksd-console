@@ -34,10 +34,10 @@ service.interceptors.response.use(
       // TODO ACCESS
       Message.warning("用户未登录");
       Lockr.rm("user_id");
-      if (defaultSettings.expireUrl) {
+      if (defaultSettings.signIn) {
         localStorage.clear();
         window.open(
-          defaultSettings.expireUrl + "?redirect_url=" + window.location.origin,
+          defaultSettings.signIn + "?redirect_url=" + window.location.origin,
           "_self"
         );
       }
