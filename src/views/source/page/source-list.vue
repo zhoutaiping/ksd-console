@@ -47,7 +47,7 @@
           <el-table-column label="监控组" prop>
             <template slot-scope="{row}">
               {{
-              formartValue(row, 'monitor_group_name ')
+              formartValue(row, 'monitor_group_name')
               }}
             </template>
           </el-table-column>

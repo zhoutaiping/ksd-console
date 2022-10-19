@@ -36,7 +36,7 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column label="监控任务名称/ID" prop="app_name" min-width="150">
+          <el-table-column label="监控任务名称/ID" prop="app_name" min-width="200">
             <template slot-scope="scope">
               <!-- :to="{
                 path:'/Monitor/Monitor-dashboard/'+ scope.row.uuid 
@@ -49,14 +49,14 @@
             </template>
           </el-table-column>
           <el-table-column label="监控组" prop="group_uuid" min-width="150" />
-          <el-table-column label="监控目标" prop="target" min-width="150" />
-          <el-table-column label="监控协议" prop="protocol" min-width="150">
+          <el-table-column label="监控目标" prop="target" />
+          <el-table-column label="监控协议" prop="protocol" align="center">
             <template slot-scope="{row}">{{formartValue(row, 'protocol') || '--'}}</template>
           </el-table-column>
-          <el-table-column label="监控频率" prop="frequency" min-width="150">
+          <el-table-column label="监控频率" prop="frequency" align="center">
             <template slot-scope="{row}">{{formartValue(row, 'frequency') || 0 }} 秒</template>
           </el-table-column>
-          <el-table-column label="监控目标状态" prop="status" min-width="150">
+          <el-table-column label="监控目标状态" prop="status" align="center">
             <template slot-scope="{row}">
               <span v-if="Number(row.target_status) === 1" class="success--color">正常</span>
               <span v-else-if="Number(row.target_status) === 2" class="warning--color">宕机</span>
@@ -65,7 +65,7 @@
           </el-table-column>
           <!-- <el-table-column label="延迟" prop="desc" min-width="150" />
           <el-table-column label="可用率" prop="desc" min-width="150" />-->
-          <el-table-column label="添加时间" prop="created_at" min-width="150" />
+          <el-table-column label="添加时间" prop="created_at" />
           <el-table-column v-if="false" label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown

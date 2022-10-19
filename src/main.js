@@ -43,7 +43,6 @@ new Vue({
   store,
   created() {
     bootstrap();
-    console.log(localStorage.getItem("userinfo"));
   },
   render: (h) => h(App),
 });

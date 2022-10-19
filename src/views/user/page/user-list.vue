@@ -44,7 +44,7 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list" @selection-change="handleSelectionChange">
           <el-table-column type="selection" />
-          <el-table-column label="用户ID" prop="user_id" width="100" />
+          <el-table-column label="用户ID" prop="user_id" width="120" />
           <el-table-column label="用户名" min-width="150">
             <template slot-scope="{ row }">{{row.user_name || '--'}}</template>
           </el-table-column>
@@ -54,17 +54,17 @@
           <el-table-column label="邮箱" min-width="150">
             <template slot-scope="{ row }">{{row.email || '--'}}</template>
           </el-table-column>
-          <el-table-column label="角色" min-width="150">
+          <el-table-column label="角色" width="120">
             <template slot-scope="{ row }">{{role[row.role_id] || '--'}}</template>
           </el-table-column>
-          <el-table-column label="状态" min-width="150">
+          <el-table-column label="状态" width="120">
             <template slot-scope="scope">
-              <span v-if="scope.row.status ===1 " class="success--color">启用</span>
+              <span v-if="scope.row.status ===1" class="success--color">启用</span>
               <span v-else class="red--color">禁用</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
-          <el-table-column label="操作" width="200" align="right" fixed="right">
+          <el-table-column label="备注" prop="remark" min-width="150" />
+          <el-table-column label="操作" width="100" align="right" fixed="right">
             <template slot-scope="{row}">
               <el-dropdown
                 type="primary"

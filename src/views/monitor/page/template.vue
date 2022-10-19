@@ -40,27 +40,26 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column label="模板名称/ID" prop="name" min-width="150">
+          <el-table-column label="模板名称/ID" prop="name" min-width="180">
             <template slot-scope="{row}">
               <span>{{row.name}}</span>
               <br />
               <span>{{row.uuid}}</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="监控组" prop="group_name" min-width="150" /> -->
-          <el-table-column label="适用协议" prop="protocol" min-width="150" />
-          <el-table-column label="监控频率" prop="frequency" min-width="150">
+          <el-table-column label="适用协议" prop="protocol" align="center" />
+          <el-table-column label="监控频率" prop="frequency" align="center">
             <template slot-scope="{row}">
               <span>{{row.frequency}} s</span>
             </template>
           </el-table-column>
-          <el-table-column label="监控耗时" prop="limit_max_delay" min-width="150">
+          <el-table-column label="监控耗时" prop="limit_max_delay" align="center">
             <template slot-scope="{row}">
               <span>{{row.limit_max_delay}} ms</span>
             </template>
           </el-table-column>
-          <el-table-column label="连续不可以用计数" prop="limit_max_fail" min-width="150" />
-          <el-table-column label="添加时间" prop="created_at" min-width="150" />
+          <el-table-column label="连续不可以用计数" prop="limit_max_fail" align="center" />
+          <el-table-column label="添加时间" prop="created_at" />
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown
