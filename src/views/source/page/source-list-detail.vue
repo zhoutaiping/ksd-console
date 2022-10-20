@@ -42,11 +42,7 @@
         <el-table :data="list" @selection-change="handleSelectionChange">
           <el-table-column type="selection" />
           <el-table-column label="节点IP" prop="id">
-            <template slot-scope="{row}">
-              {{row.ip || '--' }}
-              <!-- <br />
-              {{row.id || '--' }}-->
-            </template>
+            <template slot-scope="{row}">{{row.ip || '--' }}</template>
           </el-table-column>
           <el-table-column label="ISP" prop="isp">
             <template slot-scope="{row}">
@@ -173,7 +169,7 @@ export default {
     }
   },
   methods: {
-    formartValue(data, prop) {
+    formartValue(data = {}, prop = '') {
       if (prop === 'location') {
         let location = (!!data.location && data.location.split(',')) || [];
         if (!location.length) {
@@ -203,7 +199,7 @@ export default {
         };
         this.del(params);
       } else if (option === 'on' || option === 'off') {
-        var status = {
+        const status = {
           on: 1,
           off: 0
         };
