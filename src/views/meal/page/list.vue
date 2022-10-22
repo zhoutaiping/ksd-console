@@ -9,6 +9,12 @@
           @submit="handleSearch"
           style="width:200px"
         />
+        <InputSearch
+          v-model="bindParams.user_name"
+          placeholder="租户"
+          @submit="handleSearch"
+          style="width:200px"
+        />
         <!-- <el-button @click="handleSearch">刷新</el-button> -->
         <!-- <el-button :disabled="!multipleSelection.length" @click="">删除</el-button>-->
         <div slot="right"></div>
@@ -16,10 +22,10 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list" @selection-change="handleSelectionChange">
           <el-table-column label="序号" type="index" width="55" />
-          <el-table-column label="应用名称" prop="app_name" min-width="150">
+          <el-table-column label="应用名称" prop="app_name" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.app_name || '--'}}</template>
           </el-table-column>
-          <el-table-column label="AccessKey" min-width="150">
+          <el-table-column label="AccessKey" min-width="150" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{ scope.row.access_key }}</span>
               <el-tooltip content="点击可复制到粘贴板">
@@ -29,11 +35,14 @@
               </el-tooltip>
             </template>
           </el-table-column>
-          <el-table-column label="资源池" prop="pool_name" min-width="150">
+          <el-table-column label="资源池" prop="pool_name" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.pool_name || '--'}}</template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="created_at" />
-          <el-table-column label="备注" prop="remark" />
+          <el-table-column label="租户" prop="use_name" min-width="120" show-overflow-tooltip>
+            <template slot-scope="{ row }">{{row.user_name || '--'}}</template>
+          </el-table-column>
+          <el-table-column label="创建时间" prop="created_at" show-overflow-tooltip />
+          <el-table-column label="备注" prop="remark" show-overflow-tooltip />
           <el-table-column label="操作" width="200" align="right">
             <template slot-scope="scope">
               <!-- <el-button type="text" @click="$refs.Add.handleOpen(scope.row, {mode:'Edit'})">编辑</el-button> -->

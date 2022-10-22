@@ -19,7 +19,7 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
-          <el-table-column label="资源池名称" prop="pool_name">
+          <el-table-column label="资源池名称" prop="pool_name" show-overflow-tooltip>
             <template slot-scope="{row}">{{row.pool_name || '--' }}</template>
           </el-table-column>
           <el-table-column label="类型" prop="ISA">
@@ -28,18 +28,14 @@
           <el-table-column label="风险等级" prop="LVEL">
             <template slot-scope="{row}">{{risk_level[row.risk_level] || '--' }}</template>
           </el-table-column>
-          <el-table-column label="监控模版" prop>
+          <el-table-column label="监控模版" show-overflow-tooltip>
             <template slot-scope="{row}">
-              {{
-              formartValue(row, 'monitor_template_name')
-              }}
+              <span>{{formartValue(row, 'monitor_template_name')}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="监控组" prop>
+          <el-table-column label="监控组" show-overflow-tooltip>
             <template slot-scope="{row}">
-              {{
-              formartValue(row, 'monitor_group_name')
-              }}
+              <span>{{formartValue(row, 'monitor_group_name')}}</span>
             </template>
           </el-table-column>
           <el-table-column label="资源分配" prop="LVEL">
@@ -51,8 +47,8 @@
               </span>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" />
-          <el-table-column label="创建时间" prop="created_at" />
+          <el-table-column label="备注" prop="remark" show-overflow-tooltip />
+          <el-table-column label="创建时间" prop="created_at" show-overflow-tooltip />
           <el-table-column label="操作" width="80px">
             <template slot-scope="{row}">
               <el-dropdown

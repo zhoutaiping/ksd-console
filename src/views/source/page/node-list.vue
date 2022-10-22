@@ -17,16 +17,20 @@
           style="width:180px;"
         />
         <div slot="right">
-          <!-- <el-select
-            v-model="bindParams.is_delete"
+          <el-select
+            v-model="bindParams.ip_type"
             clearable
-            placeholder="删除状态"
+            placeholder="风险等级"
             style="width:120px;margin-right: 10px;"
             @change="$refs.DmData.initPage()"
           >
-            <el-option :value="1" label="是" />
-            <el-option :value="0" label="否" />
-          </el-select>-->
+            <el-option
+              v-for="(item, index) in Object.keys(ip_type)"
+              :key="index"
+              :value="item"
+              :label="ip_type[item]"
+            />
+          </el-select>
           <el-select
             v-model="bindParams.status"
             clearable

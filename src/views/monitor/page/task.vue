@@ -19,12 +19,17 @@
           @submit="handleSearch"
         />
         <div slot="right">
-          <!-- <el-select
-            v-model="bindParams.type"
+          <el-select
+            v-model="bindParams.target_status"
             :placeholder="'目标状态'"
-            @click="handleSearch"
+            clearable
+            @change="handleSearch"
             class="input-box"
-          />
+          >
+            <el-option label="正常" :value="1"></el-option>
+            <el-option label="宕机" :value="2"></el-option>
+          </el-select>
+          <!-- 
           <el-select
             v-model="bindParams.group"
             :placeholder="'监控组'"
@@ -36,7 +41,7 @@
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="selection" />
-          <el-table-column label="监控任务名称/ID" prop="app_name" min-width="200">
+          <el-table-column label="监控任务名称/ID" prop="app_name" show-overflow-tooltip min-width="200">
             <template slot-scope="scope">
               <!-- :to="{
                 path:'/Monitor/Monitor-dashboard/'+ scope.row.uuid 
@@ -48,8 +53,8 @@
               {{ scope.row.uuid }}
             </template>
           </el-table-column>
-          <el-table-column label="监控组" prop="group_uuid" min-width="150" />
-          <el-table-column label="监控目标" prop="target" />
+          <el-table-column label="监控组" prop="group_uuid" min-width="150" show-overflow-tooltip />
+          <el-table-column label="监控目标" prop="target" show-overflow-tooltip />
           <el-table-column label="监控协议" prop="protocol" align="center">
             <template slot-scope="{row}">{{formartValue(row, 'protocol') || '--'}}</template>
           </el-table-column>
