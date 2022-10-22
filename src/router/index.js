@@ -111,7 +111,7 @@ export const asyncRoutes = [
     path: "/source",
     component: Layout,
     alwaysShow: true,
-    meta: { title: "资源池管理", icon: "pc1" },
+    meta: { title: "资源管理", icon: "pc1" },
     redirect: "/node-list",
     children: [
       {
