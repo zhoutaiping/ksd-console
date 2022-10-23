@@ -40,7 +40,9 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
-          <el-table-column type="selection" />
+          <el-table-column type="index" label="序号" />
+
+          <!-- <el-table-column type="selection" /> -->
           <el-table-column label="监控任务名称/ID" prop="app_name" show-overflow-tooltip min-width="200">
             <template slot-scope="scope">
               <!-- :to="{

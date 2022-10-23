@@ -39,7 +39,8 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
-          <el-table-column type="selection" />
+          <el-table-column type="index" label="序号" />
+          <!-- <el-table-column type="selection" /> -->
           <el-table-column label="模板名称/ID" prop="name" min-width="180">
             <template slot-scope="{row}">
               <span>{{row.name}}</span>

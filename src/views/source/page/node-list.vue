@@ -20,7 +20,7 @@
           <el-select
             v-model="bindParams.ip_type"
             clearable
-            placeholder="风险等级"
+            placeholder="节点类型"
             style="width:120px;margin-right: 10px;"
             @change="$refs.DmData.initPage()"
           >
@@ -65,14 +65,9 @@
             <template slot-scope="{row}">{{ formartValue(row, 'isp') }}</template>
           </el-table-column>
           <el-table-column label="归属地" prop="location">
-            <template slot-scope="{row}">
-              {{
-              formartValue(row, 'location')
-              }}
-            </template>
+            <template slot-scope="{row}">{{formartValue(row, 'location')}}</template>
           </el-table-column>
-
-          <el-table-column label="风险等级">
+          <el-table-column label="节点类型">
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
           <el-table-column label="独享类型">
@@ -85,6 +80,7 @@
             </template>
           </el-table-column>
           <el-table-column label="机器配置" prop="server_config" />
+          <el-table-column label="备注" prop="remark" show-overflow-tooltip />
           <el-table-column label="操作" width="200" align="right">
             <template slot-scope="{row}">
               <el-button type="text" @click="handleOption('edit', row)">编辑</el-button>

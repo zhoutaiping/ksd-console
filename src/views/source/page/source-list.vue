@@ -19,6 +19,7 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
+          <el-table-column type="index" label="序号" />
           <el-table-column label="资源池名称" prop="pool_name" show-overflow-tooltip>
             <template slot-scope="{row}">{{row.pool_name || '--' }}</template>
           </el-table-column>

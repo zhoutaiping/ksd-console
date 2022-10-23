@@ -20,7 +20,7 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
-          <el-table-column type="selection" />
+          <el-table-column type="index" label="序号" />
           <el-table-column label="组名称/ID" prop="name" min-width="150">
             <template slot-scope="scope">
               <router-link

@@ -43,7 +43,7 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list" @selection-change="handleSelectionChange">
-          <el-table-column type="selection" />
+          <!-- <el-table-column type="selection" /> -->
           <el-table-column label="用户ID" prop="user_id" width="120" />
           <el-table-column label="用户名" min-width="150">
             <template slot-scope="{ row }">{{row.user_name || '--'}}</template>
