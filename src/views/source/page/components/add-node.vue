@@ -13,13 +13,11 @@
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
-      <el-form-item prop="ip_type" label="节点类型">
-        <el-select v-model="form.ip_type" placeholder="节点类型" clearable class="input-box">
-          <el-option :value="1" label="优质" />
-          <el-option :value="2" label="良好" />
-          <el-option :value="3" label="普通" />
-          <el-option :value="4" label="风险" />
-          <el-option :value="5" label="高风险" />
+      <el-form-item prop="ip_type" label="风险类型">
+        <el-select v-model="form.ip_type" placeholder="风险类型" clearable class="input-box">
+          <el-option :value="1" label="高风险" />
+          <el-option :value="2" label="中风险" />
+          <el-option :value="3" label="低风险" />
         </el-select>
       </el-form-item>
       <el-form-item prop="ip" label="IP">

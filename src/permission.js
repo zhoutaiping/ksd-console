@@ -35,7 +35,6 @@ router.beforeEach(async (to, from, next) => {
     token = getQueryVariable("token");
     if (token) {
       const user_info = await store.dispatch("user/verifyToken", token);
-      console.log(user_info);
       if (user_info.is_inner) {
         await store.dispatch("user/getInfo");
         const accessRoutes = await store.dispatch(

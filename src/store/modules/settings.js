@@ -8,6 +8,12 @@ const state = {
   tagsView: tagsView,
   fixedHeader: fixedHeader,
   sidebarLogo: sidebarLogo,
+  domain_suffix: "",
+  tenant_prefix_url: "",
+  default_host: "",
+  signIn: "", //"https://account.axisnow.xyz/user/sign-in",
+  signOutUrl: "", //"https://account.axisnow.xyz/user/sign-out",
+  user_role_type_list: [],
 };
 
 const mutations = {
@@ -16,6 +22,18 @@ const mutations = {
     if (state.hasOwnProperty(key)) {
       state[key] = value;
     }
+  },
+  DOMAIN_SUFFIX: (state, domain_suffix) => {
+    state.domain_suffix = domain_suffix;
+    if (domain_suffix) {
+      state.tenant_prefix_url = "." + domain_suffix;
+      state.default_host = "console." + domain_suffix;
+      state.signIn = "https://account." + domain_suffix + "/user/sign-in";
+      state.signOutUrl = "https://account." + domain_suffix + "/user/sign-out";
+    }
+  },
+  USER_ROLE_TYPE_LIST: (state, list) => {
+    state.user_role_type_list = list;
   },
 };
 

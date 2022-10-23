@@ -20,7 +20,7 @@
           <el-select
             v-model="bindParams.ip_type"
             clearable
-            placeholder="节点类型"
+            placeholder="风险类型"
             style="width:120px;margin-right: 10px;"
             @change="$refs.DmData.initPage()"
           >
@@ -67,7 +67,7 @@
           <el-table-column label="归属地" prop="location">
             <template slot-scope="{row}">{{formartValue(row, 'location')}}</template>
           </el-table-column>
-          <el-table-column label="节点类型">
+          <el-table-column label="风险类型">
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
           <el-table-column label="独享类型">
@@ -120,11 +120,9 @@ export default {
       //     <el-option :value="5" label="高风险" />
       //     <el-option :value="0" label="默认" />
       ip_type: {
-        1: '优质',
-        2: '良好',
-        3: '普通',
-        4: '风险',
-        5: '高风险'
+        1: '高风险',
+        2: '中风险',
+        3: '低风险'
       },
       status: {
         0: ' 禁用',

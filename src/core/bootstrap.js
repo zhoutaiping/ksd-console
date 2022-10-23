@@ -1,5 +1,7 @@
 import Vue from "vue";
 import store from "@/store";
+import Fetch from "@/api/fetch-account";
+
 // import config from '@/core/setup-config'
 // import Fetch from '@/api/fetch'
 import { labelView } from "@/utils/filter";
@@ -9,6 +11,7 @@ export default async function Initializer() {
   //   const language = Vue.ls.get('language') || config.language
   //   store.commit('SET_LANGUAGE', language)
   try {
+    await globalSetting();
     await initAreaView();
   } catch (e) {
     //
@@ -16,7 +19,23 @@ export default async function Initializer() {
     // store.commit('SET_APP_READY')
   }
 }
-
+async function globalSetting() {
+  try {
+    const data = await Fetch.get("/global/setting", {});
+    localStorage.setItem("domain_suffix", data.domain_suffix || "");
+    localStorage.setItem(
+      "user_role_type_list",
+      JSON.stringify(data.user_role_type_list) || []
+    );
+    store.commit("settings/DOMAIN_SUFFIX", data.domain_suffix);
+    store.commit(
+      "settings/USER_ROLE_TYPE_LIST",
+      data.user_role_type_list || []
+    );
+  } catch (error) {
+    return;
+  }
+}
 function formatOptions(item) {
   return {
     label: item.name,

@@ -45,17 +45,20 @@
         <el-table :data="list" @selection-change="handleSelectionChange">
           <!-- <el-table-column type="selection" /> -->
           <el-table-column label="用户ID" prop="user_id" width="120" />
-          <el-table-column label="用户名" min-width="150">
+          <el-table-column label="用户名" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.user_name || '--'}}</template>
           </el-table-column>
-          <el-table-column label="昵称" min-width="150">
+          <el-table-column label="昵称" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.nick_name || '--'}}</template>
           </el-table-column>
-          <el-table-column label="邮箱" min-width="150">
+          <el-table-column label="邮箱" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.email || '--'}}</template>
           </el-table-column>
           <el-table-column label="角色" width="120">
             <template slot-scope="{ row }">{{role[row.role_id] || '--'}}</template>
+          </el-table-column>
+          <el-table-column label="用户类型" width="120">
+            <template slot-scope="{ row }">{{formartValue(row, 'role_type') || '--'}}</template>
           </el-table-column>
           <el-table-column label="状态" width="120">
             <template slot-scope="scope">
@@ -63,7 +66,7 @@
               <span v-else class="red--color">禁用</span>
             </template>
           </el-table-column>
-          <el-table-column label="备注" prop="remark" min-width="150" />
+          <el-table-column label="备注" prop="remark" min-width="150" show-overflow-tooltip />
           <el-table-column label="操作" width="100" align="right" fixed="right">
             <template slot-scope="{row}">
               <el-dropdown
@@ -114,11 +117,21 @@ export default {
       role: {
         1: '普通用户',
         2: '管理员'
-      }
+      },
+      role_type: localStorage.getItem('user_role_type_list')
+        ? JSON.parse(localStorage.getItem('user_role_type_list'))
+        : []
     };
   },
 
   methods: {
+    formartValue(data, key) {
+      if (key === 'role_type') {
+        const val = data[key];
+        const find = this.role_type.find(i => i.role_type_key === val);
+        return (find && find.role_type_val) || '';
+      }
+    },
     handleOption(key, data) {
       if (key === 'delte') this.del(data);
       if (key === 'eidt') {

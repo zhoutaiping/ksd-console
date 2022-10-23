@@ -17,11 +17,11 @@ const isp = [
   },
   {
     label: "CN2",
-    value: "CN2",
+    value: "dxcn2",
   },
   {
     label: "国际线路",
-    value: "dxcn2",
+    value: "global",
   },
   {
     label: "其他",

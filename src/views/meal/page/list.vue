@@ -9,14 +9,42 @@
           @submit="handleSearch"
           style="width:200px"
         />
-        <InputSearch
-          v-model="bindParams.user_name"
-          placeholder="租户"
-          @submit="handleSearch"
-          style="width:200px"
-        />
-        <!-- <el-button @click="handleSearch">刷新</el-button> -->
-        <!-- <el-button :disabled="!multipleSelection.length" @click="">删除</el-button>-->
+        <el-select
+          v-model="bindParams.user_id"
+          filterable
+          clearable
+          remote
+          reserve-keyword
+          placeholder="用户邮箱"
+          :remote-method="e => getUserList(e,'email')"
+          :loading="user_loading"
+          @change="handleSearch"
+        >
+          <el-option
+            v-for="item in email_list"
+            :key="item.user_id"
+            :label="item.email"
+            :value="item.user_id"
+          ></el-option>
+        </el-select>
+        <el-select
+          v-model="bindParams.tenant_id"
+          filterable
+          remote
+          clearable
+          reserve-keyword
+          placeholder="租户网络前缀模糊搜索"
+          :remote-method="getTenantList"
+          :loading="tenant_loading"
+          @change="handleSearch"
+        >
+          <el-option
+            v-for="item in tenant_list"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
+        </el-select>
         <div slot="right"></div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>
@@ -25,7 +53,7 @@
           <el-table-column label="应用名称" prop="app_name" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.app_name || '--'}}</template>
           </el-table-column>
-          <el-table-column label="AccessKey" min-width="150" show-overflow-tooltip>
+          <el-table-column label="AccessKey" min-width="200" show-overflow-tooltip>
             <template slot-scope="scope">
               <span>{{ scope.row.access_key }}</span>
               <el-tooltip content="点击可复制到粘贴板">
@@ -38,12 +66,18 @@
           <el-table-column label="资源池" prop="pool_name" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.pool_name || '--'}}</template>
           </el-table-column>
-          <el-table-column label="租户" prop="use_name" min-width="120" show-overflow-tooltip>
-            <template slot-scope="{ row }">{{row.user_name || '--'}}</template>
+          <el-table-column label="用户昵称" prop="nick_name" min-width="100" show-overflow-tooltip>
+            <template slot-scope="{ row }">{{formartVal(row, 'nick_name')|| '--'}}</template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="created_at" show-overflow-tooltip />
+          <el-table-column label="用户邮箱" prop="email" min-width="140" show-overflow-tooltip>
+            <template slot-scope="{ row }">{{formartVal(row, 'email')|| '--'}}</template>
+          </el-table-column>
+          <el-table-column label="租户网络" prop="tenant" min-width="140" show-overflow-tooltip>
+            <template slot-scope="{ row }">{{formartVal(row, 'tenant')|| '--'}}</template>
+          </el-table-column>
+          <el-table-column label="创建时间" prop="created_at" width="150" show-overflow-tooltip />
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
-          <el-table-column label="操作" width="200" align="right">
+          <el-table-column label="操作" width="140" align="right">
             <template slot-scope="scope">
               <!-- <el-button type="text" @click="$refs.Add.handleOpen(scope.row, {mode:'Edit'})">编辑</el-button> -->
               <!-- <router-link :to="{name: `SDK_meal__id`, params: {id: scope.row.id}}"> -->
@@ -56,7 +90,7 @@
         </el-table>
       </DmTable>
     </DmData>
-    <Add ref="Add" />
+    <Add ref="Add" @submit="handleSearch" />
     <Config ref="config" @init="handleSearch" />
   </ConsolePageLayout>
 </template>
@@ -64,8 +98,9 @@
 <script>
 import consoleData from '@/mixins/consoleData';
 import ColumnExpireTime from '@/components/Column/ColumnExpireTime';
-import Add from '../components/add.vue';
+import Add from '../components/add-edit.vue';
 import Config from '../components/config.vue';
+import { LaptopOutline } from '@ant-design/icons/lib/dist';
 export default {
   components: { ColumnExpireTime, Add, Config },
 
@@ -77,11 +112,109 @@ export default {
       API_INDEX: '/sdk/list',
       bindParams: {
         token: localStorage.getItem('token')
-      }
+      },
+      user_list: [],
+      email_list: [],
+      user_loading: false,
+      tenant_loading: false,
+      tenant_list: []
     };
   },
-
+  computed: {
+    domain_suffix() {
+      return (
+        this.$store.getters.domain_suffix ||
+        localStorage.getItem('domain_suffix')
+      );
+    }
+  },
+  mounted() {
+    // this.getUserList();
+    // this.getTanantList();
+  },
   methods: {
+    async getUserList(search = '', type = '') {
+      console.log(search, type);
+      if (type === 'email') {
+        this.email_list = [];
+      } else {
+        this.user_list = [];
+      }
+
+      if (search !== '' && type) {
+        this.user_loading = true;
+
+        try {
+          const params = {
+            token: localStorage.getItem('token')
+          };
+          params[type] = search;
+          const data = await this.Fetch.get('/user/search', params);
+          const { list = [] } = data || {};
+          // this.user_list = list || [];
+          if (type === 'email') {
+            this.email_list = list;
+          } else {
+            this.user_list = list;
+          }
+        } catch (error) {
+          return;
+        } finally {
+          setTimeout(() => {
+            this.user_loading = false;
+          }, 200);
+        }
+      }
+    },
+    async getTenantList(tenant_name) {
+      if (tenant_name !== '') {
+        this.tenant_loading = true;
+        this.user_list = [];
+        try {
+          const data = await this.Fetch.get('/user/tenant/search', {
+            token: localStorage.getItem('token'),
+            tenant_prefix: tenant_name
+          });
+          const { list = [] } = data || {};
+
+          this.tenant_list =
+            list.map(i => {
+              return {
+                label: i.tenant_prefix + '.' + this.domain_suffix,
+                value: i.tenant_id
+              };
+            }) || [];
+        } catch (error) {
+          return;
+        } finally {
+          setTimeout(() => {
+            this.tenant_loading = false;
+          }, 200);
+        }
+      } else {
+        this.tenant_list = [];
+      }
+    },
+
+    formartVal(data, key) {
+      let val = '';
+      if (key === 'email') {
+        const user = data['user_info'] || null;
+        val = (user && user.email) || '';
+      }
+      if (key === 'nick_name') {
+        const user = data['user_info'] || null;
+        val = (user && user.nick_name) || '';
+      }
+      if (key === 'tenant') {
+        const tenant = data['tenant_info'] || null;
+        if (tenant) {
+          val = tenant.tenant_prefix + '.' + this.domain_suffix;
+        }
+      }
+
+      return val;
+    },
     copyAccessKey(row) {
       this.Help.copyText(row.access_key);
       this.$message.success('复制成功');

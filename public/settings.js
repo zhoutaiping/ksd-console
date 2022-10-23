@@ -33,7 +33,13 @@ module.exports = {
    */
   errorLog: "production",
   logo: "https://auth.axisnow.xyz/img/logo/logo-02.png",
+  // signIn: "https://account.axisnow.xyz/user/sign-in",
+  // signOutUrl: "https://account.axisnow.xyz/user/sign-out",
+  // logiUrl: "",
+
+  tenant_prefix_url: ".axisnow.xyz",
+  domain_suffix: "axisnow.xyz",
+  default_host: "console.axisnow.xyz",
   signIn: "https://account.axisnow.xyz/user/sign-in",
   signOutUrl: "https://account.axisnow.xyz/user/sign-out",
-  logiUrl: "",
 };
