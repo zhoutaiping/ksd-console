@@ -12,7 +12,14 @@
     title-label="IP资源"
     @submit="handleSubmit"
   >
-    <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
+    <el-form
+      v-loading="loading"
+      ref="Form"
+      :model="form"
+      :rules="rules"
+      label-position="right"
+      label-width="150px"
+    >
       <el-form-item prop="ip_type" label="风险类型">
         <el-select v-model="form.ip_type" placeholder="风险类型" clearable class="input-box">
           <el-option :value="1" label="高风险" />
@@ -164,6 +171,8 @@ export default createDialog({
       });
     },
     async getDetail() {
+      this.loading = true;
+
       try {
         const data = await this.FetchAccount.get('/pool/node/detail', {
           id: this.form.id,
@@ -183,6 +192,10 @@ export default createDialog({
         this.form.location = location;
       } catch (error) {
         return;
+      } finally {
+        setTimeout(() => {
+          this.loading = false;
+        }, 200);
       }
     },
     async fetchSubmit(form) {

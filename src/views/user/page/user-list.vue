@@ -6,14 +6,10 @@
         <el-button :disabled="!multipleSelection.length" @click="editStatus(0)">禁用</el-button>
         <el-button type="primary" :disabled="!multipleSelection.length" @click="editStatus(1)">启用</el-button>
         <!-- <el-button type="primary" @click="$refs.Add.handleOpen({}, {mode:'Create'})">新增</el-button> -->
-        <!-- <el-button type="primary" @click="$refs.AddEditTaskVue.handleOpen()"
-            >添加监控任务</el-button
-        >-->
       </div>
     </div>
     <DmData ref="DmData" @init="fetchList">
       <DmToolbar>
-        <!-- <el-button type="primary" @click="$refs.Add.handleOpen()">新增应用</el-button> -->
         <InputSearch
           v-model="bindParams.user_name"
           placeholder="用户名称"
@@ -32,8 +28,6 @@
           @submit="handleSearch"
           style="width:200px"
         />
-        <!-- <el-button @click="handleSearch">刷新</el-button> -->
-        <!-- <el-button :disabled="!multipleSelection.length" @click="">删除</el-button>-->
         <div slot="right">
           <el-select v-model="bindParams.status" placeholder="状态" clearable @change="handleSearch">
             <el-option label="启用" value="1"></el-option>
@@ -82,7 +76,7 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="eidt">编辑</el-dropdown-item>
-                  <el-dropdown-item command="password">重置密码</el-dropdown-item>
+                  <el-dropdown-item command="password" disabled>重置密码</el-dropdown-item>
                   <el-dropdown-item command="delte">
                     <span style="color: red">删除</span>
                   </el-dropdown-item>
@@ -157,7 +151,10 @@ export default {
     async del(data) {
       if (!data.user_id) return;
       try {
-        await this.Fetch.post('/user/delete', { id: data.user_id });
+        await this.Fetch.post('/user/delete', {
+          id: data.user_id,
+          token: localStorage.getItem('token')
+        });
         await this.$refs.DmData.initPage();
         this.Message('ACTION_SUCCESS');
       } catch (error) {

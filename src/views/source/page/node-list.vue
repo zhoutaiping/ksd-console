@@ -55,11 +55,7 @@
         <el-table :data="list" @selection-change="handleSelectionChange">
           <el-table-column type="selection" />
           <el-table-column label="节点IP" prop="id">
-            <template slot-scope="{row}">
-              {{row.ip || '--' }}
-              <!-- <br/>
-              {{row.id || '--' }}-->
-            </template>
+            <template slot-scope="{row}">{{row.ip || '--' }}</template>
           </el-table-column>
           <el-table-column label="ISP" prop="isp">
             <template slot-scope="{row}">{{ formartValue(row, 'isp') }}</template>
@@ -83,9 +79,21 @@
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
           <el-table-column label="操作" width="200" align="right">
             <template slot-scope="{row}">
-              <el-button type="text" @click="handleOption('edit', row)">编辑</el-button>
-              <el-divider direction="vertical" />
-              <el-button type="text" @click="handleOption('del', row)">删除</el-button>
+              <el-dropdown
+                @command="
+                (e) => {
+                  handleOption(e, row);
+                }
+              "
+              >
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more" />
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="edit">编辑</el-dropdown-item>
+                  <el-dropdown-item command="del">删除</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </el-table>
@@ -113,12 +121,6 @@ export default {
       bindParams: {
         token: localStorage.getItem('token')
       },
-      // <el-option :value="1" label="优质" />
-      //     <el-option :value="2" label="良好" />
-      //     <el-option :value="3" label="普通" />
-      //     <el-option :value="4" label="风险" />
-      //     <el-option :value="5" label="高风险" />
-      //     <el-option :value="0" label="默认" />
       ip_type: {
         1: '高风险',
         2: '中风险',

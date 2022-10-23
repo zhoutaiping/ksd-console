@@ -2,7 +2,6 @@
   <ConsolePageLayout style="padding:12px;">
     <DmData ref="DmData" @init="fetchList">
       <DmToolbar>
-        <!-- <el-button type="primary" @click="$refs.Add.handleOpen()">新增应用</el-button> -->
         <InputSearch
           v-model="bindParams.app_name"
           placeholder="应用名称"
@@ -77,14 +76,17 @@
           </el-table-column>
           <el-table-column label="创建时间" prop="created_at" width="150" show-overflow-tooltip />
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
-          <el-table-column label="操作" width="140" align="right">
-            <template slot-scope="scope">
-              <!-- <el-button type="text" @click="$refs.Add.handleOpen(scope.row, {mode:'Edit'})">编辑</el-button> -->
-              <!-- <router-link :to="{name: `SDK_meal__id`, params: {id: scope.row.id}}"> -->
-              <el-button type="text" @click="$refs.config.handleOpen(scope.row)">资源池设置</el-button>
-              <!-- <el-divider direction="vertical" /> -->
-              <!-- <el-button type="text" @click="del(scope.row)">删除</el-button> -->
-              <!-- </router-link> -->
+          <el-table-column label="操作" width="140" fixed="right" align="right">
+            <template slot-scope="{row}">
+              <el-dropdown @command="(e) => {handleOption(e, row);}">
+                <span class="el-dropdown-link">
+                  <i class="el-icon-more" />
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="edit">编辑</el-dropdown-item>
+                  <el-dropdown-item command="config">资源池设置</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </el-table>
@@ -219,16 +221,12 @@ export default {
       this.Help.copyText(row.access_key);
       this.$message.success('复制成功');
     },
-
-    async del(data) {
-      if (!data.id) return;
-      try {
-        await this.Fetch.post('/delete', { id: data.id });
-        await this.$refs.DmData.initPage();
-        this.Message('ACTION_SUCCESS');
-      } catch (error) {
-        this.Message('ACTION_ERROR');
-        return;
+    handleOption(option, data) {
+      if (option === 'edit') {
+        this.$refs.Add.handleOpen(data, { mode: 'Edit' });
+      }
+      if (option === 'config') {
+        this.$refs.config.handleOpen(data);
       }
     }
   }

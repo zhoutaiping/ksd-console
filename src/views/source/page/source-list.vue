@@ -50,7 +50,7 @@
           </el-table-column>
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
           <el-table-column label="创建时间" prop="created_at" show-overflow-tooltip />
-          <el-table-column label="操作" width="80px">
+          <el-table-column label="操作" width="80px" align="right">
             <template slot-scope="{row}">
               <el-dropdown
                 @command="
