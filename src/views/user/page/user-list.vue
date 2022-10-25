@@ -63,20 +63,13 @@
           <el-table-column label="备注" prop="remark" min-width="150" show-overflow-tooltip />
           <el-table-column label="操作" width="100" align="right" fixed="right">
             <template slot-scope="{row}">
-              <el-dropdown
-                type="primary"
-                @command="
-              (e) => {
-                handleOption(e, row);
-              }
-            "
-              >
+              <el-dropdown type="primary" @command="(e) => {handleOption(e, row);}">
                 <span class="el-dropdown-link">
                   <i class="el-icon-more" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="eidt">编辑</el-dropdown-item>
-                  <el-dropdown-item command="password" disabled>重置密码</el-dropdown-item>
+                  <el-dropdown-item command="password">重置密码</el-dropdown-item>
                   <el-dropdown-item command="delte">
                     <span style="color: red">删除</span>
                   </el-dropdown-item>

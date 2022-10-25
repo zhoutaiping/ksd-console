@@ -169,12 +169,9 @@
       </el-form-item>
 
       <el-form-item label="默认端口" prop="default_port">
-        <el-input-number
-          :controls="false"
-          :precision="0"
+        <el-input
+          type="textarea"
           v-model="form.default_port"
-          :min="0"
-          :max="65535"
           placeholder="0-65535,多个域名以“，”隔开'"
           class="input-box"
         />
@@ -207,42 +204,6 @@ function portValidator(rule, value, callback) {
   if (value.length > 1000) callback(new Error('最多同时添加1000个端口'));
   callback();
 }
-// (
-//   `sdk_id` int UNSIGNED NOT NULL COMMENT 'SDK自增ID主键',
-//   `created_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
-//   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-//   `app_id` int UNSIGNED NOT NULL DEFAULT '0' COMMENT '所属应用ID',
-//   `access_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT 'access_key',
-//   `tenant_id` int UNSIGNED NOT NULL COMMENT '租户ID',
-//   `status` int NOT NULL COMMENT '状态',
-//   `remark` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '备注',
-//   `rule_num` int NOT NULL DEFAULT '200' COMMENT '套餐转发规则条数',
-//   `risk_ip_count` int UNSIGNED DEFAULT '3' COMMENT '风险分组 默认IP个数',
-//   `normal_ip_count` int UNSIGNED DEFAULT '3' COMMENT '普通分组 默认IP个数',
-//   `good_ip_count` int UNSIGNED DEFAULT '3' COMMENT '良好分组 默认IP个数',
-//   `is_appstore` tinyint UNSIGNED DEFAULT '0' COMMENT '是否上架appstore 默认 0 未上架 1 已上架',
-//   `enable_fake_request` tinyint UNSIGNED DEFAULT '1' COMMENT '开启混淆',
-//   `enable_real_ip` tinyint UNSIGNED DEFAULT '0' COMMENT '获取真实IP',
-//   `risk_control` tinyint UNSIGNED DEFAULT '1' COMMENT '终端风险监测',
-//   `dns_domains` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '预置dns解析域名列表',
-//   `static_level` tinyint(1) DEFAULT '1' COMMENT '静态风险等级 0低风险 1 一般 2 高风险',
-//   `preset_ips` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '预置IP列表',
-//   `proxy_realip` tinyint UNSIGNED DEFAULT '0' COMMENT '传递真实IP 0关 1 开',
-//   `block_vm` tinyint UNSIGNED NOT NULL DEFAULT '0' COMMENT '禁止模拟器/虚拟机 禁止为1，否则为0 默认不禁止',
-//   `block_root` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止root 禁止为1，否则为0 默认不禁止',
-//   `block_debug` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止调试 禁止为1，否则为0 默认不禁止',
-//   `block_multiinst` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止多开 禁止为1，否则为0 默认不禁止',
-//   `block_groupctrl` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止群控 禁止为1，否则为0 默认不禁止',
-//   `block_hook` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止hook 禁止为1，否则为0 默认不禁止',
-//   `block_vpn` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止vpn 禁止为1，否则为0 默认不禁止',
-//   `block_proxy` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止代理 禁止为1，否则为0 默认不禁止',
-//   `block_simulator` tinyint UNSIGNED DEFAULT '0' COMMENT '禁止为1，否则为0 默认不禁止',
-//   `default_port` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin COMMENT '默认使用端口',
-//   `check_rls` tinyint UNSIGNED DEFAULT '0' COMMENT '检测控制台配置 默认0， 0 关 1 开',
-//   `log_level` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'info' COMMENT '日志等级 默认info',
-//   `pool_id` int DEFAULT '0' COMMENT '节点池ID',
-//   `user_id` int DEFAULT '0'
-// )
 export default createDialog({
   components: {},
 

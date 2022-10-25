@@ -72,7 +72,9 @@
             <template slot-scope="{ row }">{{formartVal(row, 'email')|| '--'}}</template>
           </el-table-column>
           <el-table-column label="租户网络" prop="tenant" min-width="140" show-overflow-tooltip>
-            <template slot-scope="{ row }">{{formartVal(row, 'tenant')|| '--'}}</template>
+            <template slot-scope="{ row }">
+              <a @click="handleOption('link', row)">{{formartVal(row, 'tenant')|| '--'}}</a>
+            </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="created_at" width="150" show-overflow-tooltip />
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
@@ -85,6 +87,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="edit">编辑</el-dropdown-item>
                   <el-dropdown-item command="config">资源池设置</el-dropdown-item>
+                  <el-dropdown-item command="link">租户平台</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
@@ -227,6 +230,20 @@ export default {
       }
       if (option === 'config') {
         this.$refs.config.handleOpen(data);
+      }
+      if (option === 'link') {
+        const customer_user_id =
+          JSON.parse(localStorage.getItem('user')).id || '';
+        const token = localStorage.getItem('token');
+        const tenant_prefix = 'https://' + this.formartVal(data, 'tenant');
+        console.log(data, customer_user_id);
+        window.location.replace(
+          tenant_prefix +
+            '?token=' +
+            token +
+            '&customer_user_id=' +
+            customer_user_id
+        );
       }
     }
   }

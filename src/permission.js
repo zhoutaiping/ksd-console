@@ -46,10 +46,9 @@ router.beforeEach(async (to, from, next) => {
       } else {
         store.dispatch("user/logout").then((res) => {
           localStorage.clear();
-          window.location.href =
-            defaultSettings.signOutUrl +
-            "?redirect_url=" +
-            window.location.origin;
+          const default_host =
+            store.getters.default_host || defaultSettings.default_host;
+          window.location.href = "https://" + default_host + "?token=" + token;
         });
       }
     } else {
