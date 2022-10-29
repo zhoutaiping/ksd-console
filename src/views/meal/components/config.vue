@@ -102,6 +102,7 @@ export default createDialog({
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
         this.loading = false;
+        this.form.pool_id = '';
       });
     },
     async getPool(

@@ -41,6 +41,33 @@
       <el-form-item label="Access_Key" prop="access_key">
         <el-input v-model="form.access_key" disabled class="input-box"></el-input>
       </el-form-item>
+      <el-form-item label="预置dns解析域名列表" :prop="form.dns_domains?'dns_domains':''">
+        <el-input
+          type="textarea"
+          placeholder="'www.demo.com，多个域名以“，”隔开'"
+          v-model="form.dns_domains"
+          class="input-box"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="预置IP列表" :prop="form.preset_ips?'preset_ips':''">
+        <el-input
+          type="textarea"
+          placeholder="127.1.1.1;多个域名以“，”隔开'"
+          v-model="form.preset_ips"
+          class="input-box"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="默认端口" :prop="!!form.default_port ? 'default_port' :''">
+        <el-input
+          type="textarea"
+          v-model="form.default_port"
+          placeholder="0-65535,多个域名以“，”隔开'"
+          class="input-box"
+        />
+      </el-form-item>
+      <el-form-item label="uuid" prop="uuid">
+        <el-input type="textarea" v-model="form.uuid" disabled class="input-box" />
+      </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="form.status" class="input-box">
           <el-option :value="1" label="启用"></el-option>
@@ -104,28 +131,13 @@
           <el-option :value="0" label="否"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="预置dns解析域名列表" prop="dns_domains">
-        <el-input
-          type="textarea"
-          placeholder="'www.demo.com，多个域名以“，”隔开'"
-          v-model="form.dns_domains"
-          class="input-box"
-        ></el-input>
-      </el-form-item>
+
       <el-form-item label="静态风险等级" prop="static_level">
         <el-select v-model="form.static_level" class="input-box">
           <el-option :value="0" label="低风险"></el-option>
           <el-option :value="1" label="一般"></el-option>
           <el-option :value="2" label="高风险"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item label="预置IP列表" prop="preset_ips">
-        <el-input
-          type="textarea"
-          placeholder="127.1.1.1;多个域名以“，”隔开'"
-          v-model="form.preset_ips"
-          class="input-box"
-        ></el-input>
       </el-form-item>
       <el-form-item label="禁止模拟器/虚拟机" prop="block_vm">
         <el-switch v-model="form.block_vm" :active-value="1" :inactive-value="0" />
@@ -168,14 +180,6 @@
         {{ form.check_rls === 1? '开启':'关闭'}}
       </el-form-item>
 
-      <el-form-item label="默认端口" prop="default_port">
-        <el-input
-          type="textarea"
-          v-model="form.default_port"
-          placeholder="0-65535,多个域名以“，”隔开'"
-          class="input-box"
-        />
-      </el-form-item>
       <el-form-item label="开启日志" prop="log_level">
         <el-select v-model="form.log_level" class="input-box">
           <el-option label="trace" value="trace" />
@@ -195,13 +199,19 @@
 
 <script>
 import createDialog from '@/utils/createDialog';
-
+import RULE from '@/utils/verify';
+import { reject } from 'q';
 const Label = {};
 
 function portValidator(rule, value, callback) {
   value = value.toString().replace('，', ',');
   value = value.toString().split(',');
   if (value.length > 1000) callback(new Error('最多同时添加1000个端口'));
+  console.log(
+    value,
+    value.find(i => !RULE.port(i))
+  );
+  if (value.find(i => !RULE.port(i))) callback(new Error('端口不正确'));
   callback();
 }
 export default createDialog({
@@ -222,6 +232,7 @@ export default createDialog({
         app_name: '',
         rule_num: 200,
         status: 1,
+        uuid: '',
         risk_ip_count: 3,
         normal_ip_count: 3,
         good_ip_count: 3,
@@ -243,7 +254,6 @@ export default createDialog({
         block_proxy: 0,
         block_simulator: 0,
         default_port: '',
-        block_simulator: 0,
         check_rls: 0,
         log_level: 'info',
         remark: ''
@@ -262,10 +272,7 @@ export default createDialog({
         enable_fake_request: [],
         enable_real_ip: [],
         risk_control: [],
-        dns_domains: '',
         static_level: [],
-        preset_ips: [],
-        proxy_realip: [],
         block_vm: [],
         block_root: [],
         block_debug: [],
@@ -274,7 +281,9 @@ export default createDialog({
         block_hook: [],
         block_vpn: [],
         block_proxy: [],
-        block_simulator: [],
+        proxy_realip: [],
+        dns_domains: [],
+        preset_ips: [],
         default_port: [],
         block_simulator: [],
         check_rls: [],
@@ -297,9 +306,22 @@ export default createDialog({
           //   sdk_id: form.sdk_id,
           //   tenant_id: form.tenant_id
           // });
+          this.getUUID({
+            sdk_id: form.sdk_id,
+            tenant_id: form.tenant_id
+          });
         }
         this.loading = false;
       });
+    },
+
+    async getUUID(params = {}) {
+      try {
+        const data = await this.FetchAccount.get('/sdk/builtin_config', params);
+        this.form.uuid = (data.uuid && data.uuid) || '';
+      } catch (error) {
+        return;
+      }
     },
     getInfo(params = {}) {
       this.FetchAccount.get('/sdk/info', params)
@@ -311,8 +333,55 @@ export default createDialog({
         })
         .catch(e => {});
     },
+    checkVal(form) {
+      if (!!this.form.dns_domains) {
+        let domain = JSON.parse(JSON.stringify(this.form.dns_domains))
+          .toString()
+          .replace('，', ',');
+        domain = domain.toString().split(',');
+        console.log(domain);
+        if (domain.length > 1000) {
+          this.$message.warning('默认域名最多1000个');
+          throw new Error();
+        }
+        if (domain.find(i => !RULE.dnsDomain.test(i))) {
+          this.$message.warning('域名格式错误');
+          throw new Error();
+        }
+      }
+      if (!!this.form.default_port) {
+        let port = JSON.parse(JSON.stringify(this.form.default_port))
+          .toString()
+          .replace('，', ',');
+        port = port.toString().split(',');
+        if (port.length > 1000) {
+          this.$message.warning('默认端口最多1000个');
+          throw new Error();
+        }
+        if (port.find(i => !RULE.port.test(i))) {
+          this.$message.warning('端口错误，1-65535');
+          throw new Error();
+        }
+      }
+      if (!!this.form.preset_ips) {
+        let ip = JSON.parse(JSON.stringify(this.form.preset_ips))
+          .toString()
+          .replace('，', ',');
+        ip = ip.toString().split(',');
+        if (ip.length > 1000) {
+          this.$message.warning('默认ip最多1000个');
+          throw new Error();
+        }
+        if (ip.find(i => !RULE.ipReg.test(i))) {
+          this.$message.warning('IP格式错误');
+          throw new Error();
+        }
+      }
+    },
+
     async fetchSubmit(form) {
-      this.$refs.Form.validate(valid => {
+      await this.checkVal();
+      await this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();
       });
 
@@ -329,6 +398,7 @@ export default createDialog({
     },
 
     async handleSubmit() {
+      this.resetSubmitLoading();
       this.Message('ACTION_SUCCESS');
       this.$emit('submit');
       this.handleClose();

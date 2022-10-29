@@ -18,6 +18,32 @@ const service = axios.create({
 });
 
 service.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token") || null;
+  if (["GET", "get"].includes(config.method)) {
+    let params = {
+      ...config.params,
+    };
+
+    if (!!token) {
+      params.token = token;
+    }
+    config.params = {
+      ...params,
+    };
+  }
+  if (
+    ["post", "put", "delete", "POST", "PUT", "DELETE"].includes(config.method)
+  ) {
+    let data = {
+      ...config.data,
+    };
+    if (!!token) {
+      data.token = token;
+    }
+    config.data = {
+      ...data,
+    };
+  }
   return config;
 });
 

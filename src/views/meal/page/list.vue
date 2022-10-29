@@ -56,7 +56,21 @@
             <template slot-scope="scope">
               <span>{{ scope.row.access_key }}</span>
               <el-tooltip content="点击可复制到粘贴板">
-                <el-button type="text" @click="copyAccessKey(scope.row)">
+                <el-button
+                  v-if="scope.row.access_key"
+                  type="text"
+                  @click="copyAccessKey(scope.row,'access_key')"
+                >
+                  <i class="el-icon-copy-document" style="margin-left: 8px" />
+                </el-button>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column label="UUID" width="120" show-overflow-tooltip>
+            <template slot-scope="scope">
+              <el-tooltip content="点击可复制到粘贴板">
+                <el-button type="text" @click="copyAccessKey(scope.row,'uuid')">
+                  copy-uuid
                   <i class="el-icon-copy-document" style="margin-left: 8px" />
                 </el-button>
               </el-tooltip>
@@ -85,7 +99,7 @@
                   <i class="el-icon-more" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item command="edit">编辑</el-dropdown-item>
+                  <el-dropdown-item command="edit">编辑应用</el-dropdown-item>
                   <el-dropdown-item command="config">资源池设置</el-dropdown-item>
                   <el-dropdown-item command="link">租户平台</el-dropdown-item>
                 </el-dropdown-menu>
@@ -105,7 +119,8 @@ import consoleData from '@/mixins/consoleData';
 import ColumnExpireTime from '@/components/Column/ColumnExpireTime';
 import Add from '../components/add-edit.vue';
 import Config from '../components/config.vue';
-import { LaptopOutline } from '@ant-design/icons/lib/dist';
+import defaultSettings from '@public/settings';
+
 export default {
   components: { ColumnExpireTime, Add, Config },
 
@@ -220,9 +235,23 @@ export default {
 
       return val;
     },
-    copyAccessKey(row) {
-      this.Help.copyText(row.access_key);
-      this.$message.success('复制成功');
+    copyAccessKey(row, type) {
+      if (type === 'access_key') {
+        this.Help.copyText(row[type]);
+        this.$message.success('复制成功');
+      } else if (type === 'uuid') {
+        this.FetchAccount.get('/sdk/builtin_config', {
+          sdk_id: row.sdk_id,
+          tenant_id: row.tenant_id
+        })
+          .then(res => {
+            this.Help.copyText(res.uuid);
+            this.$message.success('复制成功');
+          })
+          .catch(e => {
+            this.$message.warning('复制失败');
+          });
+      }
     },
     handleOption(option, data) {
       if (option === 'edit') {
@@ -232,18 +261,53 @@ export default {
         this.$refs.config.handleOpen(data);
       }
       if (option === 'link') {
-        const customer_user_id =
-          JSON.parse(localStorage.getItem('user')).id || '';
-        const token = localStorage.getItem('token');
+        const customer_user_id = data.user_id || '';
+        const tenant_id = data['tenant_info'].tenant_id || '';
+        const token = JSON.parse(JSON.stringify(localStorage.getItem('token')));
         const tenant_prefix = 'https://' + this.formartVal(data, 'tenant');
-        console.log(data, customer_user_id);
-        window.location.replace(
+        console.log(
+          data,
+          customer_user_id,
           tenant_prefix +
             '?token=' +
             token +
             '&customer_user_id=' +
-            customer_user_id
+            customer_user_id +
+            '&tenant_id=' +
+            tenant_id
         );
+        if (process.env.NODE_ENV === 'development') {
+          // window.location.replace(
+          //   'http://localhost:8080/' +
+          //     '?token=' +
+          //     token +
+          //     '&customer_user_id=' +
+          //     customer_user_id +
+          //     '&tenant_id=' +
+          //     tenant_id
+          // );
+          return;
+        } else {
+          const url =
+            tenant_prefix +
+            '?token=' +
+            token +
+            '&customer_user_id=' +
+            customer_user_id +
+            '&tenant_id=' +
+            tenant_id;
+
+          window.open(url, '_blank');
+          // window.location.replace(
+          //   tenant_prefix +
+          //     '?token=' +
+          //     token +
+          //     '&customer_user_id=' +
+          //     customer_user_id +
+          //     '&tenant_id=' +
+          //     tenant_id
+          // );
+        }
       }
     }
   }

@@ -182,8 +182,12 @@ export default createDialog({
     },
     async getGroup(params = { page: 1, page_size: 99999 }) {
       try {
-        const data = await this.Fetch.post('/monitor/group/list', params);
-        const { list = [] } = data || {};
+        const data = await this.FetchAccount.post(
+          '/monitor/group/list',
+          params
+        );
+        let { list = [] } = data || {};
+        list = list.filter(i => i.node_num > 0);
         this.group_list = list.map(i => {
           return {
             label: i.name,
@@ -196,7 +200,10 @@ export default createDialog({
     },
     async getTemplate(params = { page: 1, page_size: 99999 }) {
       try {
-        const data = await this.Fetch.post('/monitor/template/list', params);
+        const data = await this.FetchAccount.post(
+          '/monitor/template/list',
+          params
+        );
         const { list = [] } = data || {};
         this.template_list = list.map(i => {
           return {
