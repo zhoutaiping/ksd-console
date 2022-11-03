@@ -52,7 +52,7 @@
       <el-form-item label="预置IP列表" :prop="form.preset_ips?'preset_ips':''">
         <el-input
           type="textarea"
-          placeholder="127.1.1.1;多个域名以“，”隔开'"
+          placeholder="外网IP;多个IP以“，”隔开'"
           v-model="form.preset_ips"
           class="input-box"
         ></el-input>
@@ -61,19 +61,19 @@
         <el-input
           type="textarea"
           v-model="form.default_port"
-          placeholder="0-65535,多个域名以“，”隔开'"
+          placeholder="0-65535,多个端口以“，”隔开'"
           class="input-box"
         />
       </el-form-item>
       <el-form-item label="uuid" prop="uuid">
         <el-input type="textarea" v-model="form.uuid" disabled class="input-box" />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <!-- <el-form-item label="状态" prop="status">
         <el-select v-model="form.status" class="input-box">
           <el-option :value="1" label="启用"></el-option>
           <el-option :value="0" label="禁用"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <el-form-item label="转发规则条数" prop="rule_num">
         <el-input-number v-model="form.rule_num" :controls="false" :precision="0" class="input-box"></el-input-number>
       </el-form-item>
