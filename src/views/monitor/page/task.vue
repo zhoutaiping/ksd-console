@@ -70,9 +70,9 @@
               <span v-else>未知</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="延迟" prop="desc" min-width="150" />
-          <el-table-column label="可用率" prop="desc" min-width="150" />-->
-          <el-table-column label="添加时间" prop="created_at" />
+          <el-table-column label="添加时间" prop="created_at">
+            <template slot-scope="{row}">{{formartTime(row.created_at)}}</template>
+          </el-table-column>
           <el-table-column v-if="false" label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown

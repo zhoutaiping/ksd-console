@@ -11,9 +11,10 @@ const state = {
   domain_suffix: "",
   tenant_prefix_url: "",
   default_host: "",
-  signIn: "", //"https://account.axisnow.xyz/user/sign-in",
-  signOutUrl: "", //"https://account.axisnow.xyz/user/sign-out",
+  signIn: "",
+  signOutUrl: "",
   user_role_type_list: [],
+  default_api: "",
 };
 
 const mutations = {
@@ -28,6 +29,7 @@ const mutations = {
     if (domain_suffix) {
       state.tenant_prefix_url = "." + domain_suffix;
       state.default_host = "console." + domain_suffix;
+      state.default_api = "https://account." + domain_suffix;
       state.signIn = "https://account." + domain_suffix + "/user/sign-in";
       state.signOutUrl = "https://account." + domain_suffix + "/user/sign-out";
     }

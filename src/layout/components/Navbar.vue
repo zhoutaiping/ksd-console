@@ -63,14 +63,11 @@ export default {
     },
     logout() {
       this.$store.dispatch('user/logout').then(res => {
-        if (defaultSettings.signOutUrl) {
+        const signOutUrl =
+          this.$store.getters.signOutUrl || defaultSettings.signOutUrl;
+        if (signOutUrl) {
           localStorage.clear();
-          window.location.replace(
-            defaultSettings.signOutUrl +
-              '?redirect_url=' +
-              defaultSettings.signIn,
-            '_self'
-          );
+          window.location.replace(signOutUrl, '_self');
         }
       });
     }

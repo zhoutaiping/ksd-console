@@ -121,22 +121,24 @@ export default {
   methods: {
     handleLogin() {
       removeToken();
-      if (defaultSettings.signIn) {
+      const signIn = this.$store.getters.signIn || defaultSettings.signIn;
+      if (signIn) {
         localStorage.clear();
         window.open(
-          defaultSettings.signIn + '?redirect_url=' + window.location.origin,
+          signIn + '?redirect_url=' + window.location.origin,
           '_self'
         );
       }
     },
     async logout() {
       await this.$store.dispatch('user/logout');
-      if (defaultSettings.signOutUrl) {
+      const signOutUrl =
+        this.$store.getters.signOutUrl || defaultSettings.signOutUrl;
+
+      if (signOutUrl) {
         localStorage.clear();
         window.open(
-          defaultSettings.signOutUrl +
-            '?redirect_url=' +
-            window.location.origin,
+          signOutUrl + '?redirect_url=' + window.location.origin,
           '_self'
         );
       }

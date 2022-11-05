@@ -52,7 +52,9 @@
               <span>{{ formartValue(row, 'isp') }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="添加时间" prop="created_at" min-width="150" />
+          <el-table-column label="添加时间" prop="created_at" min-width="150">
+            <template slot-scope="{row}">{{formartTime(row.created_at)}}</template>
+          </el-table-column>
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown

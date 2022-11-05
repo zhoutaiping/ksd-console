@@ -90,7 +90,9 @@
               <a @click="handleOption('link', row)">{{formartVal(row, 'tenant')|| '--'}}</a>
             </template>
           </el-table-column>
-          <el-table-column label="创建时间" prop="created_at" width="150" show-overflow-tooltip />
+          <el-table-column label="创建时间" prop="created_at" width="150" show-overflow-tooltip>
+            <template slot-scope="{row}">{{formartTime(row.created_at)}}</template>
+          </el-table-column>
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
           <el-table-column label="操作" width="140" fixed="right" align="right">
             <template slot-scope="{row}">

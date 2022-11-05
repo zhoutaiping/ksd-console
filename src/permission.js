@@ -4,11 +4,14 @@ import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 import getPageTitle from "@/utils/get-page-title";
 import defaultSettings from "@public/settings";
+import bootstrap from "@/core/bootstrap";
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 
 const whiteList = []; // no redirect whitelist
-
+if (!store.getters.default_api) {
+  bootstrap();
+}
 router.beforeEach(async (to, from, next) => {
   // start progress bar
   NProgress.start();

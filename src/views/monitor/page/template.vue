@@ -60,7 +60,9 @@
             </template>
           </el-table-column>
           <el-table-column label="连续不可以用计数" prop="limit_max_fail" align="center" />
-          <el-table-column label="添加时间" prop="created_at" />
+          <el-table-column label="添加时间" prop="created_at">
+            <template slot-scope="{row}">{{formartTime(row.created_at)}}</template>
+          </el-table-column>
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
               <el-dropdown

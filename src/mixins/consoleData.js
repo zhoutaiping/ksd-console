@@ -1,6 +1,9 @@
+import { formartTime } from "@/utils";
+
 export default {
   data() {
     return {
+      formartTime,
       loading: false,
       multipleSelection: [],
       bindParams: {},

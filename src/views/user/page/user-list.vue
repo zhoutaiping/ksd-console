@@ -69,7 +69,7 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="eidt">编辑</el-dropdown-item>
-                  <el-dropdown-item command="password">重置密码</el-dropdown-item>
+                  <!-- <el-dropdown-item command="password">重置密码</el-dropdown-item> -->
                   <el-dropdown-item command="delte">
                     <span style="color: red">删除</span>
                   </el-dropdown-item>
