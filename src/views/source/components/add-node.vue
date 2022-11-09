@@ -27,7 +27,15 @@
           <el-option :value="3" label="低风险" />
         </el-select>
       </el-form-item>
-      <el-form-item prop="ip" label="IP">
+      <el-form-item v-if="options.mode === 'Create'" prop="ip_range" label="IP">
+        <el-input
+          v-model="form.ip_range"
+          type="textarea"
+          placeholder="多个换行，兼容CIDR格式/ip区域段"
+          class="input-box"
+        />
+      </el-form-item>
+      <el-form-item v-else prop="ip" label="IP">
         <el-input v-model="form.ip" type="textarea" placeholder="ip" class="input-box" />
       </el-form-item>
       <el-form-item prop="block_overseas" label="封禁海外">
@@ -61,6 +69,7 @@ import FormItemArea from '@/components/FormItem/FormItemArea';
 import InputArea from '@/components/Input/InputArea';
 import RULE from '@/utils/verify';
 import ISP from '@/constants/isp';
+import { fromTextArea } from 'codemirror';
 
 const Label = {
   protocol: [
@@ -102,9 +111,27 @@ function portValidator(rule, value, callback) {
   if (value.length > 1000) callback(new Error('最多同时添加1000个端口'));
   callback();
 }
-function validatorValue(message = '格式错误') {
+function validatorBetchValue(message = '格式错误') {
   function _validator(rule, value, callback) {
-    if (RULE.ipReg.test(value) || RULE.Ipv6Reg.test(value)) {
+    value = (value && value.toString().split(/[(\r\n)\r\n]+/)) || [];
+    if (!value.length) callback(new Error('请填写IP'));
+    const _e = value.find(i => {
+      const error =
+        RULE.ipReg.test(i) || RULE.cidrREG.test(i) || RULE.ipRangeReg.test(i);
+      return error === false;
+    });
+    if (!_e) {
+      callback();
+    } else {
+      callback(new Error(message));
+    }
+  }
+  return _validator;
+}
+function validatorIPValue(message = '格式错误') {
+  function _validator(rule, value, callback) {
+    const error = RULE.ipReg.test(value);
+    if (error) {
       callback();
     } else {
       callback(new Error(message));
@@ -131,6 +158,7 @@ export default createDialog({
         continent_country: '',
         country: '',
         province: '',
+        ip_range: '',
         ip: '',
         ip_pool: 0,
         ip_type: 1,
@@ -148,9 +176,13 @@ export default createDialog({
         ip_pool: [{ required: true, message: ' ' }],
         ip_type: [{ required: true, message: ' ' }],
         isp: [{ required: true, message: ' ' }],
+        ip_range: [
+          { required: true, trigger: 'blur', message: '请填写IP' },
+          { validator: validatorBetchValue() }
+        ],
         ip: [
           { required: true, trigger: 'blur', message: '请填写IP' },
-          { validator: validatorValue() }
+          { validator: validatorIPValue() }
         ],
         location: [],
         unshared: [],
@@ -178,7 +210,6 @@ export default createDialog({
           id: this.form.id,
           token: localStorage.getItem('token')
         });
-
         this.form = Object.assign({ ...this.formDefault }, { ...data });
         this.form.ip_type = Number(data.ip_type) === 0 ? '' : data.ip_type;
         let location = [];
@@ -202,7 +233,11 @@ export default createDialog({
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();
       });
-      if (this.form.location[0] === 'CN' && !this.form.location[1]) {
+      if (
+        this.form.location &&
+        this.form.location[0] === 'CN' &&
+        !this.form.location[1]
+      ) {
         this.$message.warning('请选择地区！');
         throw new Error();
       }
@@ -210,13 +245,16 @@ export default createDialog({
         ...this.form,
         country: (this.form.location[0] && this.form.location[0]) || '',
         province: (this.form.location[1] && this.form.location[1]) || '',
-        location: this.form.location.join(','),
-        token: localStorage.getItem('token')
+        location: this.form.location.join(',')
       };
       try {
         if (this.options.mode === 'Create') {
-          await this.FetchAccount.post('/pool/node/add', form);
+          const ip_range = this.form.ip_range.split(/[(\r\n)\r\n]+/);
+          form['ip_range'] = ip_range.filter(i => i);
+          delete form.ip;
+          await this.FetchAccount.post('/pool/node/batchAdd', form);
         } else {
+          delete form.ip_range;
           await this.FetchAccount.post('/pool/node/modify', form);
         }
       } catch (e) {
