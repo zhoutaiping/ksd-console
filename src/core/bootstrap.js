@@ -22,16 +22,22 @@ export default async function Initializer() {
 async function globalSetting() {
   try {
     const data = await Fetch.get("/global/setting", {});
-    localStorage.setItem("domain_suffix", data.domain_suffix || "");
+
+    const {
+      domain_suffix = "",
+      user_role_type_list = "",
+      domain_register_list = [],
+      domain_service_list = [],
+    } = data || {};
     localStorage.setItem(
       "user_role_type_list",
-      JSON.stringify(data.user_role_type_list) || []
+      JSON.stringify(user_role_type_list)
     );
-    store.commit("settings/DOMAIN_SUFFIX", data.domain_suffix);
-    store.commit(
-      "settings/USER_ROLE_TYPE_LIST",
-      data.user_role_type_list || []
-    );
+    localStorage.setItem("domain_suffix", domain_suffix || "");
+    store.commit("settings/DOMAIN_SUFFIX", domain_suffix);
+    store.commit("settings/USER_ROLE_TYPE_LIST", user_role_type_list || []);
+    store.commit("settings/DOMAIN_REGISTER_LIST", domain_register_list);
+    store.commit("settings/DOMAIN_SERVICE_LIST", domain_service_list);
   } catch (error) {
     return;
   }

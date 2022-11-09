@@ -15,6 +15,8 @@ const state = {
   signOutUrl: "",
   user_role_type_list: [],
   default_api: "",
+  domain_register_list: [],
+  domain_service_list: [],
 };
 
 const mutations = {
@@ -36,6 +38,12 @@ const mutations = {
   },
   USER_ROLE_TYPE_LIST: (state, list) => {
     state.user_role_type_list = list;
+  },
+  DOMAIN_REGISTER_LIST: (state, list) => {
+    state.domain_register_list = list;
+  },
+  DOMAIN_SERVICE_LIST: (state, list) => {
+    state.domain_service_list = list;
   },
 };
 

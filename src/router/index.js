@@ -121,6 +121,24 @@ export const asyncRoutes = [
         meta: { title: "节点列表", icon: "internet", noCache: true },
       },
       {
+        path: "domian-list",
+        component: () => import("@/views/source/page/domain-list"),
+        name: "SOURCE_DOMAIN",
+        meta: { title: "内置域名", icon: "yumingliebiao", noCache: true },
+      },
+      {
+        path: "domian-list/:id",
+        component: () => import("@/views/source/page/domain-log"),
+        name: "SOURCE_DOMAIN_LOG",
+        hidden: true,
+        meta: {
+          title: "宕机切换日志",
+          icon: "yumingliebiao",
+          noCache: true,
+          back: `SOURCE_DOMAIN`,
+        },
+      },
+      {
         path: "source-list",
         component: () => import("@/views/source/page/source-list"),
         name: "SOURCE_SOURCE",

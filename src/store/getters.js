@@ -20,5 +20,7 @@ const getters = {
   default_host: (state) => state.settings.default_host,
   signIn: (state) => state.settings.signIn,
   signOutUrl: (state) => state.settings.signOutUrl,
+  domain_register_list: (state) => state.settings.domain_register_list,
+  domain_service_list: (state) => state.settings.domain_service_list,
 };
 export default getters;

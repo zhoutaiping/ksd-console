@@ -116,7 +116,7 @@
 <script>
 import consoleData from '@/mixins/consoleData';
 import DmTable from '@/components/Dm/DmTable.vue';
-import AddEdit from './components/add-source-node.vue';
+import AddEdit from '../components/add-source-node.vue';
 import { areaView } from '@/utils/filter';
 import ISP from '@/constants/isp';
 
