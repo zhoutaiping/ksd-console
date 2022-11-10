@@ -42,20 +42,38 @@
         <el-input v-model="form.access_key" disabled class="input-box"></el-input>
       </el-form-item>
       <el-form-item label="预置dns解析域名列表" :prop="form.dns_domains?'dns_domains':''">
-        <el-input
+        <!-- <el-input
           type="textarea"
-          placeholder="'www.demo.com，多个域名以“，”隔开'"
+          placeholder="www.demo.com，多个域名以“，”隔开'"
           v-model="form.dns_domains"
           class="input-box"
-        ></el-input>
+        ></el-input>-->
+        <el-select v-model="form.dns_domains" multiple collapse-tags class="input-box">
+          <el-option
+            v-for="(item, index) in domainList"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
       </el-form-item>
-      <el-form-item label="预置IP列表" :prop="form.preset_ips?'preset_ips':''">
+      <!-- <el-form-item label="预置IP列表" :prop="form.preset_ips?'preset_ips':''">
         <el-input
           type="textarea"
           placeholder="外网IP;多个IP以“，”隔开'"
           v-model="form.preset_ips"
           class="input-box"
         ></el-input>
+      </el-form-item>-->
+      <el-form-item label="内置资源池" prop="default_pool_id">
+        <el-select v-model="form.default_pool_id" class="input-box">
+          <el-option
+            v-for="(item, index) in poolList"
+            :key="index"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="默认端口" :prop="!!form.default_port ? 'default_port' :''">
         <el-input
@@ -68,12 +86,6 @@
       <el-form-item label="uuid" prop="uuid">
         <el-input type="textarea" v-model="form.uuid" disabled class="input-box" />
       </el-form-item>
-      <!-- <el-form-item label="状态" prop="status">
-        <el-select v-model="form.status" class="input-box">
-          <el-option :value="1" label="启用"></el-option>
-          <el-option :value="0" label="禁用"></el-option>
-        </el-select>
-      </el-form-item>-->
       <el-form-item label="转发规则条数" prop="rule_num">
         <el-input-number v-model="form.rule_num" :controls="false" :precision="0" class="input-box"></el-input-number>
       </el-form-item>
@@ -200,17 +212,13 @@
 <script>
 import createDialog from '@/utils/createDialog';
 import RULE from '@/utils/verify';
-import { reject } from 'q';
 const Label = {};
 
 function portValidator(rule, value, callback) {
   value = value.toString().replace('，', ',');
   value = value.toString().split(',');
   if (value.length > 1000) callback(new Error('最多同时添加1000个端口'));
-  console.log(
-    value,
-    value.find(i => !RULE.port(i))
-  );
+
   if (value.find(i => !RULE.port(i))) callback(new Error('端口不正确'));
   callback();
 }
@@ -223,6 +231,8 @@ export default createDialog({
     return {
       loading: true,
       Label,
+      Fetch: this.FetchAccount,
+
       optionsDefault: {
         batch: false,
         mode: 'Create',
@@ -240,7 +250,7 @@ export default createDialog({
         enable_fake_request: 1,
         enable_real_ip: 0,
         risk_control: 1,
-        dns_domains: '',
+        dns_domains: [],
         static_level: 0,
         preset_ips: '',
         proxy_realip: 0,
@@ -256,7 +266,8 @@ export default createDialog({
         default_port: '',
         check_rls: 0,
         log_level: 'info',
-        remark: ''
+        remark: '',
+        default_pool_id: ''
       },
       form: {},
       rules: {
@@ -289,18 +300,25 @@ export default createDialog({
         check_rls: [],
         log_level: [],
         remark: []
-      }
+      },
+      domainList: [],
+      poolList: []
     };
   },
 
   methods: {
     afterOpen(form) {
-      console.log(form);
+      this.geDomain();
+      this.getPool();
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
+        this.form = Object.assign(this.formDefault, { ...form });
+        this.form.dns_domains = form.dns_domains
+          .toString()
+          .split(',')
+          .filter(i => i);
         if (form.sdk_id && form.tenant_id) {
-          this.form = Object.assign(this.formDefault, { ...form });
-          console.log({ ...this.form });
+          // console.log({ ...this.form });
           // this.getInfo({
           //   token: localStorage.getItem('token'),
           //   sdk_id: form.sdk_id,
@@ -326,29 +344,41 @@ export default createDialog({
     getInfo(params = {}) {
       this.FetchAccount.get('/sdk/info', params)
         .then(res => {
-          console.log('----info', res);
           if (Object.keys(res)) {
             this.from = Object.assign(this.formDefault, res);
           }
         })
         .catch(e => {});
     },
+    async geDomain(param = { page: 1, page_size: 99999 }) {
+      const { list = [] } = await this.FetchAccount.get('/domain/list', param);
+      this.domainList = list.map(i => {
+        return { label: i.domain, value: i.domain };
+      });
+    },
+    async getPool(params = { page: 1, page_size: 99999 }) {
+      this.poolList = [];
+      const { list = [] } = await this.Fetch.get('/pool/list', params);
+      this.poolList = list.map(i => {
+        return { label: i.pool_name + '-' + i.node_num + '节点', value: i.id };
+      });
+    },
     checkVal(form) {
-      if (!!this.form.dns_domains) {
-        let domain = JSON.parse(JSON.stringify(this.form.dns_domains))
-          .toString()
-          .replace('，', ',');
-        domain = domain.toString().split(',');
-        console.log(domain);
-        if (domain.length > 1000) {
-          this.$message.warning('默认域名最多1000个');
-          throw new Error();
-        }
-        if (domain.find(i => !RULE.dnsDomain.test(i))) {
-          this.$message.warning('域名格式错误');
-          throw new Error();
-        }
-      }
+      // if (!!this.form.dns_domains) {
+      //   let domain = JSON.parse(JSON.stringify(this.form.dns_domains))
+      //     .toString()
+      //     .replace('，', ',');
+      //   domain = domain.toString().split(',');
+      //   console.log(domain);
+      //   if (domain.length > 1000) {
+      //     this.$message.warning('默认域名最多1000个');
+      //     throw new Error();
+      //   }
+      //   if (domain.find(i => !RULE.dnsDomain.test(i))) {
+      //     this.$message.warning('域名格式错误');
+      //     throw new Error();
+      //   }
+      // }
       if (!!this.form.default_port) {
         let port = JSON.parse(JSON.stringify(this.form.default_port))
           .toString()
@@ -363,20 +393,20 @@ export default createDialog({
           throw new Error();
         }
       }
-      if (!!this.form.preset_ips) {
-        let ip = JSON.parse(JSON.stringify(this.form.preset_ips))
-          .toString()
-          .replace('，', ',');
-        ip = ip.toString().split(',');
-        if (ip.length > 1000) {
-          this.$message.warning('默认ip最多1000个');
-          throw new Error();
-        }
-        if (ip.find(i => !RULE.ipReg.test(i))) {
-          this.$message.warning('IP格式错误');
-          throw new Error();
-        }
-      }
+      // if (!!this.form.preset_ips) {
+      //   let ip = JSON.parse(JSON.stringify(this.form.preset_ips))
+      //     .toString()
+      //     .replace('，', ',');
+      //   ip = ip.toString().split(',');
+      //   if (ip.length > 1000) {
+      //     this.$message.warning('默认ip最多1000个');
+      //     throw new Error();
+      //   }
+      //   if (ip.find(i => !RULE.ipReg.test(i))) {
+      //     this.$message.warning('IP格式错误');
+      //     throw new Error();
+      //   }
+      // }
     },
 
     async fetchSubmit(form) {
@@ -387,7 +417,7 @@ export default createDialog({
 
       form = {
         ...this.form,
-        token: localStorage.getItem('token')
+        dns_domains: this.form.dns_domains.join(',')
       };
 
       try {
