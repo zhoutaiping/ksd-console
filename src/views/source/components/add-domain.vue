@@ -80,10 +80,10 @@
       </el-form-item>
       <template v-if="options.mode !=='Create'">
         <el-form-item label="当前解析地址">
-          <el-input type="textarea" :disabled="options.mode !=='Create'"></el-input>
+          <el-input type="textarea" :disabled="options.mode !=='Create'" class="input-box"></el-input>
         </el-form-item>
         <el-form-item label="关联应用">
-          <el-input v-model="form.app_name" :disabled="options.mode !=='Create'"></el-input>
+          <el-input v-model="form.app_name" :disabled="options.mode !=='Create'" class="input-box"></el-input>
         </el-form-item>
       </template>
       <el-form-item label="备注">
@@ -133,7 +133,7 @@ export default createDialog({
         domain_zone_id: '',
         domain_api_token: '',
         pool_id: '',
-        usable_node_count: 1,
+        usable_node_count: 0,
         remark: '',
         status: 0
       },
@@ -238,16 +238,9 @@ export default createDialog({
       this.$refs.Form.validate(valid => {
         if (!valid) throw new Error();
       });
-      if (this.form.location[0] === 'CN' && !this.form.location[1]) {
-        this.$message.warning('请选择地区！');
-        throw new Error();
-      }
+
       form = {
-        ...this.form,
-        country: (this.form.location[0] && this.form.location[0]) || '',
-        province: (this.form.location[1] && this.form.location[1]) || '',
-        location: this.form.location.join(','),
-        token: localStorage.getItem('token')
+        ...this.form
       };
       try {
         if (this.options.mode === 'Create') {
