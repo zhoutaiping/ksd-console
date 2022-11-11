@@ -142,16 +142,14 @@ export default {
         this.del(data);
       } else if (option === 'on') {
         const params = {
-          ids: this.multipleSelection.map(i => i.id).join(','),
-          status: 1,
-          token: localStorage.getItem('token')
+          domain_ids: this.multipleSelection.map(i => i.domain_id),
+          status: 1
         };
         this.editStatus(params);
       } else if (option === 'off') {
         const params = {
-          ids: this.multipleSelection.map(i => i.id).join(','),
-          status: 0,
-          token: localStorage.getItem('token')
+          domain_ids: this.multipleSelection.map(i => i.domain_id),
+          status: 0
         };
         this.editStatus(params);
       }

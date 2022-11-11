@@ -83,7 +83,7 @@
           <el-input type="textarea" :disabled="options.mode !=='Create'" class="input-box"></el-input>
         </el-form-item>
         <el-form-item label="关联应用">
-          <el-input v-model="form.app_name" :disabled="options.mode !=='Create'" class="input-box"></el-input>
+          <el-input v-model="form.app_names" :disabled="options.mode !=='Create'" class="input-box"></el-input>
         </el-form-item>
       </template>
       <el-form-item label="备注">
@@ -135,7 +135,8 @@ export default createDialog({
         pool_id: '',
         usable_node_count: 0,
         remark: '',
-        status: 0
+        status: 0,
+        app_names: ''
       },
       rules: {
         domain: [
@@ -226,6 +227,7 @@ export default createDialog({
           domain_id: this.form.domain_id
         });
         this.form = Object.assign({ ...this.formDefault }, { ...data });
+        this.from.app_names = data.app_names && data.app_names.join(',');
       } catch (error) {
         return;
       } finally {
@@ -246,6 +248,7 @@ export default createDialog({
         if (this.options.mode === 'Create') {
           await this.FetchAccount.post('/domain/add', form);
         } else {
+          form.app_names = (form.app_names && form.app_names.split(',')) || [];
           await this.FetchAccount.post('/domain/modify', form);
         }
       } catch (e) {
