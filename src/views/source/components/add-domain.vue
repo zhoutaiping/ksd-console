@@ -139,9 +139,7 @@ export default createDialog({
           { required: true, trigger: 'blur', message: '请填写域名' },
           { validator: validatorValue() }
         ],
-        domain_register_name: [
-          { required: true, trigger: 'blur', message: ' ' }
-        ],
+        domain_register_name: [],
         domain_service_name: [
           { required: true, trigger: 'blur', message: ' ' }
         ],
