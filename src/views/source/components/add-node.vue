@@ -1,8 +1,4 @@
-<style scoped>
-.input-box {
-  width: 400px;
-}
-</style>
+
 <template>
   <DmDialog
     ref="Dialog"
@@ -21,25 +17,37 @@
       label-width="150px"
     >
       <el-form-item prop="ip_type" label="风险类型">
-        <el-select v-model="form.ip_type" placeholder="风险类型" clearable class="input-box">
+        <!-- <el-select v-model="form.ip_type" placeholder="风险类型" clearable class="input-box">
           <el-option :value="1" label="高风险" />
           <el-option :value="2" label="中风险" />
           <el-option :value="3" label="低风险" />
-        </el-select>
+        </el-select>-->
+        <el-radio-group v-model="form.ip_type">
+          <el-radio-button :label="1">高风险</el-radio-button>
+          <el-radio-button :label="2">中风险</el-radio-button>
+          <el-radio-button :label="3">低风险</el-radio-button>
+        </el-radio-group>
       </el-form-item>
       <el-form-item v-if="options.mode === 'Create'" prop="ip_range" label="IP">
         <el-input
           v-model="form.ip_range"
           type="textarea"
-          placeholder="多个换行，兼容CIDR格式/ip区域段"
+          placeholder="例如：1.1.1.1,1.1.1.1-1.1.1.3,1.1.1.0/24多个换行，兼容CIDR格式/ip区域段"
           class="input-box"
         />
       </el-form-item>
       <el-form-item v-else prop="ip" label="IP">
         <el-input v-model="form.ip" type="textarea" placeholder="ip" class="input-box" />
       </el-form-item>
-      <el-form-item prop="block_overseas" label="封禁海外">
-        <el-checkbox v-model="form.block_overseas" :true-label="0" :false-label="1" />
+      <el-form-item prop="node_cate" label="节点类型">
+        <el-select v-model="form.node_cate" placeholder class="input-box">
+          <el-option
+            v-for="item in node_cate_list"
+            :key="item.val"
+            :label="item.key"
+            :value="item.val"
+          ></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item prop="isp" label="ISP">
         <yd-form-select :selects="Label.ISP_TYPE" v-model="form.isp" class="input-box" />
@@ -53,9 +61,25 @@
       <el-form-item prop="server_config" label="机器配置">
         <el-input v-model="form.server_config" placeholder class="input-box" />
       </el-form-item>
-      <el-form-item prop="unshared" label="独享配置">
-        <el-checkbox v-model="form.unshared" :true-label="1" :false-label="0" />
+      <el-form-item>
+        <el-form-item prop="block_overseas" class="form-item-inline">
+          <el-checkbox
+            v-model="form.block_overseas"
+            :true-label="0"
+            :false-label="1"
+            style="margin-right: 10px;"
+          />封禁海外
+        </el-form-item>
+        <el-form-item prop="unshared" class="form-item-inline">
+          <el-checkbox
+            v-model="form.unshared"
+            :true-label="1"
+            :false-label="0"
+            style="margin-right: 10px;"
+          />独享配置
+        </el-form-item>
       </el-form-item>
+
       <el-form-item label="备注">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />
       </el-form-item>
@@ -69,7 +93,6 @@ import FormItemArea from '@/components/FormItem/FormItemArea';
 import InputArea from '@/components/Input/InputArea';
 import RULE from '@/utils/verify';
 import ISP from '@/constants/isp';
-import { fromTextArea } from 'codemirror';
 
 const Label = {
   protocol: [
@@ -165,6 +188,7 @@ export default createDialog({
         is_delete: 0,
         isp: '',
         location: [],
+        node_cate: '',
         remark: '',
         server_config: '',
         status: 0,
@@ -172,7 +196,7 @@ export default createDialog({
         unshared: 0
       },
       rules: {
-        block_overseas: [{ required: true, message: ' ' }],
+        block_overseas: [],
         ip_pool: [{ required: true, message: ' ' }],
         ip_type: [{ required: true, message: ' ' }],
         isp: [{ required: true, message: ' ' }],
@@ -184,6 +208,7 @@ export default createDialog({
           { required: true, trigger: 'blur', message: '请填写IP' },
           { validator: validatorIPValue() }
         ],
+        node_cate: [{ required: true, message: ' ' }],
         location: [],
         unshared: [],
         location: [],
@@ -191,7 +216,11 @@ export default createDialog({
       }
     };
   },
-
+  computed: {
+    node_cate_list() {
+      return this.$store.getters.node_cate_list || [];
+    }
+  },
   methods: {
     afterOpen(form) {
       this.$nextTick(async () => {
@@ -270,3 +299,13 @@ export default createDialog({
   }
 });
 </script>
+<style scoped>
+.input-box {
+  width: 400px;
+}
+.form-item-inline {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-right: 20px;
+}
+</style>

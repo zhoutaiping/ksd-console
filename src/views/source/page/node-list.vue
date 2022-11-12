@@ -21,7 +21,7 @@
             v-model="bindParams.ip_type"
             clearable
             placeholder="风险类型"
-            style="width:120px;margin-right: 10px;"
+            style="width:130px;margin-right: 10px;"
             @change="$refs.DmData.initPage()"
           >
             <el-option
@@ -31,11 +31,19 @@
               :label="ip_type[item]"
             />
           </el-select>
+          <yd-form-select
+            clearable
+            :selects="node_cate_list"
+            v-model="bindParams.node_cate"
+            placeholder="节点类型"
+            style="width:130px;margin-right: 10px;"
+            @change="$refs.DmData.initPage()"
+          />
           <el-select
             v-model="bindParams.status"
             clearable
             placeholder="启用状态"
-            style="width:120px;margin-right: 10px;"
+            style="width:130px;margin-right: 10px;"
             @change="$refs.DmData.initPage()"
           >
             <el-option :value="1" label="启用" />
@@ -46,7 +54,7 @@
             :selects="ISP_TYPE"
             v-model="bindParams.isp"
             placeholder="ISP"
-            style="width:120px;"
+            style="width:130px;"
             @change="$refs.DmData.initPage()"
           />
         </div>
@@ -66,6 +74,9 @@
           <el-table-column label="风险类型">
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
+          <el-table-column label="节点类型">
+            <template slot-scope="{row}">{{formartValue(row, 'node_cate')}}</template>
+          </el-table-column>
           <el-table-column label="独享类型">
             <template slot-scope="{row}">{{Number(row.unshared) === 1 ? '独享': '共享' }}</template>
           </el-table-column>
@@ -77,7 +88,7 @@
           </el-table-column>
           <el-table-column label="机器配置" prop="server_config" />
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
-          <el-table-column label="操作" width="200" align="right">
+          <el-table-column label="操作" fixed="right" width="200" align="right">
             <template slot-scope="{row}">
               <el-dropdown
                 @command="
@@ -133,6 +144,18 @@ export default {
       ISP_TYPE: ISP
     };
   },
+  computed: {
+    node_cate_list() {
+      const list = this.$store.getters.node_cate_list || [];
+
+      return list.map(i => {
+        return {
+          label: i.key,
+          value: i.val
+        };
+      });
+    }
+  },
   methods: {
     formartValue(data, prop) {
       if (prop === 'location') {
@@ -154,6 +177,42 @@ export default {
           : '';
         return isp;
       }
+
+      if (prop === 'node_cate') {
+        let val = data[prop];
+        val = this.node_cate_list.find(i => Number(i.value) === Number(val));
+
+        return (val && val.label) || '';
+      }
+
+      // const dataMap = {
+      //   node_cate: (data, key) => {
+      //     let val = data[key];
+      //     val = this.node_cate_list.find(i => Number(i.value) === Number(val));
+
+      //     return (val && val.label) || '';
+      //   },
+      //   location: (data, key) => {
+      //     let location = [];
+      //     if (!!data[key]) {
+      //       location = (!!data[key] && data[key].split(',')) || [];
+      //     }
+      //     if (!location.length) {
+      //       if (data.country) location.push(data.country);
+      //       if (data.province) location.push(data.province);
+      //     }
+      //     return (location.length && this.areaView(location)) || '--';
+      //   },
+      //   isp: (data, key) => {
+      //     let isp = data[key];
+      //     isp = this.ISP_TYPE.find(i => i.value === isp)
+      //       ? this.ISP_TYPE.find(i => i.value === isp).label
+      //       : '';
+      //     return isp;
+      //   }
+      // };
+
+      // return dataMap[prop](data, prop);
     },
     handleOption(option, data) {
       if (option === 'add') {

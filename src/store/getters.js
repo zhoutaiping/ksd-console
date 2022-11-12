@@ -22,5 +22,7 @@ const getters = {
   signOutUrl: (state) => state.settings.signOutUrl,
   domain_register_list: (state) => state.settings.domain_register_list,
   domain_service_list: (state) => state.settings.domain_service_list,
+  node_cate_list: (state) => state.settings.node_cate_list,
+  pool_cate_list: (state) => state.settings.pool_cate_list,
 };
 export default getters;

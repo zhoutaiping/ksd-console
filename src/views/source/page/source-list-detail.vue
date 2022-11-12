@@ -33,7 +33,7 @@
             :selects="ISP_TYPE"
             v-model="bindParams.isp"
             placeholder="ISP"
-            class="input-box"
+            style="width:120px;"
             @change="$refs.DmData.initPage()"
           />
         </div>

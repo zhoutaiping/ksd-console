@@ -28,6 +28,8 @@ async function globalSetting() {
       user_role_type_list = "",
       domain_register_list = [],
       domain_service_list = [],
+      node_cate_list = [],
+      pool_cate_list = [],
     } = data || {};
     localStorage.setItem(
       "user_role_type_list",
@@ -38,6 +40,8 @@ async function globalSetting() {
     store.commit("settings/USER_ROLE_TYPE_LIST", user_role_type_list || []);
     store.commit("settings/DOMAIN_REGISTER_LIST", domain_register_list);
     store.commit("settings/DOMAIN_SERVICE_LIST", domain_service_list);
+    store.commit("settings/NODE_CATE_LIST", node_cate_list);
+    store.commit("settings/POOL_CATE_LIST", pool_cate_list);
   } catch (error) {
     return;
   }

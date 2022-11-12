@@ -17,6 +17,8 @@ const state = {
   default_api: "",
   domain_register_list: [],
   domain_service_list: [],
+  node_cate_list: [],
+  pool_cate_list: [],
 };
 
 const mutations = {
@@ -44,6 +46,12 @@ const mutations = {
   },
   DOMAIN_SERVICE_LIST: (state, list) => {
     state.domain_service_list = list;
+  },
+  NODE_CATE_LIST: (state, list) => {
+    state.node_cate_list = list;
+  },
+  POOL_CATE_LIST: (state, list) => {
+    state.pool_cate_list = list;
   },
 };
 
