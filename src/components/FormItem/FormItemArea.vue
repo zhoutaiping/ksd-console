@@ -28,10 +28,14 @@
 <script>
 import CountryList from '@/constants/country-list';
 import { province as ProvinceList } from '@/constants/city-data';
+import { nextTick } from 'process';
 
 export default {
   props: {
-    value: Array
+    value: {
+      type: [Array, String],
+      default: []
+    }
   },
 
   data() {
@@ -56,7 +60,9 @@ export default {
   },
 
   mounted() {
-    this.init();
+    this.$nextTick(e => {
+      this.init();
+    });
   },
 
   methods: {

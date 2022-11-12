@@ -60,8 +60,8 @@
           <el-table-column label="域名解析商">
             <template slot-scope="{row}">{{formartValue(row, 'domain_service_name')}}</template>
           </el-table-column>
-          <el-table-column label="解析地址">
-            <template slot-scope="{row}">{{row.ip || '--'}}</template>
+          <el-table-column label="解析地址" show-overflow-tooltip>
+            <template slot-scope="{row}">{{row.dns_ip || '--'}}</template>
           </el-table-column>
           <el-table-column label="使用状态" prop="status">
             <template slot-scope="{row}">

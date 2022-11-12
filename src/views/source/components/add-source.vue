@@ -18,7 +18,7 @@
       </el-form-item>
       <el-form-item prop="pool_cate" label="资源池类型">
         <yd-form-select
-          clearable
+          :clearable="options.mode !== 'Edit'"
           :selects="pool_cate_list"
           v-model="form.pool_cate"
           placeholder="资源池类型"
@@ -166,7 +166,8 @@ export default createDialog({
       return list.map(i => {
         return {
           label: i.key,
-          value: i.val
+          value: i.val,
+          disabled: this.options.mode === 'Edit'
         };
       });
     }

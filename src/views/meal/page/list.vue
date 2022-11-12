@@ -87,7 +87,10 @@
           </el-table-column>
           <el-table-column label="租户网络" prop="tenant" min-width="140" show-overflow-tooltip>
             <template slot-scope="{ row }">
-              <a @click="handleOption('link', row)">{{formartVal(row, 'tenant')|| '--'}}</a>
+              <a
+                @click="handleOption('link', row)"
+                class="primary--color"
+              >{{formartVal(row, 'tenant')|| '--'}}</a>
             </template>
           </el-table-column>
           <el-table-column label="创建时间" prop="created_at" width="150" show-overflow-tooltip>

@@ -40,13 +40,21 @@
         <el-input v-model="form.ip" type="textarea" placeholder="ip" class="input-box" />
       </el-form-item>
       <el-form-item prop="node_cate" label="节点类型">
-        <el-select v-model="form.node_cate" multiple collapse-tags placeholder class="input-box">
+        <el-select
+          v-model="form.node_cate"
+          :disabled="options.mode === 'Edit'"
+          multiple
+          collapse-tags
+          clearable
+          class="input-box"
+        >
           <el-option
             v-for="item in node_cate_list"
             :key="item.val"
             :label="item.key"
+            :disabled="item.disabled"
             :value="item.val"
-          ></el-option>
+          />
         </el-select>
       </el-form-item>
       <el-form-item prop="isp" label="ISP">
@@ -218,7 +226,13 @@ export default createDialog({
   },
   computed: {
     node_cate_list() {
-      return this.$store.getters.node_cate_list || [];
+      const list = this.$store.getters.node_cate_list;
+      return (
+        list.map(i => {
+          i.disabled = this.options.mode === 'Edit';
+          return i;
+        }) || []
+      );
     }
   },
   methods: {
@@ -239,24 +253,31 @@ export default createDialog({
           id: this.form.id,
           token: localStorage.getItem('token')
         });
+        const _data = { ...data };
+        data['location'] = setLocation(data);
         this.form = Object.assign({ ...this.formDefault }, { ...data });
-        this.form.node_cate = data.node_cate.split(',');
+        this.form.node_cate =
+          (data.node_cate && data.node_cate.split(',')) || [];
         this.form.ip_type = Number(data.ip_type) === 0 ? '' : data.ip_type;
-        let location = [];
-        if (!!data.location) {
-          location = data.location.split(',');
-        }
-        if (location.length) {
-          if (data.country) location.push(data.country);
-          if (data.province) location.push(data.province);
-        }
-        this.form.location = location;
       } catch (error) {
         return;
       } finally {
         setTimeout(() => {
           this.loading = false;
         }, 200);
+      }
+
+      function setLocation(data) {
+        let location = [];
+        if (!!data.location) {
+          location = data.location.split(',');
+        }
+        if (!location.length) {
+          if (data.country) location.push(data.country);
+          if (data.province) location.push(data.province);
+        }
+
+        return location;
       }
     },
     async fetchSubmit(form) {
@@ -276,7 +297,7 @@ export default createDialog({
         country: (this.form.location[0] && this.form.location[0]) || '',
         province: (this.form.location[1] && this.form.location[1]) || '',
         location: this.form.location.join(','),
-        node_cate: this.form.node_cate.join(',')
+        node_cate: (this.form.node_cate && this.form.node_cate.join(',')) || []
       };
       try {
         if (this.options.mode === 'Create') {
