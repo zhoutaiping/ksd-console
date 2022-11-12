@@ -13,9 +13,11 @@
     @submit="handleSubmit"
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
-      <el-form-item prop="pool_id" label="资源池">
+      <el-form-item prop="pool_id" label="网关资源池">
         <yd-form-select :selects="poollist" v-model="form.pool_id" class="input-box" />
-        <!-- <el-input v-model="form.SOUCRCE" class="input-box" /> -->
+      </el-form-item>
+      <el-form-item prop="center_pool_id" label="中心资源池">
+        <yd-form-select :selects="CenterPool" v-model="form.center_pool_id" class="input-box" />
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />
@@ -27,38 +29,7 @@
 <script>
 import createDialog from '@/utils/createDialog';
 
-const Label = {
-  protocol: [
-    {
-      label: 'TCP',
-      value: 1
-    },
-    {
-      label: 'UDP',
-      value: 2
-    }
-  ],
-  loading: [
-    {
-      label: '轮询',
-      value: 1
-    },
-    {
-      label: 'IP哈希',
-      value: 2
-    }
-  ],
-  sourceType: [
-    {
-      label: 'IP',
-      value: 1
-    },
-    {
-      label: '域名',
-      value: 2
-    }
-  ]
-};
+const Label = {};
 
 function portValidator(rule, value, callback) {
   value = value.toString().replace('，', ',');
@@ -85,41 +56,50 @@ export default createDialog({
       },
       formDefault: {
         pool_id: '',
+        center_pool_id: '',
         user_id: JSON.parse(localStorage.getItem('user')).id || '',
         remark: ''
       },
       rules: {
         pool_id: [{ required: true, message: '请选择资源池', trigger: 'blur' }],
-        remark: [{}]
+        center_pool_id: [],
+        remark: []
       },
-      poollist: []
+      poollist: [],
+      CenterPool: []
     };
   },
 
   methods: {
     afterOpen(form) {
-      this.getPool();
+      this.getPool({ page: 1, page_size: 9999, pool_cate: 0 }, 'Pool');
+      this.getPool({ page: 1, page_size: 9999, pool_cate: 2 }, 'CenterPool');
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
         this.loading = false;
         this.form.pool_id = form.pool_id === 0 ? '' : form.pool_id;
+        this.form.center_pool_id =
+          form.center_pool_id === 0 ? '' : form.center_pool_id;
       });
     },
     async getPool(
       params = {
         page: 1,
-        page_size: 9999,
-        token: localStorage.getItem('token')
-      }
+        page_size: 9999
+      },
+      type = ''
     ) {
       this.poollist = [];
       try {
         const data = await this.Fetch.get(this.API_INDEX, params);
-        const { list = [] } = data || {};
-        this.poollist =
-          list.map(i => {
-            return { label: i.pool_name, value: i.id };
-          }) || [];
+        let { list = [] } = data || {};
+        list = list.map(i => {
+          return { label: i.pool_name, value: i.id };
+        });
+
+        if (type === 'Pool') this.poollist = list;
+
+        if (type === 'CenterPool') this.CenterPool = list;
       } catch (error) {
         return;
       }

@@ -356,7 +356,7 @@ export default createDialog({
         return { label: i.domain, value: i.domain };
       });
     },
-    async getPool(params = { page: 1, page_size: 99999 }) {
+    async getPool(params = { pool_cate: 1, page: 1, page_size: 99999 }) {
       this.poolList = [];
       const { list = [] } = await this.Fetch.get('/pool/list', params);
       this.poolList = list.map(i => {

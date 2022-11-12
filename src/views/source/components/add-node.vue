@@ -177,7 +177,7 @@ export default createDialog({
         listView: []
       },
       formDefault: {
-        block_overseas: 0,
+        block_overseas: 1,
         continent_country: '',
         country: '',
         province: '',
@@ -188,7 +188,7 @@ export default createDialog({
         is_delete: 0,
         isp: '',
         location: [],
-        node_cate: [],
+        node_cate: ['0'],
         remark: '',
         server_config: '',
         status: 0,
