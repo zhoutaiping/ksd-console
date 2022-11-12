@@ -2,6 +2,9 @@
 .input-box {
   width: 400px;
 }
+::v-deep .el-input-number .el-input__inner {
+  text-align: left;
+}
 </style>
 <template>
   <DmDialog
@@ -9,7 +12,7 @@
     :fetch-submit="fetchSubmit"
     :mode="options.mode"
     width="700px"
-    title-label="IP资源"
+    title-label="域名"
     @submit="handleSubmit"
   >
     <el-form
@@ -76,7 +79,12 @@
         />
       </el-form-item>
       <el-form-item prop="usable_node_count" label="节点可用个数">
-        <el-input v-model="form.usable_node_count" readonly class="input-box" />
+        <el-input-number
+          v-model="form.usable_node_count"
+          :controls="false"
+          :min="0"
+          class="input-box"
+        />
       </el-form-item>
       <template v-if="options.mode !=='Create'">
         <el-form-item label="当前解析地址">
@@ -133,9 +141,9 @@ export default createDialog({
         domain_zone_id: '',
         domain_api_token: '',
         pool_id: '',
-        usable_node_count: 0,
+        usable_node_count: 3,
         remark: '',
-        status: 0,
+        status: 1,
         app_names: ''
       },
       rules: {
@@ -216,8 +224,8 @@ export default createDialog({
       }
     },
     changPool(val) {
-      const pool = (val && this.poollist.find(i => i.value === val)) || null;
-      this.form.usable_node_count = val && pool ? pool.node_num || 0 : 0;
+      // const pool = (val && this.poollist.find(i => i.value === val)) || null;
+      // this.form.usable_node_count = val && pool ? pool.node_num || 0 : 0;
     },
     async getDetail() {
       this.loading = true;
