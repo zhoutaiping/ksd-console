@@ -34,7 +34,7 @@
       <el-form-item prop="domain_register_name" label="域名注册商">
         <el-input v-model="form.domain_register_name" class="input-box" />
       </el-form-item>
-      <el-form-item prop="domain_register_name" label="域名解析商">
+      <el-form-item prop="domain_service_name" label="域名解析商">
         <el-select
           v-model="form.domain_service_name"
           class="input-box"
