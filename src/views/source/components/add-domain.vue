@@ -32,19 +32,7 @@
         />
       </el-form-item>
       <el-form-item prop="domain_register_name" label="域名注册商">
-        <el-select
-          v-model="form.domain_register_name"
-          class="input-box"
-          filterable
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in domain_register_list"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+        <el-input v-model="form.domain_register_name" class="input-box" />
       </el-form-item>
       <el-form-item prop="domain_register_name" label="域名解析商">
         <el-select
