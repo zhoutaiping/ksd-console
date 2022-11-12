@@ -40,7 +40,7 @@
         <el-input v-model="form.ip" type="textarea" placeholder="ip" class="input-box" />
       </el-form-item>
       <el-form-item prop="node_cate" label="节点类型">
-        <el-select v-model="form.node_cate" placeholder class="input-box">
+        <el-select v-model="form.node_cate" multiple collapse-tags placeholder class="input-box">
           <el-option
             v-for="item in node_cate_list"
             :key="item.val"
@@ -188,7 +188,7 @@ export default createDialog({
         is_delete: 0,
         isp: '',
         location: [],
-        node_cate: '',
+        node_cate: [],
         remark: '',
         server_config: '',
         status: 0,
@@ -240,6 +240,7 @@ export default createDialog({
           token: localStorage.getItem('token')
         });
         this.form = Object.assign({ ...this.formDefault }, { ...data });
+        this.form.node_cate = data.node_cate.split(',');
         this.form.ip_type = Number(data.ip_type) === 0 ? '' : data.ip_type;
         let location = [];
         if (!!data.location) {
@@ -274,7 +275,8 @@ export default createDialog({
         ...this.form,
         country: (this.form.location[0] && this.form.location[0]) || '',
         province: (this.form.location[1] && this.form.location[1]) || '',
-        location: this.form.location.join(',')
+        location: this.form.location.join(','),
+        node_cate: this.form.node_cate.join(',')
       };
       try {
         if (this.options.mode === 'Create') {

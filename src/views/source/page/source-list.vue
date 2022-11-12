@@ -8,12 +8,20 @@
     </div>
     <DmData ref="DmData" @init="fetchList" :auto-init="true">
       <DmToolbar>
-        <div>
-          <InputSearch
-            v-model="bindParams.pool_name"
-            placeholder="资源池名称"
-            @submit="$refs.DmData.initPage()"
-            class="input-box"
+        <InputSearch
+          v-model="bindParams.pool_name"
+          placeholder="资源池名称"
+          @submit="$refs.DmData.initPage()"
+          class="input-box"
+        />
+        <div slot="right">
+          <yd-form-select
+            clearable
+            :selects="pool_cate_list"
+            v-model="bindParams.pool_cate"
+            placeholder="资源池类型"
+            style="width:130px;margin-right: 10px;"
+            @change="$refs.DmData.initPage()"
           />
         </div>
       </DmToolbar>
@@ -21,10 +29,18 @@
         <el-table :data="list">
           <el-table-column type="index" label="序号" />
           <el-table-column label="资源池名称" prop="pool_name" show-overflow-tooltip>
-            <template slot-scope="{row}">{{row.pool_name || '--' }}</template>
+            <template slot-scope="{row}">
+              <a
+                class="color--primary"
+                @click="handleOption('SERVER', row)"
+              >{{row.pool_name || '--' }}</a>
+            </template>
           </el-table-column>
           <el-table-column label="类型" prop="ISA">
             <template slot-scope="{row}">{{row.unshared ===1 ? '独享': '共享' }}</template>
+          </el-table-column>
+          <el-table-column label="资源池类型" prop="LVEL">
+            <template slot-scope="{row}">{{formartValue(row, 'pool_cate')}}</template>
           </el-table-column>
           <el-table-column label="风险等级" prop="LVEL">
             <template slot-scope="{row}">{{risk_level[row.risk_level] || '--' }}</template>
@@ -52,7 +68,7 @@
           <el-table-column label="创建时间" prop="created_at" show-overflow-tooltip>
             <template slot-scope="{row}">{{formartTime(row.created_at)}}</template>
           </el-table-column>
-          <el-table-column label="操作" width="80px" align="right">
+          <el-table-column label="操作" width="80px" fixed="right" align="right">
             <template slot-scope="{row}">
               <el-dropdown
                 @command="
@@ -104,24 +120,42 @@ export default {
       }
     };
   },
+  computed: {
+    pool_cate_list() {
+      const list = this.$store.getters.pool_cate_list || [];
+
+      return list.map(i => {
+        return {
+          label: i.key,
+          value: i.val
+        };
+      });
+    }
+  },
   methods: {
     formartValue(data, prop) {
-      return data[prop] || '';
+      let val = data[prop];
+      if (prop === 'pool_cate') {
+        val = this.pool_cate_list.find(i => Number(i.value) === Number(val));
+        val = (val && val.label) || '';
+      }
+      return val || '';
     },
     handleOption(TYPE, data) {
       if (TYPE === 'Edit') {
         this.$refs.addedit.handleOpen(data, { mode: 'Edit' });
       } else if (TYPE === 'SERVER') {
-        this.$router.push({
-          path: '/source/source-list/' + data.id
-        });
+        this.handleLink(data);
       } else if (TYPE === 'DEL') {
         this.del(data);
       }
     },
     handleLink(data) {
       this.$router.push({
-        path: '/source/source-list/' + data.id
+        path: '/source/source-list/' + data.id,
+        query: {
+          pool_cate: data.pool_cate
+        }
       });
     },
     async del(data) {

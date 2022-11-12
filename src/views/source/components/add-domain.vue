@@ -13,6 +13,7 @@
     :mode="options.mode"
     width="700px"
     title-label="域名"
+    :submitStatus="is_domain_check"
     @submit="handleSubmit"
   >
     <el-form
@@ -55,18 +56,13 @@
       <el-form-item prop="domain_zone_id" label="Zone ID">
         <el-input v-model="form.domain_zone_id" class="input-box" plaaceholder="Zone ID" />
       </el-form-item>
-      <el-form-item prop="domain_api_token" label="API TOKEN">
+      <el-form-item prop="domain_api_token" label="API Key">
         <el-input v-model="form.domain_api_token" class="input-box" />
       </el-form-item>
-      <el-form-item prop="pool_id" label="节点池">
-        <yd-form-select
-          :selects="poollist"
-          v-model="form.pool_id"
-          class="input-box"
-          @change="changPool"
-        />
+      <el-form-item prop="pool_id" label="内置域名节点池">
+        <yd-form-select :selects="poollist" v-model="form.pool_id" class="input-box" />
       </el-form-item>
-      <el-form-item prop="usable_node_count" label="节点可用个数">
+      <el-form-item prop="usable_node_count" label="域名可用个数">
         <el-input-number
           v-model="form.usable_node_count"
           :controls="false"
@@ -76,14 +72,35 @@
       </el-form-item>
       <template v-if="options.mode !=='Create'">
         <el-form-item label="当前解析地址">
-          <el-input type="textarea" :disabled="options.mode !=='Create'" class="input-box"></el-input>
+          <el-input
+            type="textarea"
+            v-model="form.dns_ip"
+            :disabled="options.mode !=='Create'"
+            class="input-box"
+          ></el-input>
         </el-form-item>
         <el-form-item label="关联应用">
           <el-input v-model="form.app_names" :disabled="options.mode !=='Create'" class="input-box"></el-input>
         </el-form-item>
       </template>
-      <el-form-item label="备注">
+      <el-form-item label="备注" style="margin-bottom: 10px">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />
+      </el-form-item>
+      <el-form-item label style="margin-bottom: 0px">
+        <DmAlert class="input-box">
+          <template>
+            {{changeLabel}}
+            <el-button type="text" @click="checkDomain">点击检测</el-button>
+            <p
+              v-if="domain_check_desc && domain_check_desc !=='default'"
+              class="red--color"
+            >{{domain_check_desc}}</p>
+            <p
+              v-else-if="!is_domain_check && domain_check_desc !=='default'"
+              class="success--color"
+            >连接成功</p>
+          </template>
+        </DmAlert>
       </el-form-item>
     </el-form>
   </DmDialog>
@@ -132,7 +149,8 @@ export default createDialog({
         usable_node_count: 3,
         remark: '',
         status: 1,
-        app_names: ''
+        app_names: '',
+        dns_ip: ''
       },
       rules: {
         domain: [
@@ -156,7 +174,11 @@ export default createDialog({
         pool_id: [{ required: true, trigger: 'blur', message: ' ' }],
         usable_node_count: [{ required: true, trigger: 'blur', message: ' ' }],
         remark: []
-      }
+      },
+      changeLabel: '域名信息完善，请确保连接成功再添加',
+      is_domain_check: true,
+      domain_check_desc: 'default',
+      default_model: {}
     };
   },
   computed: {
@@ -177,7 +199,48 @@ export default createDialog({
           value: i.key
         };
       });
-      return list;
+    }
+  },
+  watch: {
+    'form.domain': {
+      handler(val) {
+        if (val !== this.default_model.domain) {
+          this.is_domain_check = true;
+          this.changeLabel = '域名信息改变，请确保连接成功再添加';
+        }
+      }
+    },
+    'form.domain_email': {
+      handler(val) {
+        if (val !== this.default_model.domain_email) {
+          this.is_domain_check = true;
+          this.changeLabel = 'Email 改变，请确保连接成功再添加';
+        }
+      }
+    },
+    'form.domain_service_name': {
+      handler(val) {
+        if (val !== this.default_model.domain_service_name) {
+          this.is_domain_check = true;
+          this.changeLabel = '域名解析商改变，请确保连接成功再添加';
+        }
+      }
+    },
+    'form.domain_api_token': {
+      handler(val) {
+        if (val !== this.default_model.domain_api_token) {
+          this.is_domain_check = true;
+          this.changeLabel = 'Zone ID 改变，请确保连接成功再添加';
+        }
+      }
+    },
+    'form.domain_api_token': {
+      handler(val) {
+        if (val !== this.default_model.domain_api_token) {
+          this.is_domain_check = true;
+          this.changeLabel = '域名信息完善，请确保连接成功再添加';
+        }
+      }
     }
   },
   methods: {
@@ -185,15 +248,22 @@ export default createDialog({
       this.getPool();
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
+        this.default_model = Object.assign({}, this.form);
         this.loading = false;
         if (this.options.mode === 'Edit') {
           this.getDetail();
+          this.is_domain_check = false;
+          this.domain_check_desc = '';
+        } else {
+          this.is_domain_check = true;
+          this.domain_check_desc = '';
         }
       });
     },
     async getPool(
       params = {
         page: 1,
+        pool_cate: 1,
         page_size: 99999
       }
     ) {
@@ -209,19 +279,50 @@ export default createDialog({
         return;
       }
     },
-    changPool(val) {
-      // const pool = (val && this.poollist.find(i => i.value === val)) || null;
-      // this.form.usable_node_count = val && pool ? pool.node_num || 0 : 0;
+    async checkDomain() {
+      const params = {
+        domain: this.form.domain,
+        domain_service_name: this.form.domain_service_name,
+        domain_email: this.form.domain_email,
+        domain_zone_id: this.form.domain_zone_id,
+        domain_api_token: this.form.domain_api_token
+      };
+
+      // const params = {
+      //   domain: 'a.app-cdn.info22',
+      //   domain_service_name: 'CLOUDFLARE',
+      //   domain_email: 'tuhyhliny@gmail.com',
+      //   domain_zone_id: 'c86c38624147082665a5e36d769dfa2a-111',
+      //   domain_api_token: 'b53a359aae9ed87c48f2d82a8f44e45518a50',
+      //   token: 'c5f56d7b9091ba574b39af6b90ec476e'
+      // };
+      this.loading = true;
+      try {
+        const { result = '' } = await this.FetchAccount.post(
+          '/domain/check',
+          params
+        );
+        this.is_domain_check = false;
+        this.domain_check_desc = result;
+      } catch (error) {
+        console.log(error);
+        this.domain_check_desc = error.msg;
+        this.is_domain_check = true;
+      } finally {
+        this.loading = false;
+      }
     },
+
     async getDetail() {
       this.loading = true;
-
       try {
         const data = await this.FetchAccount.get('/domain/detail', {
           domain_id: this.form.domain_id
         });
         this.form = Object.assign({ ...this.formDefault }, { ...data });
         this.from.app_names = data.app_names && data.app_names.join(',');
+
+        this.default_model = this.form;
       } catch (error) {
         return;
       } finally {

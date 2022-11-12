@@ -16,19 +16,16 @@
       <el-form-item prop="pool_name" label="资源池名称">
         <el-input v-model="form.pool_name" class="input-box" />
       </el-form-item>
-      <!-- <el-form-item
-        prop="type"
-        label="类型"
-      >
-        <el-select
-          v-model="form.type"
+      <el-form-item prop="pool_cate" label="资源池类型">
+        <yd-form-select
+          clearable
+          :selects="pool_cate_list"
+          v-model="form.pool_cate"
+          placeholder="资源池类型"
           class="input-box"
-        >
-          <el-option :value="0" label="默认"></el-option>
-          <el-option :value="1" label="全家配置"></el-option>
-          <el-option :value="2" label="高风险池"></el-option>
-        </el-select>
-      </el-form-item>-->
+        />
+      </el-form-item>
+
       <el-form-item prop="risk_level" label="风险等级">
         <el-select v-model="form.risk_level" class="input-box">
           <el-option :value="1" label="低"></el-option>
@@ -36,6 +33,7 @@
           <el-option :value="3" label="高"></el-option>
         </el-select>
       </el-form-item>
+
       <el-form-item label="监控模版" prop="monitor_template_uuid">
         <el-select v-model="form.monitor_template_uuid" class="input-box">
           <el-option
@@ -142,6 +140,7 @@ export default createDialog({
         monitor_template_uuid: '',
         monitor_group_uuid: '',
         type: 0,
+        pool_cate: '',
         unshared: 0
       },
       rules: {
@@ -152,6 +151,7 @@ export default createDialog({
         monitor_template_uuid: [
           { required: true, message: ' ', trigger: 'blur' }
         ],
+        pool_cate: [],
         monitor_group_uuid: [{ required: true, message: ' ', trigger: 'blur' }]
       },
       mode: 'Created',
@@ -159,7 +159,18 @@ export default createDialog({
       template_list: []
     };
   },
+  computed: {
+    pool_cate_list() {
+      const list = this.$store.getters.pool_cate_list || [];
 
+      return list.map(i => {
+        return {
+          label: i.key,
+          value: i.val
+        };
+      });
+    }
+  },
   methods: {
     afterOpen(form) {
       const params = {

@@ -50,6 +50,7 @@
       <template v-if="actionVisible">
         <el-button
           size="mini"
+          :disabled="submitStatus"
           v-if="showSubmit"
           :loading="submitLoading"
           :type="aside ? 'text' : 'primary'"
@@ -92,6 +93,10 @@ export default create({
     closeOnClickModal: {
       type: Boolean,
       default: true
+    },
+    submitStatus: {
+      type: Boolean,
+      default: false
     },
     submitText: {
       type: String,

@@ -75,7 +75,13 @@
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
           <el-table-column label="节点类型">
-            <template slot-scope="{row}">{{formartValue(row, 'node_cate')}}</template>
+            <template slot-scope="{row}">
+              <p
+                v-for="(item, _) in formartValue(row, 'node_cate')"
+                :key="_"
+                style="margin-bottom:0px;"
+              >{{item}}</p>
+            </template>
           </el-table-column>
           <el-table-column label="独享类型">
             <template slot-scope="{row}">{{Number(row.unshared) === 1 ? '独享': '共享' }}</template>
@@ -179,10 +185,14 @@ export default {
       }
 
       if (prop === 'node_cate') {
-        let val = data[prop];
-        val = this.node_cate_list.find(i => Number(i.value) === Number(val));
-
-        return (val && val.label) || '';
+        let val = (data[prop] && data[prop].split(',')) || [];
+        val = val.map(i => {
+          const find = this.node_cate_list.find(
+            _ => Number(_.value) === Number(i)
+          );
+          return (find && find.label) || '';
+        });
+        return (val && val) || [];
       }
 
       // const dataMap = {

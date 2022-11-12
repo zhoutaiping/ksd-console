@@ -61,7 +61,10 @@
           <el-table-column label="节点风险等级">
             <template slot-scope="{row}">{{ip_type[row.ip_type] || '--'}}</template>
           </el-table-column>
-          <el-table-column label="类型">
+          <!-- <el-table-column label="节点类型">
+            <template slot-scope="{row}">{{formartValue(row, 'node_cate')}}</template>
+          </el-table-column>-->
+          <el-table-column label="独享类型">
             <template slot-scope="{row}">{{row.unshared ===1 ? '独享': '共享' }}</template>
           </el-table-column>
           <el-table-column label="监控状态">
@@ -164,6 +167,16 @@ export default {
     };
   },
   computed: {
+    node_cate_list() {
+      const list = this.$store.getters.node_cate_list || [];
+
+      return list.map(i => {
+        return {
+          label: i.key,
+          value: i.val
+        };
+      });
+    },
     ips() {
       return (this.list && this.list.length && this.list.map(i => i.id)) || [];
     }
@@ -181,6 +194,13 @@ export default {
       if (prop === 'isp') {
         const find = this.ISP.find(i => i.value === data[prop]);
         return find ? find.label : '--';
+      }
+
+      if (prop === 'node_cate') {
+        let val = data[prop];
+        val = this.node_cate_list.find(i => Number(i.value) === Number(val));
+
+        return (val && val.label) || '';
       }
     },
     handleOption(option, data) {

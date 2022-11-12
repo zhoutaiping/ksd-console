@@ -130,7 +130,12 @@ export default createDialog({
       });
     },
     getIP(
-      params = { page: 1, pageSize: 9999, token: localStorage.getItem('token') }
+      params = {
+        page: 1,
+        pageSize: 9999,
+        node_cate: this.$route.query.pool_cate || 0,
+        token: localStorage.getItem('token')
+      }
     ) {
       this.ipList = [];
       this.Fetch.get('/pool/node/list', params).then(res => {
