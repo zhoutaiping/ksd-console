@@ -83,7 +83,9 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="Edit">编辑</el-dropdown-item>
                   <el-dropdown-item command="SERVER" @click="handleLink(row)">管理节点</el-dropdown-item>
-                  <el-dropdown-item command="DEL" @click="del(row)">删除</el-dropdown-item>
+                  <el-dropdown-item command="DEL" @click="del(row)">
+                    <span style="color: red">删除</span>
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>
