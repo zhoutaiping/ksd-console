@@ -151,7 +151,7 @@ export default createDialog({
         monitor_template_uuid: [
           { required: true, message: ' ', trigger: 'blur' }
         ],
-        pool_cate: [],
+        pool_cate: [{ required: true, message: ' ', trigger: 'blur' }],
         monitor_group_uuid: [{ required: true, message: ' ', trigger: 'blur' }]
       },
       mode: 'Created',

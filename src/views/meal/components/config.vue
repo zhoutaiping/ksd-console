@@ -17,7 +17,12 @@
         <yd-form-select :selects="poollist" v-model="form.pool_id" class="input-box" />
       </el-form-item>
       <el-form-item prop="center_pool_id" label="中心资源池">
-        <yd-form-select :selects="CenterPool" v-model="form.center_pool_id" class="input-box" />
+        <yd-form-select
+          clearable
+          :selects="CenterPool"
+          v-model="form.center_pool_id"
+          class="input-box"
+        />
       </el-form-item>
       <el-form-item label="备注" prop="remark">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />

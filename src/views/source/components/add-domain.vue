@@ -320,7 +320,11 @@ export default createDialog({
           domain_id: this.form.domain_id
         });
         this.form = Object.assign({ ...this.formDefault }, { ...data });
-        this.from.app_names = data.app_names && data.app_names.join(',');
+        this.form.app_names =
+          (data.app_names &&
+            data.app_names.length &&
+            data.app_names.join(',')) ||
+          ',';
 
         this.default_model = this.form;
       } catch (error) {
