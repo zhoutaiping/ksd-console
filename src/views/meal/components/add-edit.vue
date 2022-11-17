@@ -358,7 +358,8 @@ export default createDialog({
     },
     async getPool(params = { pool_cate: 1, page: 1, page_size: 99999 }) {
       this.poolList = [];
-      const { list = [] } = await this.Fetch.get('/pool/list', params);
+      let { list = [] } = await this.Fetch.get('/pool/list', params);
+      list = list.filter(i => i.node_num > 0);
       this.poolList = list.map(i => {
         return { label: i.pool_name + '-' + i.node_num + '节点', value: i.id };
       });

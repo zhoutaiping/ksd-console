@@ -62,7 +62,7 @@
       <el-form-item prop="pool_id" label="内置域名节点池">
         <yd-form-select :selects="poollist" v-model="form.pool_id" class="input-box" />
       </el-form-item>
-      <el-form-item prop="usable_node_count" label="域名可用个数">
+      <el-form-item prop="usable_node_count" label="可用节点IP个数">
         <el-input-number
           v-model="form.usable_node_count"
           :controls="false"
@@ -248,7 +248,10 @@ export default createDialog({
       this.getPool();
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
-        this.default_model = Object.assign({}, this.form);
+        this.default_model = Object.assign(
+          {},
+          JSON.parse(JSON.stringify(this.form))
+        );
         this.loading = false;
         if (this.options.mode === 'Edit') {
           this.getDetail();
@@ -279,6 +282,17 @@ export default createDialog({
         return;
       }
     },
+    /**
+     *    
+     * // const params = {
+      //   domain: 'a.app-cdn.info22',
+      //   domain_service_name: 'CLOUDFLARE',
+      //   domain_email: 'tuhyhliny@gmail.com',
+      //   domain_zone_id: 'c86c38624147082665a5e36d769dfa2a-111',
+      //   domain_api_token: 'b53a359aae9ed87c48f2d82a8f44e45518a50',
+      //   token: 'c5f56d7b9091ba574b39af6b90ec476e'
+      // };
+     */
     async checkDomain() {
       const params = {
         domain: this.form.domain,
@@ -288,14 +302,6 @@ export default createDialog({
         domain_api_token: this.form.domain_api_token
       };
 
-      // const params = {
-      //   domain: 'a.app-cdn.info22',
-      //   domain_service_name: 'CLOUDFLARE',
-      //   domain_email: 'tuhyhliny@gmail.com',
-      //   domain_zone_id: 'c86c38624147082665a5e36d769dfa2a-111',
-      //   domain_api_token: 'b53a359aae9ed87c48f2d82a8f44e45518a50',
-      //   token: 'c5f56d7b9091ba574b39af6b90ec476e'
-      // };
       this.loading = true;
       try {
         const { result = '' } = await this.FetchAccount.post(
@@ -319,14 +325,16 @@ export default createDialog({
         const data = await this.FetchAccount.get('/domain/detail', {
           domain_id: this.form.domain_id
         });
-        this.form = Object.assign({ ...this.formDefault }, { ...data });
-        this.form.app_names =
+        data.app_names =
           (data.app_names &&
             data.app_names.length &&
             data.app_names.join(',')) ||
           ',';
-
-        this.default_model = this.form;
+        this.form = Object.assign({ ...this.formDefault }, { ...data });
+        this.default_model = JSON.parse(JSON.stringify(this.form));
+        console.log('form---', {
+          ...this.form
+        });
       } catch (error) {
         return;
       } finally {
