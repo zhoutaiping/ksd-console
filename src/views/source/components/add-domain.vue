@@ -226,9 +226,9 @@ export default createDialog({
         }
       }
     },
-    'form.domain_api_token': {
+    'form.domain_zone_id': {
       handler(val) {
-        if (val !== this.default_model.domain_api_token) {
+        if (val !== this.default_model.domain_zone_id) {
           this.is_domain_check = true;
           this.changeLabel = 'Zone ID 改变，请确保连接成功再添加';
         }

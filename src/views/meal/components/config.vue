@@ -117,6 +117,7 @@ export default createDialog({
       form = {
         ...this.form,
         user_id: Number(this.form.user_id),
+        center_pool_id: this.form.center_pool_id || 0,
         token: localStorage.getItem('token')
       };
 

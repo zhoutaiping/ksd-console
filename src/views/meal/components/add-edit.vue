@@ -356,10 +356,11 @@ export default createDialog({
         return { label: i.domain, value: i.domain };
       });
     },
-    async getPool(params = { pool_cate: 1, page: 1, page_size: 99999 }) {
+    async getPool(params = { page: 1, page_size: 99999 }) {
       this.poolList = [];
       let { list = [] } = await this.Fetch.get('/pool/list', params);
       list = list.filter(i => i.node_num > 0);
+      list = list.filter(i => i.pool_cate !== 2);
       this.poolList = list.map(i => {
         return { label: i.pool_name + '-' + i.node_num + '节点', value: i.id };
       });
