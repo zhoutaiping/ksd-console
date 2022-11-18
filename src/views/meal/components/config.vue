@@ -98,12 +98,11 @@ export default createDialog({
       try {
         const data = await this.Fetch.get(this.API_INDEX, params);
         let { list = [] } = data || {};
+        list = list.filter(i => i.node_num > 0);
         list = list.map(i => {
           return { label: i.pool_name, value: i.id };
         });
-
         if (type === 'Pool') this.poollist = list;
-
         if (type === 'CenterPool') this.CenterPool = list;
       } catch (error) {
         return;
