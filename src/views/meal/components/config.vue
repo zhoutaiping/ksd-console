@@ -90,7 +90,7 @@ export default createDialog({
     async getPool(
       params = {
         page: 1,
-        page_size: 9999
+        page_size: 99999
       },
       type = ''
     ) {
@@ -100,7 +100,10 @@ export default createDialog({
         let { list = [] } = data || {};
         list = list.filter(i => i.node_num > 0);
         list = list.map(i => {
-          return { label: i.pool_name, value: i.id };
+          return {
+            label: i.pool_name + '-' + i.node_num + '节点',
+            value: i.id
+          };
         });
         if (type === 'Pool') this.poollist = list;
         if (type === 'CenterPool') this.CenterPool = list;

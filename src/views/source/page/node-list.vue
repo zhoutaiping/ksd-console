@@ -94,7 +94,7 @@
           </el-table-column>
           <el-table-column label="机器配置" prop="server_config" />
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
-          <el-table-column label="操作" fixed="right" width="200" align="right">
+          <el-table-column label="操作" fixed="right" width="120" align="right">
             <template slot-scope="{row}">
               <el-dropdown
                 @command="
@@ -108,7 +108,9 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="edit">编辑</el-dropdown-item>
-                  <el-dropdown-item command="del">删除</el-dropdown-item>
+                  <el-dropdown-item command="del">
+                    <span style="color: red">删除</span>
+                  </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </template>

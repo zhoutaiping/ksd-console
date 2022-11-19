@@ -332,9 +332,6 @@ export default createDialog({
           ',';
         this.form = Object.assign({ ...this.formDefault }, { ...data });
         this.default_model = JSON.parse(JSON.stringify(this.form));
-        console.log('form---', {
-          ...this.form
-        });
       } catch (error) {
         return;
       } finally {
