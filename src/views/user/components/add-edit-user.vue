@@ -10,13 +10,18 @@
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
       <el-form-item prop="user_name" label="用户名">
-        <el-input v-model="form.user_name" class="input-box" :disabled="options.mode !== 'Create'" />
+        <el-input
+          v-model="form.user_name"
+          clearable
+          class="input-box"
+          :disabled="options.mode !== 'Create'"
+        />
       </el-form-item>
       <el-form-item prop="nick_name" label="昵称">
-        <el-input v-model="form.nick_name" class="input-box" />
+        <el-input v-model="form.nick_name" clearable class="input-box" />
       </el-form-item>
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="form.email" placeholder=" " type="email" class="input-box" />
+        <el-input v-model="form.email" clearable placeholder=" " type="email" class="input-box" />
       </el-form-item>
       <el-form-item v-if="options.mode === 'Create'" label="密码" prop="password">
         <el-input v-model="form.password" placeholder=" " type="password" class="input-box" />

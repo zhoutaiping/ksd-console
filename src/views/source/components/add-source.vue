@@ -14,13 +14,13 @@
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
       <el-form-item prop="pool_name" label="资源池名称">
-        <el-input v-model="form.pool_name" class="input-box" />
+        <el-input v-model="form.pool_name" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="pool_cate" label="资源池类型">
         <yd-form-select
+          v-model="form.pool_cate"
           :clearable="options.mode !== 'Edit'"
           :selects="pool_cate_list"
-          v-model="form.pool_cate"
           placeholder="资源池类型"
           class="input-box"
         />
@@ -35,7 +35,7 @@
       </el-form-item>
 
       <el-form-item label="监控模版" prop="monitor_template_uuid">
-        <el-select v-model="form.monitor_template_uuid" class="input-box">
+        <el-select v-model="form.monitor_template_uuid" clearable filterable class="input-box">
           <el-option
             v-for="item in template_list"
             :value="item.value"
@@ -45,7 +45,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="监控组" prop="monitor_group_uuid">
-        <el-select v-model="form.monitor_group_uuid" class="input-box">
+        <el-select v-model="form.monitor_group_uuid" clearable filterable class="input-box">
           <el-option
             v-for="item in group_list"
             :value="item.value"
@@ -57,16 +57,6 @@
       <el-form-item prop="unshared" label="是否独享">
         <el-checkbox v-model="form.unshared" :true-label="1" :false-label="0" />
       </el-form-item>
-      <!-- <el-form-item
-        prop="is_delete"
-        label="是否删除"
-      >
-        <el-checkbox
-          v-model="form.is_delete"
-          :true-label="1"
-          :false-label="0"
-        />
-      </el-form-item>-->
       <el-form-item label="备注">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />
       </el-form-item>
@@ -202,7 +192,7 @@ export default createDialog({
         list = list.filter(i => i.node_num > 0);
         this.group_list = list.map(i => {
           return {
-            label: i.name,
+            label: i.name + '-' + i.node_num + '节点',
             value: i.uuid
           };
         });

@@ -14,9 +14,6 @@
           class="input-box"
           @submit="handleSearch"
         />
-        <div slot="right">
-          <!-- <el-select v-model="bindParams.type" :placeholder="'使用状态'" class="input-box"/> -->
-        </div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">

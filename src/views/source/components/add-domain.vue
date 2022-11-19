@@ -27,40 +27,41 @@
       <el-form-item prop="domain" label="域名">
         <el-input
           v-model="form.domain"
+          clearable
           :disabled="options.mode !=='Create'"
           placeholder="www.dome.com"
           class="input-box"
         />
       </el-form-item>
       <el-form-item prop="domain_register_name" label="域名注册商">
-        <el-input v-model="form.domain_register_name" class="input-box" />
+        <el-input v-model="form.domain_register_name" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="domain_service_name" label="域名解析商">
-        <el-select
+        <yd-form-select
           v-model="form.domain_service_name"
-          class="input-box"
+          :selects="domain_service_list"
+          clearable
           filterable
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in domain_service_list"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
+          class="input-box"
+        />
       </el-form-item>
       <el-form-item prop="domain_email" label="Email">
-        <el-input v-model="form.domain_email" class="input-box" plaaceholder="email" />
+        <el-input v-model="form.domain_email" clearable class="input-box" plaaceholder="email" />
       </el-form-item>
-      <el-form-item prop="domain_zone_id" label="Zone ID">
-        <el-input v-model="form.domain_zone_id" class="input-box" plaaceholder="Zone ID" />
+      <el-form-item prop="domain_zone_id" clearable label="Zone ID">
+        <el-input v-model="form.domain_zone_id" clearable class="input-box" plaaceholder="Zone ID" />
       </el-form-item>
       <el-form-item prop="domain_api_token" label="API Key">
         <el-input v-model="form.domain_api_token" class="input-box" />
       </el-form-item>
       <el-form-item prop="pool_id" label="内置域名节点池">
-        <yd-form-select :selects="poollist" v-model="form.pool_id" class="input-box" />
+        <yd-form-select
+          v-model="form.pool_id"
+          :selects="poolList"
+          filterable
+          clearable
+          class="input-box"
+        />
       </el-form-item>
       <el-form-item prop="usable_node_count" label="可用节点IP个数">
         <el-input-number
@@ -74,14 +75,19 @@
       <template v-if="options.mode !=='Create'">
         <el-form-item label="当前解析地址">
           <el-input
-            type="textarea"
             v-model="form.dns_ip"
             :disabled="options.mode !=='Create'"
             class="input-box"
-          ></el-input>
+            type="textarea"
+          />
         </el-form-item>
         <el-form-item label="关联应用">
-          <el-input v-model="form.app_names" :disabled="options.mode !=='Create'" class="input-box"></el-input>
+          <el-input
+            v-model="form.app_names"
+            type="textarea"
+            :disabled="options.mode !=='Create'"
+            class="input-box"
+          ></el-input>
         </el-form-item>
       </template>
       <el-form-item label="备注" style="margin-bottom: 10px">
@@ -138,7 +144,7 @@ export default createDialog({
       },
       REGISTER: [],
       SERVICE: [],
-      poollist: [],
+      poolList: [],
       formDefault: {
         domain: '',
         domain_register_name: '',
@@ -271,11 +277,11 @@ export default createDialog({
         page_size: 99999
       }
     ) {
-      this.poollist = [];
+      this.poolList = [];
       try {
         const data = await this.FetchAccount.get('/pool/list', params);
         const { list = [] } = data || {};
-        this.poollist =
+        this.poolList =
           list.map(i => {
             return { label: i.pool_name, value: i.id, ...i };
           }) || [];
