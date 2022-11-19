@@ -29,7 +29,13 @@
           style="width:200px"
         />
         <div slot="right">
-          <el-select v-model="bindParams.status" placeholder="状态" clearable @change="handleSearch">
+          <el-select
+            v-model="bindParams.status"
+            placeholder="状态"
+            clearable
+            @change="handleSearch"
+            style="width:120px;margin-right: 10px;"
+          >
             <el-option label="启用" value="1"></el-option>
             <el-option label="禁用" value="0"></el-option>
           </el-select>
@@ -37,7 +43,6 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list" @selection-change="handleSelectionChange">
-          <!-- <el-table-column type="selection" /> -->
           <el-table-column label="用户ID" prop="user_id" width="120" />
           <el-table-column label="用户名" min-width="150" show-overflow-tooltip>
             <template slot-scope="{ row }">{{row.user_name || '--'}}</template>

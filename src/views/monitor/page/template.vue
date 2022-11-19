@@ -24,6 +24,7 @@
             :placeholder="'监控协议'"
             class="input-box"
             @change="handleSearch"
+            style="width: 130px;"
           >
             <el-option value="https" label="HTTPS" />
             <el-option value="hppt" label="HTTP" />

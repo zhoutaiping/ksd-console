@@ -17,11 +17,6 @@
       label-width="150px"
     >
       <el-form-item prop="ip_type" label="风险类型">
-        <!-- <el-select v-model="form.ip_type" placeholder="风险类型" clearable class="input-box">
-          <el-option :value="1" label="高风险" />
-          <el-option :value="2" label="中风险" />
-          <el-option :value="3" label="低风险" />
-        </el-select>-->
         <el-radio-group v-model="form.ip_type">
           <el-radio-button :label="1">高风险</el-radio-button>
           <el-radio-button :label="2">中风险</el-radio-button>
@@ -59,12 +54,10 @@
       </el-form-item>
       <el-form-item prop="isp" label="ISP">
         <yd-form-select :selects="Label.ISP_TYPE" v-model="form.isp" class="input-box" />
-        <!-- <el-input v-model="form.isp" class="input-box" /> -->
       </el-form-item>
       <el-form-item prop="location" label="归属地">
         <FormItemArea v-model="form.location" ref="FormItemArea" class="input-box" />
         <!-- <InputArea v-model="form.location" class="input-box" style="width: 400px;" /> -->
-        <!-- <el-input v-model="form.location" placeholder class="input-box" /> -->
       </el-form-item>
       <el-form-item prop="server_config" label="机器配置">
         <el-input v-model="form.server_config" placeholder class="input-box" />
@@ -192,7 +185,7 @@ export default createDialog({
         ip_range: '',
         ip: '',
         ip_pool: 0,
-        ip_type: 1,
+        ip_type: 2,
         is_delete: 0,
         isp: '',
         location: [],

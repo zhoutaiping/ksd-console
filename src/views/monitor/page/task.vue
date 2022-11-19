@@ -24,6 +24,7 @@
             :placeholder="'目标状态'"
             clearable
             @change="handleSearch"
+            style="width: 130px;"
             class="input-box"
           >
             <el-option label="正常" :value="1"></el-option>
