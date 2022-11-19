@@ -9,13 +9,13 @@
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
       <el-form-item prop="name" label="监测点名称">
-        <el-input v-model="form.name" class="input-box" />
+        <el-input v-model="form.name" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="ipv4" label="IPV4">
-        <el-input v-model="form.ipv4" class="input-box" />
+        <el-input v-model="form.ipv4" clearable class="input-box" />
       </el-form-item>
       <el-form-item :prop="form.ipv6? 'ipv6' : ''" label="IPV6">
-        <el-input v-model="form.ipv6" class="input-box" />
+        <el-input v-model="form.ipv6" clearable class="input-box" />
       </el-form-item>
       <!-- <el-form-item prop="type" label="监测类型">
         <el-select v-model="form.type" class="input-box" placeholder="监测类型">
@@ -27,7 +27,7 @@
         <FormItemArea v-model="form.location" ref="FormItemArea" class="input-box" />
       </el-form-item>
       <el-form-item prop="isp" label="线路">
-        <yd-form-select :selects="Label.ISP_TYPE" v-model="form.isp" class="input-box" />
+        <yd-form-select :selects="Label.ISP_TYPE" clearable v-model="form.isp" class="input-box" />
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />

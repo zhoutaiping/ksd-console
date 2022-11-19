@@ -9,7 +9,7 @@
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
       <el-form-item prop="name" label="任务名称">
-        <el-input v-model="form.name" class="input-box" />
+        <el-input v-model="form.name" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="group" label="监控组">
         <el-select v-model="form.group" class="input-box">
@@ -41,26 +41,26 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="host" label="监控host">
-        <el-input v-model="form.host" class="input-box" />
+        <el-input v-model="form.host" clearable class="input-box" />
       </el-form-item>
 
       <el-form-item prop="url" label="监控路径">
-        <el-input v-model="form.url" class="input-box" />
+        <el-input v-model="form.url" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="domain" label="预期HTTP状态码">
         <el-input v-model="form.domain" class="input-box" />
       </el-form-item>
       <el-form-item prop="domain" label="监控耗时">
-        <el-input v-model="form.domain" class="input-box" />
+        <el-input v-model="form.domain" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="domain" label="连续不可用次数">
-        <el-input v-model="form.domain" class="input-box" />
+        <el-input v-model="form.domain" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="domain" label="连续宕机限制">
-        <el-input v-model="form.domain" class="input-box" />
+        <el-input v-model="form.domain" clearable class="input-box" />
       </el-form-item>
       <el-form-item prop="domain" label="平均监控延时">
-        <el-input v-model="form.domain" class="input-box" />
+        <el-input v-model="form.domain" clearable class="input-box" />
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />

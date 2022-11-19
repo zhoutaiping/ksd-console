@@ -257,7 +257,7 @@ export default createDialog({
       handler(val) {
         if (val !== this.default_model.domain_api_token) {
           this.is_domain_check = true;
-          this.changeLabel = '域名信息完善，请确保连接成功再添加';
+          this.changeLabel = 'API Key改变，请确保连接成功再添加';
         }
       }
     }

@@ -9,7 +9,7 @@
   >
     <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
       <el-form-item prop="name" label="组名称">
-        <el-input v-model="form.name" class="input-box" />
+        <el-input v-model="form.name" clearable class="input-box" />
       </el-form-item>
       <el-form-item label="备注">
         <el-input v-model="form.remark" placeholder="备注" type="textarea" class="input-box" />

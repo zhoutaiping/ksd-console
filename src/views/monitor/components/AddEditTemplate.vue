@@ -11,7 +11,7 @@
       <yd-scroll ref="scroll">
         <el-form ref="Form" :model="form" :rules="rules" label-position="right" label-width="150px">
           <el-form-item prop="name" label="模板名称">
-            <el-input v-model="form.name" class="input-box" />
+            <el-input v-model="form.name" clearable class="input-box" />
           </el-form-item>
           <el-form-item prop="protocol" label="适用协议">
             <el-select
@@ -50,10 +50,10 @@
               </el-select>
             </el-form-item>
             <el-form-item prop="domain" label="监控host">
-              <el-input v-model="form.domain" class="input-box" />
+              <el-input v-model="form.domain" clearable class="input-box" />
             </el-form-item>
             <el-form-item prop="path" label="监控路径">
-              <el-input v-model="form.path" class="input-box" />
+              <el-input v-model="form.path" clearable class="input-box" />
             </el-form-item>
           </template>
           <el-form-item prop="frequency" label="监控频率">
