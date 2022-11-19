@@ -134,15 +134,23 @@ export default createDialog({
         unshared: 0
       },
       rules: {
-        pool_name: [{ required: true, message: ' ', trigger: 'blur' }],
-        risk_level: [{ required: true, message: ' ' }],
+        pool_name: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        risk_level: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
         unshared: [],
         remark: [],
         monitor_template_uuid: [
-          { required: true, message: ' ', trigger: 'blur' }
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
         ],
-        pool_cate: [{ required: true, message: ' ', trigger: 'blur' }],
-        monitor_group_uuid: [{ required: true, message: ' ', trigger: 'blur' }]
+        pool_cate: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        monitor_group_uuid: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ]
       },
       mode: 'Created',
       group_list: [],

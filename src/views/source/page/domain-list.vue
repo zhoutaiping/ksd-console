@@ -19,21 +19,6 @@
         />
         <div slot="right">
           <el-select
-            v-if="false"
-            v-model="bindParams.type"
-            clearable
-            placeholder="是否分配"
-            style="width:120px;margin-right: 10px;"
-            @change="$refs.DmData.initPage()"
-          >
-            <!-- <el-option
-                v-for="(item, index) in Object.keys(ip_type)"
-                :key="index"
-                :value="item"
-                :label="ip_type[item]"
-            />-->
-          </el-select>
-          <el-select
             v-model="bindParams.status"
             clearable
             placeholder="启用状态"

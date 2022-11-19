@@ -29,19 +29,11 @@
             <el-option value="https" label="HTTPS" />
             <el-option value="hppt" label="HTTP" />
           </el-select>
-
-          <!-- <el-select
-            v-model="bindParams.group"
-            :placeholder="'监控组'"
-            class="input-box"
-            @change="handleSearch"
-          />-->
         </div>
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
           <el-table-column type="index" label="序号" />
-          <!-- <el-table-column type="selection" /> -->
           <el-table-column label="模板名称/ID" prop="name" min-width="180">
             <template slot-scope="{row}">
               <span>{{row.name}}</span>
@@ -66,14 +58,7 @@
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="150" align="right">
             <template slot-scope="{ row }">
-              <el-dropdown
-                type="primary"
-                @command="
-                  (e) => {
-                    handleOption(e, row);
-                  }
-                "
-              >
+              <el-dropdown type="primary" @command="(e) => {handleOption(e, row);} ">
                 <span class="el-dropdown-link">
                   <i class="el-icon-more" />
                 </span>
