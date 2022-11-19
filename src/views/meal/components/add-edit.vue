@@ -48,7 +48,7 @@
           v-model="form.dns_domains"
           class="input-box"
         ></el-input>-->
-        <el-select v-model="form.dns_domains" multiple collapse-tags class="input-box">
+        <el-select v-model="form.dns_domains" multiple filterable collapse-tags class="input-box">
           <el-option
             v-for="(item, index) in domainList"
             :key="index"
@@ -66,7 +66,7 @@
         ></el-input>
       </el-form-item>-->
       <el-form-item label="内置资源池" prop="default_pool_id">
-        <el-select v-model="form.default_pool_id" class="input-box">
+        <el-select v-model="form.default_pool_id" filterable clearable class="input-box">
           <el-option
             v-for="(item, index) in poolList"
             :key="index"
@@ -313,6 +313,8 @@ export default createDialog({
       this.$nextTick(async () => {
         this.$refs.Form.clearValidate();
         this.form = Object.assign(this.formDefault, { ...form });
+        this.form.default_pool_id =
+          this.form.default_pool_id === 0 ? '' : this.form.default_pool_id;
         this.form.dns_domains = form.dns_domains
           .toString()
           .split(',')
@@ -419,6 +421,9 @@ export default createDialog({
 
       form = {
         ...this.form,
+        default_pool_id: ['', 0].includes(this.form.default_pool_id)
+          ? 0
+          : this.form.default_pool_id,
         dns_domains: this.form.dns_domains.join(',')
       };
 
