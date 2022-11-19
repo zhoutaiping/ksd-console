@@ -66,7 +66,8 @@
         <el-input-number
           v-model="form.usable_node_count"
           :controls="false"
-          :min="0"
+          :min="1"
+          :precision="0"
           class="input-box"
         />
       </el-form-item>

@@ -96,20 +96,14 @@
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
           <el-table-column label="操作" fixed="right" width="120" align="right">
             <template slot-scope="{row}">
-              <el-dropdown
-                @command="
-                (e) => {
-                  handleOption(e, row);
-                }
-              "
-              >
+              <el-dropdown @command="(e) => {handleOption(e, row); }">
                 <span class="el-dropdown-link">
                   <i class="el-icon-more" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="edit">编辑</el-dropdown-item>
                   <el-dropdown-item command="del">
-                    <span style="color: red">删除</span>
+                    <span class="red--color">删除</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>

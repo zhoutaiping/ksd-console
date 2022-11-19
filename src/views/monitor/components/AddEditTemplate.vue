@@ -33,7 +33,12 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="port" label="监控端口">
-            <el-input-number :controls="false" v-model="form.port" class="input-box" />
+            <el-input-number
+              :controls="false"
+              v-model="form.port"
+              :precision="0"
+              class="input-box"
+            />
           </el-form-item>
           <template v-if="!['tcp','TCP'].includes(form.protocol)">
             <el-form-item prop="method" label="监控请求方法">
@@ -52,7 +57,12 @@
             </el-form-item>
           </template>
           <el-form-item prop="frequency" label="监控频率">
-            <el-input-number :controls="false" v-model="form.frequency" class="input-box" />秒
+            <el-input-number
+              :controls="false"
+              :precision="0"
+              v-model="form.frequency"
+              class="input-box"
+            />秒
           </el-form-item>
           <el-form-item
             v-if="!['tcp','TCP'].includes(form.protocol)"
@@ -61,6 +71,7 @@
           >
             <el-input-number
               :controls="false"
+              :precision="0"
               placeholder="200"
               v-model="form.expect_status_code"
               class="input-box"
@@ -69,6 +80,7 @@
           <el-form-item prop="limit_max_fails_rate" label="监控失败占比">
             <el-input-number
               :controls="false"
+              :precision="0"
               v-model="form.limit_max_fails_rate"
               class="input-box"
               placeholder="10-100"
@@ -80,6 +92,7 @@
           <el-form-item prop="limit_max_delay" label="监控耗时">
             <el-input-number
               :controls="false"
+              :precision="0"
               v-model="form.limit_max_delay"
               class="input-box"
               placeholder="100-10000"
@@ -91,6 +104,7 @@
           <el-form-item prop="limit_max_fail" label="连续不可用计数">
             <el-input-number
               :controls="false"
+              :precision="0"
               v-model="form.limit_max_fail"
               class="input-box"
               placeholder="2-10"
@@ -102,6 +116,7 @@
           <el-form-item prop="limit_max_rise" label="连续可用计数">
             <el-input-number
               :controls="false"
+              :precision="0"
               v-model="form.limit_max_rise"
               class="input-box"
               placeholder="1-5"
@@ -113,11 +128,13 @@
           <el-form-item prop="limit_max_delay" label="连续宕机限制">
             <el-input-number
               :controls="false"
+              :precision="0"
               v-model="form.limit_up_down_interval"
               style="width:150px"
             />秒
             <el-input-number
               :controls="false"
+              :precision="0"
               v-model="form.limit_up_down_count"
               style="width:150px"
             />次
@@ -126,6 +143,7 @@
           <el-form-item prop="limit_avg_delay" label="平均延时监控">
             <el-input-number
               :controls="false"
+              :precision="0"
               v-model="form.limit_avg_delay"
               :min="50"
               class="input-box"

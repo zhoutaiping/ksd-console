@@ -19,6 +19,7 @@
         />
         <div slot="right">
           <el-select
+            v-if="false"
             v-model="bindParams.type"
             clearable
             placeholder="是否分配"
@@ -75,13 +76,7 @@
           <el-table-column label="备注" prop="remark" show-overflow-tooltip />
           <el-table-column label="操作" width="200" align="right">
             <template slot-scope="{row}">
-              <el-dropdown
-                @command="
-                    (e) => {
-                      handleOption(e, row);
-                    }
-                  "
-              >
+              <el-dropdown @command="(e) => {handleOption(e, row); }">
                 <span class="el-dropdown-link">
                   <i class="el-icon-more" />
                 </span>
