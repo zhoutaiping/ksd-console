@@ -194,28 +194,48 @@ export default createDialog({
         remark: ''
       },
       rules: {
-        name: [{ required: true, message: ' ', trigger: 'blur' }],
-        protocol: [{ required: true, message: ' ', trigger: 'blur' }],
-        method: [{ required: true, message: ' ', trigger: 'blur' }],
+        name: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
+        protocol: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        method: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
         domain: [],
-        port: { required: true, validator: portVaildate, trigger: 'blur' },
-        path: [{ required: true, message: ' ', trigger: 'blur' }],
-        is_default: [{ required: true, message: ' ', trigger: 'blur' }],
-        frequency: [{ required: true, message: ' ', trigger: 'blur' }],
-        expect_status_code: [{ required: true, message: ' ', trigger: 'blur' }],
-        limit_max_fail: [{ required: true, message: ' ', trigger: 'blur' }],
+        port: {
+          required: true,
+          validator: portVaildate,
+          trigger: ['blur', 'change']
+        },
+        path: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
+        is_default: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        frequency: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        expect_status_code: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        limit_max_fail: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
         limit_max_fails_rate: [
-          { required: true, message: ' ', trigger: 'blur' }
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
         ],
         limit_up_down_count: [
-          { required: true, message: ' ', trigger: 'blur' }
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
         ],
         limit_up_down_interval: [
-          { required: true, message: ' ', trigger: 'blur' }
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
         ],
-        down_time: [{ required: true, message: ' ', trigger: 'blur' }],
-        limit_max_delay: [{ required: true, message: ' ', trigger: 'blur' }],
-        limit_max_rise: [{ required: true, message: ' ', trigger: 'blur' }],
+        down_time: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        limit_max_delay: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        limit_max_rise: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
         limit_avg_delay: [],
         remark: []
       }

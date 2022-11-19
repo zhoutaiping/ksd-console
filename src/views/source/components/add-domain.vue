@@ -161,25 +161,37 @@ export default createDialog({
       },
       rules: {
         domain: [
-          { required: true, trigger: 'blur', message: '请填写域名' },
+          {
+            required: true,
+            trigger: ['blur', 'change'],
+            message: '请填写域名'
+          },
           { validator: validatorValue() }
         ],
         domain_register_name: [],
         domain_service_name: [
-          { required: true, trigger: 'blur', message: ' ' }
+          { required: true, trigger: ['blur', 'change'], message: ' ' }
         ],
         domain_email: [
-          { required: true, message: ' ', trigger: 'blur' },
+          { required: true, message: ' ', trigger: ['blur', 'change'] },
           {
             type: 'email',
             message: '请输入正确的邮箱地址',
             trigger: ['blur', 'change']
           }
         ],
-        domain_zone_id: [{ required: true, trigger: 'blur', message: ' ' }],
-        domain_api_token: [{ required: true, trigger: 'blur', message: ' ' }],
-        pool_id: [{ required: true, trigger: 'blur', message: ' ' }],
-        usable_node_count: [{ required: true, trigger: 'blur', message: ' ' }],
+        domain_zone_id: [
+          { required: true, trigger: ['blur', 'change'], message: ' ' }
+        ],
+        domain_api_token: [
+          { required: true, trigger: ['blur', 'change'], message: ' ' }
+        ],
+        pool_id: [
+          { required: true, trigger: ['blur', 'change'], message: ' ' }
+        ],
+        usable_node_count: [
+          { required: true, trigger: ['blur', 'change'], message: ' ' }
+        ],
         remark: []
       },
       changeLabel: '域名信息完善，请确保连接成功再添加',

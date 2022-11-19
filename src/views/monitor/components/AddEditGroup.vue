@@ -31,7 +31,7 @@ export default createDialog({
         remark: ''
       },
       rules: {
-        name: [{ required: true, message: ' ', trigger: 'blur' }],
+        name: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
         remark: []
       }
     };

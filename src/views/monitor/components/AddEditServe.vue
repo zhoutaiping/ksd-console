@@ -40,7 +40,9 @@ export default createDialog({
         group_uuid: this.$route.params.id
       },
       rules: {
-        node_uuid: [{ required: true, message: ' ', trigger: 'blur' }],
+        node_uuid: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
         remark: []
       },
       nodeList: []

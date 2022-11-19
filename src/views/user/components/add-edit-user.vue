@@ -93,12 +93,22 @@ export default createDialog({
           {
             required: true,
             validator: validatorName,
-            trigger: 'blur'
+            trigger: ['blur', 'change']
           }
         ],
-        email: [{ required: true, validator: validatorEmail, trigger: 'blur' }],
-        password: [{ required: true, message: ' ', trigger: 'blur' }],
-        role_id: [{ required: true, message: ' ', trigger: 'blur' }],
+        email: [
+          {
+            required: true,
+            validator: validatorEmail,
+            trigger: ['blur', 'change']
+          }
+        ],
+        password: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        role_id: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
         nick_name: [],
         remark: []
       }

@@ -101,14 +101,18 @@ export default createDialog({
       },
       rules: {
         risk_level: [
-          { required: true, message: '请选择风险等级', trigger: 'blur' }
+          {
+            required: true,
+            message: '请选择风险等级',
+            trigger: ['blur', 'change']
+          }
         ],
         node_ids: [
           {
             type: 'array',
             required: true,
             message: '请选择IP',
-            trigger: 'blur'
+            trigger: ['blur', 'change']
           }
         ]
       },

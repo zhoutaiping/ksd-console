@@ -66,7 +66,13 @@ export default createDialog({
         remark: ''
       },
       rules: {
-        pool_id: [{ required: true, message: '请选择资源池', trigger: 'blur' }],
+        pool_id: [
+          {
+            required: true,
+            message: '请选择资源池',
+            trigger: ['blur', 'change']
+          }
+        ],
         center_pool_id: [],
         remark: []
       },

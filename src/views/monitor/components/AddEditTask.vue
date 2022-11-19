@@ -88,14 +88,20 @@ export default createDialog({
         remark: ''
       },
       rules: {
-        name: [{ required: true, message: ' ', trigger: 'blur' }],
-        domain: [{ required: true, message: ' ', trigger: 'blur' }],
-        port: [{ required: true, message: ' ', trigger: 'blur' }],
-        template: [{ required: true, message: ' ', trigger: 'blur' }],
-        http: [{ required: true, message: ' ', trigger: 'blur' }],
-        methods: [{ required: true, message: ' ', trigger: 'blur' }],
-        http_sni: [{ required: true, message: ' ', trigger: 'blur' }],
-        url: [{ required: true, message: ' ', trigger: 'blur' }],
+        name: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
+        domain: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
+        port: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
+        template: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        http: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
+        methods: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        http_sni: [
+          { required: true, message: ' ', trigger: ['blur', 'change'] }
+        ],
+        url: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
         remark: []
       }
     };

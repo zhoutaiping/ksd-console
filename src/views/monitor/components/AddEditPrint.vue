@@ -124,13 +124,13 @@ export default createDialog({
         status: 0
       },
       rules: {
-        name: [{ required: true, message: ' ', trigger: 'blur' }],
+        name: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
         ipv4: [
-          { required: true, trigger: 'blur', message: '请填写IP' },
+          { required: true, trigger: ['blur', 'change'], message: '请填写IP' },
           { validator: validatorValue() }
         ],
         ipv6: [{ validator: validatorValue2() }],
-        type: [{ required: true, message: ' ', trigger: 'blur' }],
+        type: [{ required: true, message: ' ', trigger: ['blur', 'change'] }],
         isp: [],
         location: [],
         country: [],
