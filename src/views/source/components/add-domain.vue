@@ -291,18 +291,15 @@ export default createDialog({
     ) {
       this.poolList = [];
       try {
-        const { list = [] } = await this.FetchAccount.get('/pool/list', params);
+        let { list = [] } = await this.FetchAccount.get('/pool/list', params);
+        console.log(list);
         list = list.filter(i => i.node_num > 0);
-        this.poolList =
-          list.map(i => {
-            return {
-              label: i.pool_name + '-' + i.node_num + '节点',
-              value: i.id,
-              ...i
-            };
-          }) || [];
-
-        this.poolList = [];
+        this.poolList = list.map(i => {
+          return {
+            label: i.pool_name + '-' + i.node_num + '节点',
+            value: i.id
+          };
+        });
       } catch (error) {
         return;
       }
