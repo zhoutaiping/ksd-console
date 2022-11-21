@@ -1,5 +1,5 @@
 module.exports = {
-  title: "KDS Console",
+  title: "管理平台",
 
   /**
    * @type {boolean} true | false

@@ -1,7 +1,8 @@
 "use strict";
 const path = require("path");
 const defaultSettings = require("./src/settings.js");
-
+// const CompressionWebpackPlugin = require("compression-webpack-plugin");
+let productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i;
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -72,6 +73,19 @@ module.exports = {
     },
   },
   chainWebpack(config) {
+    // if (process.env.NODE_ENV === 'production') {
+    //   config.plugin("CompressionPlugin").use('compression-webpack-plugin', [{
+    //         filename: '[path][base].gz',
+    //         algorithm: 'gzip',
+    //         // 要压缩的文件（正则）
+    //         test: /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i,
+    //         // 最小文件开启压缩
+    //         threshold: 10240,
+    //         minRatio: 0.8
+    //       }])
+    //   }
+    // }
+
     // it can improve the speed of the first screen, it is recommended to turn on preload
     // it can improve the speed of the first screen, it is recommended to turn on preload
     config.plugin("preload").tap(() => [
@@ -102,6 +116,17 @@ module.exports = {
       .end();
 
     config.when(process.env.NODE_ENV !== "development", (config) => {
+      // config.plugin("CompressionPlugin").use("compression-webpack-plugin", [
+      //   {
+      //     filename: "[path][base].gz",
+      //     algorithm: "gzip",
+      //     // 要压缩的文件（正则）
+      //     test: productionGzipExtensions,
+      //     // 最小文件开启压缩
+      //     threshold: 10240,
+      //     minRatio: 0.8,
+      //   },
+      // ]);
       config
         .plugin("ScriptExtHtmlWebpackPlugin")
         .after("html")
@@ -121,10 +146,35 @@ module.exports = {
             priority: 10,
             chunks: "initial", // only package third parties that are initially dependent
           },
+          axios: {
+            name: "axios",
+            test: /[\\/]node_modules[\\/]_?axios(.*)/,
+            priority: 26,
+          },
+          vue: {
+            name: "vue",
+            test: /[\\/]node_modules[\\/]_?vue(.*)/,
+            priority: 23,
+          },
+          vuex: {
+            name: "vuex",
+            test: /[\\/]node_modules[\\/]_?vuex(.*)/,
+            priority: 38,
+          },
+          "vue-router": {
+            name: "vue-router",
+            test: /[\\/]node_modules[\\/]_?vue-router(.*)/,
+            priority: 29,
+          },
           elementUI: {
             name: "chunk-elementUI", // split elementUI into a single package
             priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
             test: /[\\/]node_modules[\\/]_?element-ui(.*)/, // in order to adapt to cnpm
+          },
+          antDesign: {
+            name: "chunk-antDesign", // split elementUI into a single package
+            priority: 32, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+            test: /[\\/]node_modules[\\/]_?ant-design(.*)/, // in order to adapt to cnpm
           },
           commons: {
             name: "chunk-commons",

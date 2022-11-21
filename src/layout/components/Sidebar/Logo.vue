@@ -75,9 +75,11 @@ export default {
       //color: $menuActiveText;
       font-weight: 600;
       line-height: 50px;
-      font-size: 14px;
+      font-size: 20px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
+      margin-left: 10px;
+      letter-spacing: 1px;
     }
   }
 
