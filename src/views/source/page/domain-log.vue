@@ -14,14 +14,14 @@
       </DmToolbar>
       <DmTable :loading="loading" min-height>
         <el-table :data="list">
-          <el-table-column label="宕机IP" prop="id">
-            <template slot-scope="{row}">{{row.ip || '--' }}</template>
+          <el-table-column label="宕机IP" show-overflow-tooltip>
+            <template slot-scope="{row}">{{ formartValue(row, 'down_ips') }}</template>
           </el-table-column>
-          <el-table-column label="替换IP">
-            <template slot-scope="{row}">{{ formartValue(row, 'ip_') }}</template>
+          <el-table-column label="替换IP" show-overflow-tooltip>
+            <template slot-scope="{row}">{{ formartValue(row, 'replace_ips') }}</template>
           </el-table-column>
           <el-table-column label="更换时间">
-            <template slot-scope="{row}">{{formartTime(row.updated_at)}}</template>
+            <template slot-scope="{row}">{{formartTime(row.switch_time)}}</template>
           </el-table-column>
         </el-table>
       </DmTable>
@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       Fetch: this.FetchAccount,
-      API_INDEX: '',
+      API_INDEX: '/domain/switch_log',
       domain: this.$route.query.domain || '',
       bindParams: {
         domain_id: this.$route.params.id
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     formartValue(data, prop) {
-      return data[prop];
+      return data[prop] || '--';
     }
   }
 };

@@ -152,7 +152,9 @@ export default createDialog({
               this.formartValue(i, 'isp') +
               this.formartValue(i, 'location') +
               this.formartValue(i, 'risk_level') +
-              this.formartValue(i, 'unshared'),
+              this.formartValue(i, 'unshared') +
+              this.formartValue(i, 'ip_type') +
+              this.formartValue(i, 'remark'),
             value: i.id
           };
         });
@@ -174,8 +176,19 @@ export default createDialog({
         };
         return (risk_level[data[prop]] && '-' + risk_level[data[prop]]) || '';
       }
+      if (prop === 'ip_type') {
+        const ip_type = {
+          1: '高风险',
+          2: '中风险',
+          3: '低风险'
+        };
+        return (ip_type[data[prop]] && '-' + ip_type[data[prop]]) || '';
+      }
       if (prop === 'unshared') {
         return Number(data[prop]) === 1 ? '- 独享' : '- 共享';
+      }
+      if (prop === 'remark') {
+        return data[prop] ? '-' + data[prop] : '';
       }
       if (prop === 'location') {
         let location = [];

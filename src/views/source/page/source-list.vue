@@ -149,7 +149,16 @@ export default {
       } else if (TYPE === 'SERVER') {
         this.handleLink(data);
       } else if (TYPE === 'DEL') {
-        this.del(data);
+        const self = this;
+        this.$confirm('删除资源池同时会删除资源池的节点IP?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            this.del(data);
+          })
+          .catch(() => {});
       }
     },
     handleLink(data) {
