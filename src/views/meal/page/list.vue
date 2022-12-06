@@ -54,7 +54,7 @@
           </el-table-column>
           <el-table-column label="AccessKey" min-width="200" show-overflow-tooltip>
             <template slot-scope="scope">
-              <span>{{ scope.row.access_key }}</span>
+              <span class="copy-box" @click="copyAccessKey(scope.row,'access_key')">{{ scope.row.access_key }}</span>
               <el-tooltip content="点击可复制到粘贴板">
                 <el-button
                   v-if="scope.row.access_key"
@@ -322,3 +322,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.copy-box {
+  text-decoration:underline dotted;
+}
+</style>
