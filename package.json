@@ -1,8 +1,8 @@
 {
-  "name": "vue-element-admin",
-  "version": "4.4.0",
-  "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
-  "author": "Pan <panfree23@gmail.com>",
+  "name": "andao-admin",
+  "version": "1.1s.0",
+  "description": "andao",
+  "author": "andao",
   "scripts": {
     "start": "vue-cli-service serve",
     "dev": "vue-cli-service serve",
@@ -86,20 +86,15 @@
     "last 2 versions"
   ],
   "bugs": {
-    "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
+    "url": "s"
   },
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
   },
   "keywords": [
-    "vue",
-    "admin",
-    "dashboard",
-    "element-ui",
-    "boilerplate",
-    "admin-template",
-    "management-system"
+    "andao",
+    "vue"
   ],
   "license": "MIT",
   "lint-staged": {
@@ -115,6 +110,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PanJiaChen/vue-element-admin.git"
+    "url": ""
   }
 }
