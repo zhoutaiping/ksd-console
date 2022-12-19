@@ -56,6 +56,9 @@ module.exports = {
           "^/api": "/", // 重写路径
         },
       },
+      "/statistic/": {
+        target: "http://172.18.153.158:8888",
+      },
       // "/monitor/": {
       //   target: "https://account.axisnow.xyz",
       // },

@@ -9,6 +9,7 @@ import bootstrap from "@/core/bootstrap";
 import "@/core/use";
 import "@/core/use-console";
 import "@/core/use-stage";
+import "@/core/core-chart";
 
 import "normalize.css/normalize.css"; // a modern alternative to CSS resets
 import "@/styles/theme/index.css"; // global css

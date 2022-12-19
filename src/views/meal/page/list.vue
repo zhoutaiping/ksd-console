@@ -326,5 +326,6 @@ export default {
 <style lang="scss" scoped>
 .copy-box {
   text-decoration:underline dotted;
+  cursor: pointer;
 }
 </style>

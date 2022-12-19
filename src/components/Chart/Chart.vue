@@ -11,7 +11,7 @@
       :height="height"
       :tooltip="tooltip"
       :legend-visible="legendVisible"
-      theme-name="default"
+      theme-name="andao"
     />
   </div>
   <!-- :data-empty="!loading && nData.rows.length === 0" -->

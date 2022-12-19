@@ -203,7 +203,7 @@ export default {
 
     init() {
       this.$nextTick(() => {
-        this.echarts = echarts.init(this.$refs.chart, "default");
+        this.echarts = echarts.init(this.$refs.chart, "andao");
         window.addEventListener("resize", throttle(500, this.resize), false);
         this.dataHandler();
       });

@@ -334,6 +334,82 @@ export const asyncRoutes = [
     ],
   },
   {
+    path: "/analysis",
+    name: "Analysis",
+    meta: {
+      title: "运营分析",
+      icon: "anquanyunyingfenxishitu",
+    },
+    component: Layout,
+    alwaysShow: false,
+    redirect: {
+      name: `Analysis-list`,
+    },
+    children: [
+      {
+        path: "Analysis-list",
+        component: () => import("@/views/analysis/index"),
+        name: "Analysis-list",
+        hidden:true,
+        redirect: {
+          name: `online-today`,
+        },
+        meta: { title: "分析报表", icon: "anquanyunyingfenxishitu", noCache: true },
+        children:[
+          {
+            path: "online-today",
+            component: () => import("@/views/analysis/online-today"),
+            name: "online-today",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          },{
+            path: "history-flow",
+            component: () => import("@/views/analysis/history-flow"),
+            name: "history-flow",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          },{
+            path: "history-forward",
+            component: () => import("@/views/analysis/history-forward"),
+            name: "history-forward",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          },{
+            path: "project-flow",
+            component: () => import("@/views/analysis/project-flow"),
+            name: "project-flow",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          },{
+            path: "player-rank",
+            component: () => import("@/views/analysis/player-rank"),
+            name: "player-rank",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          },{
+            path: "node-request",
+            component: () => import("@/views/analysis/node-request"),
+            name: "node-request",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          },{
+            path: "version",
+            component: () => import("@/views/analysis/version"),
+            name: "version",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          },{
+            path: "terminal-risk",
+            component: () => import("@/views/analysis/terminal-risk"),
+            name: "terminal-risk",
+            hidden:true,
+            meta: { title: "", icon: "anquanyunyingfenxishitu", noCache: true },
+          }
+        ]
+      },
+    ],
+  },
+  {
     path: "/icon",
     component: Layout,
     hidden: true,

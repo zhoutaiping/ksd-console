@@ -1,6 +1,6 @@
 {
   "name": "andao-admin",
-  "version": "1.1s.0",
+  "version": "1.1.0",
   "description": "andao",
   "author": "andao",
   "scripts": {
@@ -86,7 +86,7 @@
     "last 2 versions"
   ],
   "bugs": {
-    "url": "s"
+    "url": ""
   },
   "engines": {
     "node": ">=8.9",
