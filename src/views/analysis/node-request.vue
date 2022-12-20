@@ -60,10 +60,10 @@ export default {
       };
       console.log(1);
       try {
-        // const data = await this.fetchData(params);
+        const data = await this.fetchData(params);
 
-      const data = {"list_200":[{"ip":"139.155.245.100","status_200":5}],"list_502":[]}
-      this.list = data
+    //   const data = {"list_200":[{"ip":"139.155.245.100","status_200":5}],"list_502":[]}
+        this.list = data
       }catch (error) {
         this.list = {
         list_200:[],

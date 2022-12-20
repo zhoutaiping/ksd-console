@@ -86,36 +86,36 @@ export default {
       };
       console.log(1);
       try {
-        // const data = await this.fetchData(params);
+        const data = await this.fetchData(params);
 
-        const data = {
-          trend: {
-            x_data: [
-              "中国",
-              "美国",
-              "俄罗斯",
-              "新加坡",
-              "荷兰",
-              "土耳其",
-              "乌克兰",
-              "立陶宛",
-              "越南",
-              "卢森堡",
-              "比利时",
-              "韩国",
-              "法国",
-              "德国",
-              "日本",
-              "印度",
-              "波兰",
-              "英国",
-            ],
-            y_data: {
-              unit: "",
-              data: [1, 5, 0, 0, 4, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
-            },
-          },
-        };
+        // const data = {
+        //   trend: {
+        //     x_data: [
+        //       "中国",
+        //       "美国",
+        //       "俄罗斯",
+        //       "新加坡",
+        //       "荷兰",
+        //       "土耳其",
+        //       "乌克兰",
+        //       "立陶宛",
+        //       "越南",
+        //       "卢森堡",
+        //       "比利时",
+        //       "韩国",
+        //       "法国",
+        //       "德国",
+        //       "日本",
+        //       "印度",
+        //       "波兰",
+        //       "英国",
+        //     ],
+        //     y_data: {
+        //       unit: "",
+        //       data: [1, 5, 0, 0, 4, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0],
+        //     },
+        //   },
+        // };
         const unit =
           data.trend && data.trend.y_data ? data.trend.y_data.unit : "";
         this.settings.yAxisName = [`单位（${unit}）`];
@@ -147,67 +147,66 @@ export default {
         ...params,
         ...this.bindParams,
       };
-      console.log(1);
       try {
-        // const data = await this.fetchData(params,'POST /statistic/app/global/getalltopprovinceofday');
+        const data = await this.fetchData(params,'POST /statistic/app/global/getalltopprovinceofday');
 
-        const data = {
-        "trend": {
-            "x_data": [
-                "上海",
-                "北京",
-                "广东",
-                "河南",
-                "福建",
-                "香港",
-                "江苏",
-                "贵州",
-                "山东",
-                "江西",
-                "湖北",
-                "安徽",
-                "重庆",
-                "陕西",
-                "四川",
-                "宁夏",
-                "新疆",
-                "浙江",
-                "海南",
-                "湖南",
-                "甘肃",
-                "西藏",
-                "辽宁"
-            ],
-            "y_data": {
-                "unit": "个",
-                "data": [
-                    0,
-                    0,
-                    0,
-                    0,
-                    1,
-                    0,
-                    0,
-                    3,
-                    0,
-                    0,
-                    22,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0,
-                    0
-                ]
-            }
-        }
-    }
+    //     const data = {
+    //     "trend": {
+    //         "x_data": [
+    //             "上海",
+    //             "北京",
+    //             "广东",
+    //             "河南",
+    //             "福建",
+    //             "香港",
+    //             "江苏",
+    //             "贵州",
+    //             "山东",
+    //             "江西",
+    //             "湖北",
+    //             "安徽",
+    //             "重庆",
+    //             "陕西",
+    //             "四川",
+    //             "宁夏",
+    //             "新疆",
+    //             "浙江",
+    //             "海南",
+    //             "湖南",
+    //             "甘肃",
+    //             "西藏",
+    //             "辽宁"
+    //         ],
+    //         "y_data": {
+    //             "unit": "个",
+    //             "data": [
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 1,
+    //                 0,
+    //                 0,
+    //                 3,
+    //                 0,
+    //                 0,
+    //                 22,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0,
+    //                 0
+    //             ]
+    //         }
+    //     }
+    // }
 
         const unit =
           data.trend && data.trend.y_data ? data.trend.y_data.unit : "";
